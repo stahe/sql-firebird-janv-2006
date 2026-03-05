@@ -1,0 +1,1000 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Introduction au langage SQL avec le SGBD Firebird">
+      
+      
+        <meta name="author" content="Serge Tahé">
+      
+      
+        <link rel="canonical" href="https://stahe.github.io/sql-firebird-janv-2006/tutoriel-firebird.html">
+      
+      
+        <link rel="prev" href="introduction.html">
+      
+      
+        <link rel="next" href="introduction-au-langage-sql.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>2. Tutoriel Firebird - Introduction au langage SQL avec le SGBD Firebird</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/focus.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EBZC3JVJNR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var siteName = "Introduction au langage SQL avec le SGBD Firebird";
+    gtag('config', 'G-EBZC3JVJNR', {
+        'page_title': siteName
+    });
+  </script>
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#2-tutoriel-firebird" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Introduction au langage SQL avec le SGBD Firebird" class="md-header__button md-logo" aria-label="Introduction au langage SQL avec le SGBD Firebird" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Introduction au langage SQL avec le SGBD Firebird
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2. Tutoriel Firebird
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Passer au mode sombre"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Passer au mode sombre" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Passer au mode clair"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Passer au mode clair" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://stahe.github.io/sql-firebird-janv-2006" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Introduction au langage SQL avec le SGBD Firebird" class="md-nav__button md-logo" aria-label="Introduction au langage SQL avec le SGBD Firebird" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Introduction au langage SQL avec le SGBD Firebird
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://stahe.github.io/sql-firebird-janv-2006" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Tutoriel Firebird
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="tutoriel-firebird.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Tutoriel Firebird
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#21-ou-trouver-firebird" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1. Où trouver Firebird ?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-la-documentation-de-firebird" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2. La documentation de Firebird
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-travailler-avec-le-sgbd-firebird-grace-a-ib-expert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3. Travailler avec le SGBD Firebird grâce à IB-Expert
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-creation-dune-table-de-donnees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4. Création d&#x27;une table de données
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-insertion-de-donnees-dans-une-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5. Insertion de données dans une table
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26-lediteur-sql-de-ib-expert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6. L&#x27;éditeur SQL de [IB-Expert]
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-au-langage-sql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Introduction au langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="les-expressions-du-langage-sql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Les expressions du langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relations-entre-tables.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Relations entre tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="approfondissement-du-langage-sql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Approfondissement du langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gestion-de-lacces-concurrent-aux-donnees.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Gestion de l'accès concurrent aux données
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="installer-et-utiliser-un-pilote-odbc-pour-firebird.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Installer et utiliser un pilote ODBC pour [Firebird]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="2-tutoriel-firebird">2. Tutoriel Firebird</h1>
+<p>Avant d&#x27;aborder les bases du langage SQL, nous présentons au lecteur comment installer le SGBD Firebird ainsi que le client graphique IB-Expert.</p>
+<h2 id="21-ou-trouver-firebird">2.1. Où trouver Firebird ?</h2>
+<p>Le site principal de <a id="firebird"></a>Firebird est [<a href="http://firebird.sourceforge.net/">http://firebird.sourceforge.net/</a>]. La page de téléchargements offre les liens suivants (avril 2005) :</p>
+<p><img src="images/100000000000029C000001F5CFB40258.png" style="width:12.363cm;height:9.278cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000029C000001F5CFB40258.png" /></p>
+<p>On téléchargera les éléments suivants :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>firebird-win32
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">le SGBD pour Windows</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>firebird-net-provider
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">une bibliothèque de classes pour les applications .NET qui permet d&#x27;accéder au SGBD sans passer par un pilote ODBC.</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>firebird-ODBC-driver
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">le pilote ODBC de Firebird</p></td></tr></table>
+
+<p>Faire l&#x27;installation de ces éléments. Le SGBD est installé dans un dossier dont le contenu est analogue au suivant :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000016C000000F954F34DD9.png" style="display:inline-block; margin:4px;width:7.694cm;height:5.267cm;" class="odt-zoomable" data-zoom-src="images/100000000000016C000000F954F34DD9.png" /></td></tr></table>
+
+<p>Les binaires sont dans le dossier [bin] :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000980000018EB6B815A2.png" style="display:inline-block; margin:4px;width:2.817cm;height:7.368cm;" class="odt-zoomable" data-zoom-src="images/10000000000000980000018EB6B815A2.png" /></td></tr></table>
+
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>fbguard.exe
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">permet de lancer/arrêter le SGBD</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>isql.exe
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">client ligne permettant de gérer des bases de données</p></td></tr></table>
+
+<p>On notera que par défaut, l&#x27;administrateur du SGBD s&#x27;appelle [SYSDBA] et son mot de passe est [masterkey]. Des menus ont été installés dans [Démarrer] :</p>
+<p><img src="images/10000000000000B50000005C44F7E193.png" style="width:4.782cm;height:2.427cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000B50000005C44F7E193.png" /></p>
+<p>L&#x27;option [Firebird Guardian] permet de lancer/arrêter le SGBD. Après le lancement, l&#x27;icône du SGBD reste dans la barre des tâches de windows :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000340000002BBE55685B.png" style="display:inline-block; margin:4px;width:1.374cm;height:1.132cm;" class="odt-zoomable" data-zoom-src="images/10000000000000340000002BBE55685B.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000B1000000517CF578E2.png" style="display:inline-block; margin:4px;width:4.676cm;height:2.136cm;" class="odt-zoomable" data-zoom-src="images/10000000000000B1000000517CF578E2.png" /></td></tr></table>
+
+<p>Pour créer et exploiter des bases de données Firebird avec le client ligne [isql.exe], il est nécessaire de lire la documentation livrée avec le produit dans le dossier [doc].</p>
+<p><a id="ibexpert1"></a>
+<a id="docfirebird"></a></p>
+<h2 id="22-la-documentation-de-firebird">2.2. La documentation de Firebird</h2>
+<p>La documentation sur Firebird et sur le langage SQL peut être trouvée sur le site de Firebird (janvier 2006) :</p>
+<p><img src="images/100000000000024000000101E38316E1.png" style="width:12.188cm;height:5.438cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000024000000101E38316E1.png" /></p>
+<p>Divers manuels sont disponibles en anglais :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Firebird 1.5 Quick Start Guide
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">pour démarrer avec FB</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Firebird 1.5 Error Codes
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">pour comprendre les codes d&#x27;erreur renvoyés par FB</p></td></tr></table>
+
+<p>Des manuels de formation au langage SQL sont également disponibles :</p>
+<p><img src="images/10000000000002B800000109096DAA6C.png" style="width:12.889cm;height:4.909cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000002B800000109096DAA6C.png" /></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Data Definition Guide
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">pour découvrir comment créer des tables, quels types de données sont utilisables, ...</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Language Reference
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">le guide de référence pour apprendre SQL avec Firebird</p></td></tr></table>
+
+<p>Une façon rapide de travailler avec Firebird et d&#x27;apprendre le langage SQL est d&#x27;utiliser un client graphique. Un tel client est IB-Expert décrit au paragraphe suivant.</p>
+<p><a id="ibexpert"></a></p>
+<h2 id="23-travailler-avec-le-sgbd-firebird-grace-a-ib-expert">2.3. Travailler avec le SGBD Firebird grâce à IB-Expert</h2>
+<p>Le site principal de IB-Expert est [<a href="http://www.ibexpert.com/">http://www.ibexpert.com/</a>]. La page de téléchargements offre les liens suivants :</p>
+<p><img src="images/10000000000001D0000001AC51C2A46D.png" style="width:8.585cm;height:7.927cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001D0000001AC51C2A46D.png" /></p>
+<p>On choisira la version libre [Personal Edition]. Une fois celle-ci téléchargée et installée, on dispose d&#x27;un dossier analogue au suivant :</p>
+<p><img src="images/100000000000017200000145CD603301.png" style="width:6.84cm;height:6.013cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000017200000145CD603301.png" /></p>
+<p>L&#x27;exécutable est [ibexpert.exe]. Un raccourci est normalement disponible dans le menu [Démarrer] :</p>
+<p><img src="images/10000000000001B200000058D089D858.png" style="width:8.038cm;height:1.628cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001B200000058D089D858.png" /></p>
+<p>Une fois lancé, IBExpert affiche la fenêtre suivante :</p>
+<p><img src="images/100000000000011C000000C2791DD7B5.png" style="width:5.253cm;height:3.586cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000011C000000C2791DD7B5.png" /></p>
+<p>Utilisons l&#x27;option [<a id="createdatabase"></a>Database/Create Database] pour créer une base de données :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Server
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">peut être [local] ou [remote]. Ici notre serveur est sur la même machine que [IBExpert]. On choisit donc [local]</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Database
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">utiliser le bouton de type [dossier] du combo pour désigner le fichier de la base. Firebird met toute la base dans un unique fichier. C&#x27;est l&#x27;un de ses atouts. On transporte la base d&#x27;un poste à l&#x27;autre par simple copie du fichier. Le suffixe [.gdb] est ajouté automatiquement.</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Username
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>SYSDBA</b> est l&#x27;administrateur par défaut des distributions actuelles de Firebird</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Password
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>masterkey</b> est le mot de passe de l&#x27;administrateur SYSDBA des distributions actuelles de Firebird</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Dialect
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">le dialecte SQL à utiliser</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Register Database
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">si la case est cochée, IBExpert présentera un lien vers la base créée après avoir créé celle-ci</p></td></tr></table>
+
+<p>Si en cliquant le bouton [OK] de création, vous obtenez l&#x27;avertissement suivant :</p>
+<p><img src="images/100000000000016100000081ABF4648E.png" style="width:6.537cm;height:2.383cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000016100000081ABF4648E.png" /></p>
+<p>c&#x27;est que vous n&#x27;avez pas lancé Firebird. Lancez-le. On obtient une nouvelle fenêtre :</p>
+<p><img src="images/10000000000002BF00000122360041C0.png" style="width:13.014cm;height:5.364cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000002BF00000122360041C0.png" /></p>
+<p><a id="dbarticles"></a></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Charset
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Famille de caractères à utiliser. Bien que la copie d&#x27;écran ci-dessus n&#x27;indique aucune information, il est conseillé de prendre dans la liste déroulante la famille [ISO-8859-1] qui permet d&#x27;utiliser les caractères latins accentués.</p></td></tr></table>
+
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>Server version
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">[IBExpert] est capable de gérer différents SGBD dérivés d&#x27;Interbase. Prendre la version de Firebird que vous avez installée :</p><img src="images/10000000000001E300000044A1D6FA65.png" style="display:inline-block; margin:4px;width:8.934cm;height:1.252cm;" class="odt-zoomable" data-zoom-src="images/10000000000001E300000044A1D6FA65.png" /></td></tr></table>
+
+<p>Une fois cette nouvelle fenêtre validée par [Register], on a le résultat suivant :</p>
+<p><img src="images/100000000000013A000000D07E511B2E.png" style="width:6.634cm;height:4.392cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000013A000000D07E511B2E.png" /></p>
+<p>Pour avoir accès à la base créée, il suffit de double-cliquer sur son lien. IBExpert expose alors une arborescence donnant accès aux propriétés de la base :</p>
+<p><img src="images/100000000000013B000000FBEC216B48.png" style="width:5.824cm;height:4.646cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000013B000000FBEC216B48.png" /></p>
+<h2 id="24-creation-dune-table-de-donnees">2.4. Création d&#x27;une table de données</h2>
+<p>Créons une table. On clique droit sur [Tables] (cf fenêtre ci-dessus) et on prend l&#x27;option [New Table]. On obtient la fenêtre de définition des propriétés de la table :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000025C0000011864B71078.png" style="display:inline-block; margin:4px;width:7.99cm;height:3.704cm;" class="odt-zoomable" data-zoom-src="images/100000000000025C0000011864B71078.png" /></td></tr></table>
+
+<p>Commençons par donner le nom [ARTICLES] à la table en utilisant la zone de saisie [1] :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/1000000000000257000001547586EAE1.png" style="display:inline-block; margin:4px;width:7.925cm;height:4.498cm;" class="odt-zoomable" data-zoom-src="images/1000000000000257000001547586EAE1.png" /></td></tr></table>
+
+<p>Utilisons la zone de saisie [2] pour définir une clé primaire [ID] :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000001DC000000E2D6A28434.png" style="display:inline-block; margin:4px;width:6.297cm;height:2.99cm;" class="odt-zoomable" data-zoom-src="images/10000000000001DC000000E2D6A28434.png" /></td></tr></table>
+
+<p>Un champ est fait clé primaire par un double-clic sur la zone [PK] (Primary Key) du champ. Ajoutons des champs avec le bouton situé au-dessus de [3] :</p>
+<p><img src="images/1000000000000235000000E89CC75685.png" style="width:11.952cm;height:4.905cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000235000000E89CC75685.png" /></p>
+<p>Tant qu&#x27;on n&#x27;a pas &quot; compilé &quot; notre définition, la table n&#x27;est pas créée. Utilisons le bouton [Compile] ci-dessus pour terminer la définition de la table. IBExpert prépare les requêtes SQL de génération de la table et demande confirmation :</p>
+<p><img src="images/10000000000001F000000156BF4EB358.png" style="width:10.493cm;height:7.239cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001F000000156BF4EB358.png" /></p>
+<p>De façon intéressante, IBExpert affiche les requêtes SQL qu&#x27;il a exécutées. Cela permet un apprentissage à la fois du langage SQL mais également du dialecte SQL éventuellement propriétaire utilisé. Le bouton [Commit] permet de valider la transaction en cours, [Rollback] de l&#x27;annuler. Ici on l&#x27;accepte par [Commit]. Ceci fait, IBExpert ajoute la table créée, à l&#x27;arborescence de notre base de données :</p>
+<p><img src="images/100000000000013C0000010895A3EEDA.png" style="width:5.851cm;height:4.888cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000013C0000010895A3EEDA.png" /></p>
+<p>En double-cliquant sur la table, on a accès à ses propriétés :</p>
+<p><img src="images/100000000000024E000000C80B48A012.png" style="width:10.929cm;height:3.697cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000024E000000C80B48A012.png" /></p>
+<p>Le panneau [Constraints] nous permet d&#x27;ajouter de nouvelles contraintes d&#x27;intégrité à la table. Ouvrons-le :</p>
+<p><img src="images/100000000000029300000059883C8C55.png" style="width:12.199cm;height:1.64cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000029300000059883C8C55.png" /></p>
+<p>On retrouve la contrainte de clé primaire que nous avons créée. On peut ajouter d&#x27;autres contraintes :</p>
+<ul>
+<li>des clés étrangères [Foreign Keys]</li>
+<li>des contraintes d&#x27;intégrité de champs [Checks]</li>
+<li>des contraintes d&#x27;unicité de champs [Uniques]</li>
+</ul>
+<p>Indiquons que :</p>
+<ul>
+<li>les champs [ID, PRIX, STOCKACTUEL, STOKMINIMUM] doivent être &gt;0</li>
+<li>le champ [NOM] doit être non vide et unique</li>
+</ul>
+<p>Ouvrons le panneau [Checks] et cliquons droit dans son espace de définition des contraintes pour ajouter une nouvelle contrainte :</p>
+<p><img src="images/1000000000000160000000A5AD45096D.png" style="width:6.514cm;height:3.055cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000160000000A5AD45096D.png" /></p>
+<p>Définissons les contraintes souhaitées :</p>
+<p><img src="images/10000000000000F6000000CC296F6CC5.png" style="width:5.207cm;height:4.318cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000F6000000CC296F6CC5.png" /></p>
+<p>On notera ci-dessus, que la contrainte [NOM&lt;&gt;&#x27;&#x27;] utilise deux apostrophes et non des guillemets. Compilons ces contraintes avec le bouton [Compile] ci-dessus :</p>
+<p><img src="images/10000000000001EB000000E85058E006.png" style="width:9.084cm;height:4.295cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001EB000000E85058E006.png" /></p>
+<p>Là encore, IBExpert fait preuve de pédagogie en indiquant les requêtes SQL qu&#x27;il a exécutées. Passons maintenant au panneau [Constraints/Uniques] pour indiquer que le nom doit être unique. Cela signifie qu&#x27;on ne peut pas avoir deux fois le même nom dans la table.</p>
+<p><img src="images/10000000000001C3000000B94989C09B.png" style="width:8.341cm;height:3.429cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001C3000000B94989C09B.png" /></p>
+<p>Définissons la contrainte :</p>
+<p><img src="images/100000000000018B0000008A85D0443A.png" style="width:7.306cm;height:2.554cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000018B0000008A85D0443A.png" /></p>
+<p>Puis compilons-la. Ceci fait, ouvrons le panneau [DDL] (Data Definition Language) de la table [ARTICLES] : </p>
+<p><img src="images/1000000000000235000000587021FF84.png" style="width:11.952cm;height:1.852cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000235000000587021FF84.png" /></p>
+<p>Celui-ci donne le code SQL de génération de la table avec toutes ses contraintes. On peut sauvegarder ce code dans un script afin de le rejouer ultérieurement :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">SET</span><span class="w"> </span><span class="k">SQL</span><span class="w"> </span><span class="n">DIALECT</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="k">SET</span><span class="w"> </span><span class="k">NAMES</span><span class="w"> </span><span class="k">NONE</span><span class="p">;</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ARTICLES</span><span class="w"> </span><span class="p">(</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">    </span><span class="n">ID</span><span class="w">            </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">    </span><span class="n">NOM</span><span class="w">           </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">    </span><span class="n">PRIX</span><span class="w">          </span><span class="n">DOUBLE</span><span class="w"> </span><span class="k">PRECISION</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">    </span><span class="n">STOCKACTUEL</span><span class="w">   </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">    </span><span class="n">STOCKMINIMUM</span><span class="w">  </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="p">);</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ARTICLES</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">CHK_ID</span><span class="w"> </span><span class="k">check</span><span class="w"> </span><span class="p">(</span><span class="n">ID</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">);</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ARTICLES</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">CHK_PRIX</span><span class="w"> </span><span class="k">check</span><span class="w"> </span><span class="p">(</span><span class="n">PRIX</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">);</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ARTICLES</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">CHK_STOCKACTUEL</span><span class="w"> </span><span class="k">check</span><span class="w"> </span><span class="p">(</span><span class="n">STOCKACTUEL</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">);</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ARTICLES</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">CHK_STOCKMINIMUM</span><span class="w"> </span><span class="k">check</span><span class="w"> </span><span class="p">(</span><span class="n">STOCKMINIMUM</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">);</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ARTICLES</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">CHK_NOM</span><span class="w"> </span><span class="k">check</span><span class="w"> </span><span class="p">(</span><span class="n">NOM</span><span class="o">&lt;&gt;</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ARTICLES</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">UNQ_NOM</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="p">(</span><span class="n">NOM</span><span class="p">);</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ARTICLES</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">PK_ARTICLES</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">ID</span><span class="p">);</span>
+</code></pre></div>
+<h2 id="25-insertion-de-donnees-dans-une-table">2.5. Insertion de données dans une table</h2>
+<p>Il est maintenant temps de mettre des données dans la table [ARTICLES]. Pour cela, utilisons son panneau [Data] :</p>
+<p><img src="images/10000000000001CC0000009C5D747458.png" style="width:8.401cm;height:2.97cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001CC0000009C5D747458.png" /></p>
+<p>Les données sont entrées par un double-clic sur les champs de saisie de chaque ligne de la table. Une nouvelle ligne est ajoutée avec le bouton [+], une ligne supprimée avec le bouton [-]. Ces opérations se font dans une transaction qui est validée par le bouton [Commit Transaction] (cf ci-dessus). Sans cette validation, les données seront perdues.</p>
+<p><a id="editeursql"></a></p>
+<h2 id="26-lediteur-sql-de-ib-expert">2.6. L&#x27;éditeur SQL de [IB-Expert]</h2>
+<p>Le langage SQL (Structured Query Language) permet à un utilisateur de :</p>
+<ol>
+<li>créer des tables en précisant le type de données qu&#x27;elle va stocker, les contraintes que ces données doivent vérifier</li>
+</ol>
+<ol start="2">
+  <li>d&#x27;y insérer des données
+  </li>
+  <li>d&#x27;en modifier certaines
+  </li>
+  <li>d&#x27;en supprimer d&#x27;autres
+  </li>
+  <li>d&#x27;en exploiter le contenu pour obtenir des informations
+  </li>
+  <li>...
+  </li>
+</ol>
+
+<p>IBExpert permet à un utilisateur de faire les opérations 1 à 4 de façon graphique. Nous venons de le voir. Lorsque la base contient de nombreuses tables avec chacune des centaines de lignes, on a besoin de renseignements difficiles à obtenir visuellement. Supposons par exemple qu&#x27;un magasin virtuel sur le web ait des milliers d&#x27;acheteurs par mois. Tous les achats sont enregistrés dans une base de données. Au bout de six mois, on découvre qu&#x27;un produit « X » est défaillant. On souhaite contacter toutes les personnes qui l&#x27;ont acheté afin qu&#x27;elles renvoient le produit pour un échange gratuit. Comment trouver les adresses de ces acheteurs  ?</p>
+<ol>
+  <li>On peut consulter visuellement toutes les tables et chercher ces acheteurs. Cela prendra quelques heures.
+  </li>
+  <li>On peut émettre un ordre SQL qui va donner la liste de ces personnes en quelques secondes
+  </li>
+</ol>
+
+<p>Le langage SQL est utile dès </p>
+<ul>
+  <li>que la quantité de données dans les tables est importante
+  </li>
+  <li>qu&#x27;il y a beaucoup de tables liées entre-elles
+  </li>
+  <li>que l&#x27;information à obtenir est répartie sur plusieurs tables
+  </li>
+  <li>...
+  </li>
+</ul>
+
+<p>Nous présentons maintenant l&#x27;éditeur SQL d&#x27;IBExpert. Celui-ci est accesible via l&#x27;option [Tools/SQL Editor] ou [F12] :</p>
+<p><img src="images/10000000000001BD0000005547C3D716.png" style="width:9.414cm;height:1.794cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001BD0000005547C3D716.png" /></p>
+<p>On a alors accès à un éditeur de requêtes SQL évolué avec lequel on peut jouer des requêtes. Tapons une requête :</p>
+<p><img src="images/10000000000001A40000007268367E9D.png" style="width:8.274cm;height:2.166cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001A40000007268367E9D.png" /></p>
+<p>On exécute la requête SQL avec le bouton [Execute] ci-dessus. On obtient le résultat suivant :</p>
+<p><img src="images/100000000000017300000062A2B8745F.png" style="width:7.844cm;height:2.069cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000017300000062A2B8745F.png" /></p>
+<p>Ci-dessus, l&#x27;onglet [Results] présente la table résultat de l&#x27;ordre SQL [Select]. Pour émettre une nouvelle commande SQL, il suffit de revenir sur l&#x27;onglet [Edit]. On retrouve alors l&#x27;ordre SQL qui a été joué.</p>
+<p><img src="images/100000000000018300000031CA59D8D9.png" style="width:8.184cm;height:1.035cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000018300000031CA59D8D9.png" /></p>
+<p>Plusieurs boutons de la barre d&#x27;outils sont utiles :</p>
+<ul>
+  <li>le bouton [New Query] permet de passer à une nouvelle requête SQL :
+  </li>
+</ul>
+
+<p><img src="images/100000000000029F0000005C9684C2EA.png" style="width:14.196cm;height:1.946cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000029F0000005C9684C2EA.png" /></p>
+<p>On obtient alors une page d&#x27;édition vierge :</p>
+<p><img src="images/10000000000001D2000000602D426AED.png" style="width:9.855cm;height:2.025cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001D2000000602D426AED.png" /></p>
+<p>On peut alors taper un nouvel ordre SQL :</p>
+<p><img src="images/10000000000001FD00000062A7B296AF.png" style="width:10.767cm;height:2.066cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001FD00000062A7B296AF.png" /></p>
+<p>et l&#x27;exécuter :</p>
+<p><img src="images/1000000000000155000000917F327163.png" style="width:7.216cm;height:3.064cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000155000000917F327163.png" /></p>
+<p>Revenons sur l&#x27;onglet [Edit]. Les différents ordre SQL émis sont méorisés par [IB-xpert]. Le bouton [Previous Query] permet de revenir à un ordre SQL émis antérieurement :</p>
+<p><img src="images/100000000000026D00000061DEA33AFC.png" style="width:13.134cm;height:2.046cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000026D00000061DEA33AFC.png" /></p>
+<p>On revient alors à la requête précédente :</p>
+<p><img src="images/10000000000001E60000006B452EDD3F.png" style="width:10.289cm;height:2.258cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001E60000006B452EDD3F.png" /></p>
+<p>Le bouton [Next Query] permet lui d&#x27;aller à l&#x27;ordre SQL suivant :</p>
+<p><img src="images/100000000000029F00000065D5ED7FF5.png" style="width:14.196cm;height:2.136cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000029F00000065D5ED7FF5.png" /></p>
+<p>On retrouve alors l&#x27;ordre SQL qui suit dans la liste des ordres SQL mémorisés :</p>
+<p><img src="images/10000000000002A200000063CA8D040D.png" style="width:14.265cm;height:2.096cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000002A200000063CA8D040D.png" /></p>
+<p>Le bouton [Delete Query] permet de supprimer un ordre SQL de la liste des ordres mémorisés :</p>
+<p><img src="images/10000000000002CD000000680FEA2EB7.png" style="width:15.175cm;height:2.196cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000002CD000000680FEA2EB7.png" /></p>
+<p>Le bouton [Clear Current Query] permet d&#x27;effacer le contenu de l&#x27;éditeur pour l&#x27;ordre SQL affiché :</p>
+<p><img src="images/100000000000029800000069D9E21A4C.png" style="width:14.046cm;height:2.215cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000029800000069D9E21A4C.png" /></p>
+<p>Le bouton [Commit] permet de valider définitivement les modifications faites à la base de données :</p>
+<p><img src="images/1000000000000330000000641FC053DE.png" style="width:15.106cm;height:1.847cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000330000000641FC053DE.png" /></p>
+<p>Le bouton [RollBack] permet d&#x27;annuler les modifications faites à la base depuis le dernier [Commit]. Si aucun [Commit] n&#x27;a été fait depuis la connexion à la base, alors ce sont les modifications faites depuis cette connexion qui sont annulées.</p>
+<p><img src="images/10000000000002310000005FC55916CB.png" style="width:11.864cm;height:2.006cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000002310000005FC55916CB.png" /></p>
+<p>Prenons un exemple. Insérons une nouvelle ligne dans la table :</p>
+<p><img src="images/10000000000002E700000035322F0A87.png" style="width:16.669cm;height:1.184cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000002E700000035322F0A87.png" /></p>
+<p>L&#x27;ordre SQL est exécuté mais aucun affichage ne se produit. On ne sait pas si l&#x27;insertion a eu lieu. Pour le savoir, exécutons l&#x27;orde SQL suivant [New Query] :</p>
+<p><img src="images/100000000000015700000063216F4977.png" style="width:7.255cm;height:2.096cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000015700000063216F4977.png" /></p>
+<p>On obtient [Execute] le résultat suivant :</p>
+<p><img src="images/100000000000018D000000802CABE41B.png" style="width:8.396cm;height:2.706cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000018D000000802CABE41B.png" /></p>
+<p>La ligne a donc bien été insérée. Examinons le contenu de la table d&#x27;une autre façon maintenant. Double-cliquons sur la table [ARTICLES] dans l&#x27;explorateur de bases :</p>
+<p><img src="images/100000000000013C0000010895A3EEDA.png" style="width:5.849cm;height:4.886cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000013C0000010895A3EEDA.png" /></p>
+<p>On obtient la table suivante :</p>
+<p><img src="images/10000000000001FD000000A077F4A88B.png" style="width:10.767cm;height:3.385cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001FD000000A077F4A88B.png" /></p>
+<p>Le bouton fléché ci-dessus permet de rafraîchir la table. Après rafraîchissement, la table ci-dessus ne change pas. On a l&#x27;impression que la nouvelle ligne n&#x27;a pas été insérée. Revenons à l&#x27;éditeur SQL (F12) puis validons l&#x27;ordre SQL émis avec le bouton [Commit] :</p>
+<p><img src="images/10000000000002970000006671498947.png" style="width:14.025cm;height:2.155cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000002970000006671498947.png" /></p>
+<p>Ceci fait, revenons sur la table [ARTICLES]. Nous pouvons constater que rien n&#x27;a changé même en utilisant le bouton [Refresh] :</p>
+<p><img src="images/10000000000001FD000000A077F4A88B.png" style="width:10.767cm;height:3.385cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001FD000000A077F4A88B.png" /></p>
+<p>Ci-dessus, ouvrons l&#x27;onglet [Fields] puis revenons sur l&#x27;onglet [Data]. Cette fois-ci la ligne insérée apparaît correctement :</p>
+<p><img src="images/10000000000001B9000000814572FAEE.png" style="width:9.324cm;height:2.727cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001B9000000814572FAEE.png" /></p>
+<p>Quand commence l&#x27;émission des différents ordres SQL, l&#x27;éditeur ouvre ce qu&#x27;on appelle une <strong>transaction</strong> sur la base. Les modifications faites par ces ordres SQL de l&#x27;éditeur SQL ne seront visibles que tant qu&#x27;on reste dans le même éditeur SQL (on peut en ouvrir plusieurs). Tout se passe comme si l&#x27;éditeur SQL travaillait non pas sur la base réelle mais sur une copie qui lui est propre. Dans la réalité, ce n&#x27;est pas exactement de cette façon que cela se passe mais cette image peut nous aider à comprendre la notion de transaction. Toutes les modifications apportées à la copie au cours d&#x27;une transaction ne seront visibles dans la base réelle que lorsqu&#x27;elles auront été validées par un [Commit Transaction]. La transaction courante est alors terminée et une nouvelle transaction commence.</p>
+<p>Les modifications apportées au cours d&#x27;une transaction peuvent être annulées par une opération appelée [Rollback]. Faisons l&#x27;expérience suivante. Commençons une nouvelle transaction (il suffit de faire [Commit] sur la transaction courante) avec l&#x27;ordre SQL suivant :</p>
+<p><img src="images/10000000000000D400000066029FD8BA.png" style="width:4.486cm;height:2.155cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000D400000066029FD8BA.png" /></p>
+<p>Exécutons cet ordre qui supprime toutes les lignes de la table [ARTICLES], puis exécutons [New Query] le nouvel ordre SQL suivant :</p>
+<p><img src="images/10000000000001540000004755A4DBBF.png" style="width:7.195cm;height:1.496cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001540000004755A4DBBF.png" /></p>
+<p>Nous obtenons le résultat suivant :</p>
+<p><img src="images/10000000000002240000007C2F998A16.png" style="width:11.596cm;height:2.616cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000002240000007C2F998A16.png" /></p>
+<p>Toutes les lignes ont été détruites. Rappelons-nous que cela a été fait sur une copie de la table [ARTICLES]. Pour le vérifier, double-cliquons sur la table [ARTICLES] ci-dessous :</p>
+<p><img src="images/100000000000013C0000010895A3EEDA.png" style="width:5.851cm;height:4.888cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000013C0000010895A3EEDA.png" /></p>
+<p>et visualisons l&#x27;onglet [Data] :</p>
+<p><img src="images/10000000000001A3000000AEDB946E10.png" style="width:8.867cm;height:3.676cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001A3000000AEDB946E10.png" /></p>
+<p>Même en utilisant le bouton [Refresh] ou en passant à l&#x27;onglet [Fields] pour revenir ensuite à l&#x27;onglet [Data], le contenu ci-dessus ne bouge pas. Ceci a été expliqué. Nous sommes dans une autre transaction qui travaille sur sa propre copie. Maintenant revenons à l&#x27;éditeur SQL (F12) et utilisons le bouton [RollBack] pour annuler les suppressions de lignes qui ont été faites :</p>
+<p><img src="images/10000000000002AF000000610C034AD3.png" style="width:14.534cm;height:2.046cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000002AF000000610C034AD3.png" /></p>
+<p>Confirmation nous est demandée :</p>
+<p><img src="images/10000000000000C5000000886744B44B.png" style="width:3.646cm;height:2.517cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000C5000000886744B44B.png" /></p>
+<p>Confirmons. L&#x27;éditeur SQL confirme que les modifications ont été annulées :</p>
+<p><img src="images/1000000000000151000000A5EBC33000.png" style="width:7.126cm;height:3.485cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000151000000A5EBC33000.png" /></p>
+<p>Rejouons la requête SQL ci-dessus pour vérifier. On retrouve les lignes qui avaient été supprimées :</p>
+<p><img src="images/100000000000018C0000009F53376765.png" style="width:8.378cm;height:3.369cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000018C0000009F53376765.png" /></p>
+<p>L&#x27;opération [Rollback] a ramené la copie sur laquelle travaille l&#x27;éditeur SQL, dans l&#x27;état où elle était au début de la transaction.</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner">
+
+      <div>
+        <a href="https://tahe.developpez.com" target="_blank">
+          https://tahe.developpez.com
+        </a>
+        <br>
+        Ce cours-tutoriel écrit par <strong>Serge Tahé</strong> est mis à disposition du public selon les termes de la
+        <em>Licence Creative Commons Attribution – Pas d’Utilisation Commerciale –
+        Partage dans les Mêmes Conditions 3.0 non transposé</em>.
+      </div>
+
+    </div>
+  </div>
+
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.indexes", "navigation.expand", "toc.integrate", "navigation.top"], "search": "assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="javascripts/focus.js"></script>
+      
+    
+  </body>
+</html>

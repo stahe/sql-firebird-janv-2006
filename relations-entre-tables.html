@@ -1,0 +1,886 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Introduction au langage SQL avec le SGBD Firebird">
+      
+      
+        <meta name="author" content="Serge Tahé">
+      
+      
+        <link rel="canonical" href="https://stahe.github.io/sql-firebird-janv-2006/relations-entre-tables.html">
+      
+      
+        <link rel="prev" href="les-expressions-du-langage-sql.html">
+      
+      
+        <link rel="next" href="approfondissement-du-langage-sql.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>5. Relations entre tables - Introduction au langage SQL avec le SGBD Firebird</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/focus.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EBZC3JVJNR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var siteName = "Introduction au langage SQL avec le SGBD Firebird";
+    gtag('config', 'G-EBZC3JVJNR', {
+        'page_title': siteName
+    });
+  </script>
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#5-relations-entre-tables" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Introduction au langage SQL avec le SGBD Firebird" class="md-header__button md-logo" aria-label="Introduction au langage SQL avec le SGBD Firebird" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Introduction au langage SQL avec le SGBD Firebird
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              5. Relations entre tables
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Passer au mode sombre"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Passer au mode sombre" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Passer au mode clair"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Passer au mode clair" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://stahe.github.io/sql-firebird-janv-2006" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Introduction au langage SQL avec le SGBD Firebird" class="md-nav__button md-logo" aria-label="Introduction au langage SQL avec le SGBD Firebird" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Introduction au langage SQL avec le SGBD Firebird
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://stahe.github.io/sql-firebird-janv-2006" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tutoriel-firebird.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Tutoriel Firebird
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-au-langage-sql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Introduction au langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="les-expressions-du-langage-sql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Les expressions du langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Relations entre tables
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="relations-entre-tables.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Relations entre tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#51-les-cles-etrangeres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1. Les clés étrangères
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#52-operations-de-jointures-entre-deux-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2. Opérations de jointures entre deux tables
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="approfondissement-du-langage-sql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Approfondissement du langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gestion-de-lacces-concurrent-aux-donnees.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Gestion de l'accès concurrent aux données
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="installer-et-utiliser-un-pilote-odbc-pour-firebird.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Installer et utiliser un pilote ODBC pour [Firebird]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="5-relations-entre-tables">5. Relations entre tables</h1>
+<h2 id="51-les-cles-etrangeres">5.1. Les clés étrangères</h2>
+<p>Une base de données relationnelle est un ensemble de tables liées entre-elles par des relations. Prenons un exemple inspiré de la table [BIBLIO] précédente dont la structure était la suivante :</p>
+<p><img src="images/100000000000014D0000008AB26B6EA2.png" style="width:7.049cm;height:2.917cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000014D0000008AB26B6EA2.png" /></p>
+<p>Un exemple de contenu était le suivant :</p>
+<p><img src="images/1000000000000200000000AAB5E71811.png" style="width:10.839cm;height:3.598cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000200000000AAB5E71811.png" /></p>
+<p>On pourrait vouloir des informations sur les différents auteurs de ces ouvrages par exemple ses <em>nom</em> et <em>prénom</em>, sa <em>date de naissance</em>, sa <em>nationalité</em>. Créons une telle table. Cliquons droit sur [DBBIBLIO / Tables] puis prenons l&#x27;option [New Table] :</p>
+<p><img src="images/10000000000001500000018E88305495.png" style="width:7.108cm;height:8.419cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001500000018E88305495.png" /></p>
+<p>Construisons maintenant la table [AUTEURS] suivante :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000008C0000006539F73B1A.png" style="display:inline-block; margin:4px;width:2.958cm;height:2.138cm;" class="odt-zoomable" data-zoom-src="images/100000000000008C0000006539F73B1A.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/1000000000000145000000673D89D830.png" style="display:inline-block; margin:4px;width:6.877cm;height:2.178cm;" class="odt-zoomable" data-zoom-src="images/1000000000000145000000673D89D830.png" /></td></tr></table>
+
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>id
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">clé primaire de la table - sert à identifier une ligne de façon unique</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>nom
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">nom de l&#x27;auteur</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>prénom
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">prénom de l&#x27;auteur s&#x27;il en a un</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>date_naissance
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">sa date de naissance</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>nationalite
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">son pays d&#x27;origine</p></td></tr></table>
+
+<p>Le contenu de la table [AUTEURS] pourrait être le suivant :</p>
+<p><img src="images/10000000000001770000009CA8D7412F.png" style="width:7.938cm;height:3.298cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001770000009CA8D7412F.png" /></p>
+<p>Revenons à la table [BIBLIO] et à son contenu :</p>
+<p><img src="images/1000000000000200000000AAB5E71811.png" style="width:10.839cm;height:3.598cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000200000000AAB5E71811.png" /></p>
+<p>Dans la rubrique [AUTEUR] de la table, il devient inutile de mettre le nom de l&#x27;auteur. Il est plutôt préférable de mettre le n° (id) qu&#x27;il a dans la table [AUTEURS]. Créons donc une nouvelle table appelée [LIVRES]. Pour la créer, nous allons utiliser le script [biblio.sql] créé au paragraphe <a href="introduction-au-langage-sql.html#bibliosql">3.14</a> Nous chargeons ce script avec l&#x27;outil [Script Executive, Ctrl-F12] :</p>
+<p><img src="images/10000000000001CE000000C03DB2BA7D.png" style="width:9.779cm;height:4.059cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001CE000000C03DB2BA7D.png" /></p>
+<p>Nous modifions le script de création de la table BIBLIO pour l&#x27;adapter à celui de la table LIVRES :</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-5-10">10</a></span>
+<span class="normal"><a href="#__codelineno-5-11">11</a></span>
+<span class="normal"><a href="#__codelineno-5-12">12</a></span>
+<span class="normal"><a href="#__codelineno-5-13">13</a></span>
+<span class="normal"><a href="#__codelineno-5-14">14</a></span>
+<span class="normal"><a href="#__codelineno-5-15">15</a></span>
+<span class="normal"><a href="#__codelineno-5-16">16</a></span>
+<span class="normal"><a href="#__codelineno-5-17">17</a></span>
+<span class="normal"><a href="#__codelineno-5-18">18</a></span>
+<span class="normal"><a href="#__codelineno-5-19">19</a></span>
+<span class="normal"><a href="#__codelineno-5-20">20</a></span>
+<span class="normal"><a href="#__codelineno-5-21">21</a></span>
+<span class="normal"><a href="#__codelineno-5-22">22</a></span>
+<span class="normal"><a href="#__codelineno-5-23">23</a></span>
+<span class="normal"><a href="#__codelineno-5-24">24</a></span>
+<span class="normal"><a href="#__codelineno-5-25">25</a></span>
+<span class="normal"><a href="#__codelineno-5-26">26</a></span>
+<span class="normal"><a href="#__codelineno-5-27">27</a></span>
+<span class="normal"><a href="#__codelineno-5-28">28</a></span>
+<span class="normal"><a href="#__codelineno-5-29">29</a></span>
+<span class="normal"><a href="#__codelineno-5-30">30</a></span>
+<span class="normal"><a href="#__codelineno-5-31">31</a></span>
+<span class="normal"><a href="#__codelineno-5-32">32</a></span>
+<span class="normal"><a href="#__codelineno-5-33">33</a></span>
+<span class="normal"><a href="#__codelineno-5-34">34</a></span>
+<span class="normal"><a href="#__codelineno-5-35">35</a></span>
+<span class="normal"><a href="#__codelineno-5-36">36</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">LIVRES</span><span class="w"> </span><span class="p">(</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="n">ID</span><span class="w">          </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="n">TITRE</span><span class="w">       </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="n">AUTEUR</span><span class="w">      </span><span class="nb">INTEGER</span><span class="p">,</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="n">GENRE</span><span class="w">       </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="n">ACHAT</span><span class="w">       </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="n">PRIX</span><span class="w">        </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="n">DISPONIBLE</span><span class="w">  </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="p">);</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10"></a>
+<a id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">LIVRES</span><span class="w"> </span><span class="p">(</span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">TITRE</span><span class="p">,</span><span class="w"> </span><span class="n">AUTEUR</span><span class="p">,</span><span class="w"> </span><span class="n">GENRE</span><span class="p">,</span><span class="w"> </span><span class="n">ACHAT</span><span class="p">,</span><span class="w"> </span><span class="n">PRIX</span><span class="p">,</span><span class="w"> </span><span class="n">DISPONIBLE</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Les fleurs du mal&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;POèME&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;1978-01-01&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;n&#39;</span><span class="p">);</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">LIVRES</span><span class="w"> </span><span class="p">(</span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">TITRE</span><span class="p">,</span><span class="w"> </span><span class="n">AUTEUR</span><span class="p">,</span><span class="w"> </span><span class="n">GENRE</span><span class="p">,</span><span class="w"> </span><span class="n">ACHAT</span><span class="p">,</span><span class="w"> </span><span class="n">PRIX</span><span class="p">,</span><span class="w"> </span><span class="n">DISPONIBLE</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Tintin au Tibet&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;BD&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;1990-11-10&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">70</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;o&#39;</span><span class="p">);</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">LIVRES</span><span class="w"> </span><span class="p">(</span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">TITRE</span><span class="p">,</span><span class="w"> </span><span class="n">AUTEUR</span><span class="p">,</span><span class="w"> </span><span class="n">GENRE</span><span class="p">,</span><span class="w"> </span><span class="n">ACHAT</span><span class="p">,</span><span class="w"> </span><span class="n">PRIX</span><span class="p">,</span><span class="w"> </span><span class="n">DISPONIBLE</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Du côté de chez Swann&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ROMAN&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;1978-12-08&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">220</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;o&#39;</span><span class="p">);</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">LIVRES</span><span class="w"> </span><span class="p">(</span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">TITRE</span><span class="p">,</span><span class="w"> </span><span class="n">AUTEUR</span><span class="p">,</span><span class="w"> </span><span class="n">GENRE</span><span class="p">,</span><span class="w"> </span><span class="n">ACHAT</span><span class="p">,</span><span class="w"> </span><span class="n">PRIX</span><span class="p">,</span><span class="w"> </span><span class="n">DISPONIBLE</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;La terre&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ROMAN&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;1990-06-12&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">55</span><span class="p">.</span><span class="mi">13</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;n&#39;</span><span class="p">);</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">LIVRES</span><span class="w"> </span><span class="p">(</span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">TITRE</span><span class="p">,</span><span class="w"> </span><span class="n">AUTEUR</span><span class="p">,</span><span class="w"> </span><span class="n">GENRE</span><span class="p">,</span><span class="w"> </span><span class="n">ACHAT</span><span class="p">,</span><span class="w"> </span><span class="n">PRIX</span><span class="p">,</span><span class="w"> </span><span class="n">DISPONIBLE</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Madame Bovary&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ROMAN&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;1988-03-12&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">143</span><span class="p">.</span><span class="mi">33</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;o&#39;</span><span class="p">);</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">LIVRES</span><span class="w"> </span><span class="p">(</span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">TITRE</span><span class="p">,</span><span class="w"> </span><span class="n">AUTEUR</span><span class="p">,</span><span class="w"> </span><span class="n">GENRE</span><span class="p">,</span><span class="w"> </span><span class="n">ACHAT</span><span class="p">,</span><span class="w"> </span><span class="n">PRIX</span><span class="p">,</span><span class="w"> </span><span class="n">DISPONIBLE</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Manhattan transfer&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ROMAN&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;1987-08-30&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">352</span><span class="p">.</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;o&#39;</span><span class="p">);</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">LIVRES</span><span class="w"> </span><span class="p">(</span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">TITRE</span><span class="p">,</span><span class="w"> </span><span class="n">AUTEUR</span><span class="p">,</span><span class="w"> </span><span class="n">GENRE</span><span class="p">,</span><span class="w"> </span><span class="n">ACHAT</span><span class="p">,</span><span class="w"> </span><span class="n">PRIX</span><span class="p">,</span><span class="w"> </span><span class="n">DISPONIBLE</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Tintin en Amérique&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;BD&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;1991-05-15&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">70</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;o&#39;</span><span class="p">);</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">LIVRES</span><span class="w"> </span><span class="p">(</span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">TITRE</span><span class="p">,</span><span class="w"> </span><span class="n">AUTEUR</span><span class="p">,</span><span class="w"> </span><span class="n">GENRE</span><span class="p">,</span><span class="w"> </span><span class="n">ACHAT</span><span class="p">,</span><span class="w"> </span><span class="n">PRIX</span><span class="p">,</span><span class="w"> </span><span class="n">DISPONIBLE</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Le père Goriot&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Roman&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;1991-09-01&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">210</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;o&#39;</span><span class="p">);</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">LIVRES</span><span class="w"> </span><span class="p">(</span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">TITRE</span><span class="p">,</span><span class="w"> </span><span class="n">AUTEUR</span><span class="p">,</span><span class="w"> </span><span class="n">GENRE</span><span class="p">,</span><span class="w"> </span><span class="n">ACHAT</span><span class="p">,</span><span class="w"> </span><span class="n">PRIX</span><span class="p">,</span><span class="w"> </span><span class="n">DISPONIBLE</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Poèmes saturniens&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Poème&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;1992-09-02&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;o&#39;</span><span class="p">);</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20"></a>
+<a id="__codelineno-5-21" name="__codelineno-5-21"></a><span class="k">COMMIT</span><span class="w"> </span><span class="k">WORK</span><span class="p">;</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22"></a>
+<a id="__codelineno-5-23" name="__codelineno-5-23"></a>
+<a id="__codelineno-5-24" name="__codelineno-5-24"></a>
+<a id="__codelineno-5-25" name="__codelineno-5-25"></a><span class="cm">/******************************************************************************/</span>
+<a id="__codelineno-5-26" name="__codelineno-5-26"></a><span class="cm">/****                          Unique Constraints                          ****/</span>
+<a id="__codelineno-5-27" name="__codelineno-5-27"></a><span class="cm">/******************************************************************************/</span>
+<a id="__codelineno-5-28" name="__codelineno-5-28"></a>
+<a id="__codelineno-5-29" name="__codelineno-5-29"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">LIVRES</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">UNQ1_LIVRES</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="p">(</span><span class="n">TITRE</span><span class="p">);</span>
+<a id="__codelineno-5-30" name="__codelineno-5-30"></a>
+<a id="__codelineno-5-31" name="__codelineno-5-31"></a>
+<a id="__codelineno-5-32" name="__codelineno-5-32"></a><span class="cm">/******************************************************************************/</span>
+<a id="__codelineno-5-33" name="__codelineno-5-33"></a><span class="cm">/****                             Primary Keys                             ****/</span>
+<a id="__codelineno-5-34" name="__codelineno-5-34"></a><span class="cm">/******************************************************************************/</span>
+<a id="__codelineno-5-35" name="__codelineno-5-35"></a>
+<a id="__codelineno-5-36" name="__codelineno-5-36"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">LIVRES</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">PK_LIVRES</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">ID</span><span class="p">);</span>
+</code></pre></div></td></tr></table></div>
+<p>Nous ne commentons que les changements :</p>
+<ul>
+  <li>ligne 4 : la rubrique [AUTEUR] de la table devient un numéro entier. Ce numéro référence l&#x27;un des auteurs de la table [AUTEURS] construite précédemment.
+  </li>
+  <li>lignes 11-19 : les noms des auteurs ont été remplacés par leurs numéros d&#x27;auteur.
+  </li>
+  <li>ligne 29 : le nom de la contrainte a été changée. Elle s&#x27;appelait auparavant [ UNQ1_BIBLIO ]. Elle s&#x27;appelle désormais [ UNQ1_LIVRES ]. Ce nom peut être quelconque. Il est préférable cependant qu&#x27;il ait un sens. Ici cet effort n&#x27;a pas été fait. Les contraintes sur les différents champs, les différentes tables d&#x27;une base doivent être différenciées par des noms différents. Rappelons que la contrainte de la ligne 29 demande qu&#x27;un titre soit unique dans la table.
+  </li>
+  <li>ligne 36 : changement du nom de la contrainte sur la clé primaire ID.
+  </li>
+</ul>
+
+<p>Exécutons ce script. S&#x27;il réussit, nous obtenons la nouvelle table [LIVRES] suivante :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000008500000076777FB9B3.png" style="display:inline-block; margin:4px;width:2.819cm;height:2.498cm;" class="odt-zoomable" data-zoom-src="images/100000000000008500000076777FB9B3.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000001E5000000ABADDE5D06.png" style="display:inline-block; margin:4px;width:10.268cm;height:3.618cm;" class="odt-zoomable" data-zoom-src="images/10000000000001E5000000ABADDE5D06.png" /></td></tr></table>
+
+<p>On peut se demander si finalement nous avons gagné au change. En effet, la table [LIVRES] présente des n°s d&#x27;auteurs au lieu de leurs noms. Comme il y a des milliers d&#x27;auteurs, le lien entre un livre et son auteur semble difficile à faire. Heureusement le langage SQL est là pour nous aider. Il nous permet d&#x27;interroger plusieurs tables en même temps. Pour l&#x27;exemple, nous présentons la requête SQL qui nous permet d&#x27;obtenir les titres des livres de la bibliothèque, associés aux informations de leurs auteurs. Utilisons l&#x27;éditeur SQL (F12) pour émettre l&#x27;ordre SQL suivant :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">LIVRES</span><span class="p">.</span><span class="n">titre</span><span class="p">,</span><span class="w"> </span><span class="n">AUTEURS</span><span class="p">.</span><span class="n">nom</span><span class="p">,</span><span class="w"> </span><span class="n">AUTEURS</span><span class="p">.</span><span class="n">prenom</span><span class="p">,</span><span class="n">AUTEURS</span><span class="p">.</span><span class="n">date_naissance</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">LIVRES</span><span class="w"> </span><span class="k">inner</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">AUTEURS</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">LIVRES</span><span class="p">.</span><span class="n">AUTEUR</span><span class="o">=</span><span class="n">AUTEURS</span><span class="p">.</span><span class="n">ID</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">AUTEURS</span><span class="p">.</span><span class="n">nom</span><span class="w"> </span><span class="k">asc</span>
+</code></pre></div>
+<p>Il est trop tôt pour expliquer cet ordre SQL. Nous reviendrons dessus prochainement. Le résultat de cette requête est le suivant :</p>
+<p><img src="images/1000000000000164000000AA7F9D92F7.png" style="width:7.539cm;height:3.598cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000164000000AA7F9D92F7.png" /></p>
+<p>Chaque livre a été associé correctement à son auteur et aux informations qui lui sont liées.</p>
+<p>Résumons ce que nous venons de faire :</p>
+<ul>
+  <li>nous avons deux tables rassemblant des informations de nature différente :
+    <ul>
+      <li>la table AUTEURS rassemble des informations sur les auteurs
+      </li>
+      <li>la table LIVRES rassemble des informations sur les livres achetés par la bibliothèque
+      </li>
+    </ul>
+  </li>
+  <li>ces tables sont liées entre-elles. Un livre a forcément un auteur. Il peut même en avoir plusieurs. Ce cas n&#x27;a pas été pris en compte ici. La rubrique [AUTEUR] de la table [LIVRES] référence une ligne de la table [AUTEURS]. On appelle cela une <b>relation</b>.
+  </li>
+</ul>
+
+<p>La relation qui lie la table [LIVRES] à la table [AUTEURS] est en fait une forme de contrainte : une ligne de la table [LIVRES] doit toujours avoir un n° d&#x27;auteur qui existe dans la table [AUTEURS]. Si une ligne de [LIVRES] avait un n° d&#x27;auteur qui n&#x27;existe pas dans la table [AUTEURS], on serait dans une situation anormale où on ne serait pas capable de retrouver l&#x27;auteur d&#x27;un livre.</p>
+<p>Le SGBD est capable de vérifier que cette contrainte est toujours vérifiée. Pour cela, nous allons ajouter une contrainte à la table [LIVRES] :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000009E000000EA2C064F16.png" style="display:inline-block; margin:4px;width:3.339cm;height:4.948cm;" class="odt-zoomable" data-zoom-src="images/100000000000009E000000EA2C064F16.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000AD0000009065CA70B9.png" style="display:inline-block; margin:4px;width:3.658cm;height:3.048cm;" class="odt-zoomable" data-zoom-src="images/10000000000000AD0000009065CA70B9.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000FE000000EB317A31FD.png" style="display:inline-block; margin:4px;width:5.378cm;height:4.969cm;" class="odt-zoomable" data-zoom-src="images/10000000000000FE000000EB317A31FD.png" /></td></tr></table>
+
+<p>Le lien qui unit la rubrique [AUTEUR] de la table [LIVRES] au champ [ID] de la table [AUTEURS] s&#x27;appelle un lien de <strong>clé étangère</strong>. La rubrique [AUTEUR] de la table [LIVRES] est appelée &quot;clé étrangère&quot; ou &quot;foreign key&quot; dans l&#x27;assistant ci-dessus. Définir une clé étrangère, c&#x27;est dire que la valeur d&#x27;une colonne [c1] d&#x27;une table [T1] doit exister dans la colonne [c2] de la table [T2]. La colonne [c1] est dite &quot;clé étrangère&quot; de la table T1 sur la colonne [c2] de la table [T2]. La colonne [c2] est souvent clé primaire de la table [T2], mais ce n&#x27;est pas obligatoire.</p>
+<p>Nous définissons la clé étrangère [AUTEUR] de la table [LIVRES] sur le champ [ID] de la table [AUTEURS] de la façon suivante :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000003F9000000C501ADE2AD.png" style="display:inline-block; margin:4px;width:13.455cm;height:2.607cm;" class="odt-zoomable" data-zoom-src="images/10000000000003F9000000C501ADE2AD.png" /></td></tr></table>
+
+<ol>
+  <li>nom de la contrainte : libre
+  </li>
+  <li>colonne &quot;clé étrangère&quot;, ici la colonne [AUTEUR] de la table [LIVRES]
+  </li>
+  <li>table référencée par la clé étangère. Ici la colonne [AUTEUR] de la table [LIVRES] doit avoir une valeur dans la colonne [ID] de la table [AUTEURS]. C&#x27;est donc la table [AUTEURS] qui est référencée.
+  </li>
+  <li>colonne référencée par la clé étangère. Ici la colonne [ID] de la table [AUTEURS].
+  </li>
+</ol>
+
+<p>Nous validons cette contrainte :</p>
+<p><img src="images/10000000000001E900000095302F1B8B.png" style="width:10.349cm;height:3.149cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001E900000095302F1B8B.png" /></p>
+<p>Si tout va bien, elle est acceptée :</p>
+<p><img src="images/10000000000001EE0000010B27B969F6.png" style="width:10.458cm;height:5.648cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001EE0000010B27B969F6.png" /></p>
+<p>Quelle est la conséquence de cette nouvelle contrainte de clé étrangère ? Avec l&#x27;éditeur SQL (F12), essayons d&#x27;insérer une ligne dans la table LIVRES avec un n° d&#x27;auteur inexistant :</p>
+<p><img src="images/10000000000001E2000000C16CA79B35.png" style="width:10.199cm;height:4.089cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001E2000000C16CA79B35.png" /></p>
+<p>L&#x27;opération [INSERT] ci-dessus a essayé d&#x27;insérer un livre avec un n° d&#x27;auteur (100) inexistant. L&#x27;exécution de la requête a échoué. Le message d&#x27;erreur associé indique qu&#x27;il y a eu violation de la contrainte de clé étrangère &quot;FK_LIVRES_AUTEURS&quot;. C&#x27;est celle que nous venons de définir.</p>
+<h2 id="52-operations-de-jointures-entre-deux-tables">5.2. Opérations de jointures entre deux tables</h2>
+<p>Toujours dans la base [DBBIBLIO] (ou une autre base peu importe), créons deux tables de test appelées TA et TB et définies comme suit :</p>
+<p><strong>Table TA</strong></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000012E00000034EE43AFB1.png" style="display:inline-block; margin:4px;width:6.389cm;height:1.099cm;" class="odt-zoomable" data-zoom-src="images/100000000000012E00000034EE43AFB1.png" /><p style="margin:0;">- ID : clé primaire de la table TA</p><p style="margin:0;">- DATA : une donnée quelconque</p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000005600000046ADC07D03.png" style="display:inline-block; margin:4px;width:1.819cm;height:1.478cm;" class="odt-zoomable" data-zoom-src="images/100000000000005600000046ADC07D03.png" /></td></tr></table>
+
+<p><strong>Table TB</strong></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000014000000045D0BD93DD.png" style="display:inline-block; margin:4px;width:6.768cm;height:1.459cm;" class="odt-zoomable" data-zoom-src="images/100000000000014000000045D0BD93DD.png" /><p style="margin:0;">- ID : clé primaire de la table TB</p><p style="margin:0;">- IDTA : clé étrangère de la table TB qui référence la colonne ID de la table TA. Ainsi une valeur de la colonne IDTA de la table TA doit exister dans la colonne ID de la table TA</p><p style="margin:0;">- VALEUR : une donnée quelconque</p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000A000000045234CFE2D.png" style="display:inline-block; margin:4px;width:3.388cm;height:1.459cm;" class="odt-zoomable" data-zoom-src="images/10000000000000A000000045234CFE2D.png" /></td></tr></table>
+
+<p>Dans l&#x27;éditeur SQL (F12), nous allons émettre des ordres SQL exploitant simultanément les deux tables TA et TB.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">TA</span><span class="p">,</span><span class="w">  </span><span class="n">TB</span>
+</code></pre></div>
+<p><img src="images/10000000000000F2000000ADA94486D3.png" style="width:5.119cm;height:3.658cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000F2000000ADA94486D3.png" /></p>
+<p>L&#x27;odre SQL fait intervenir derrière le mot clé FROM, les deux tables TA et TB. L&#x27;opération FROM TA, TB va provoquer la création temporaire d&#x27;une nouvelle table dans laquelle chaque ligne de la table TA sera associée à chacune des lignes de la table TB. Ainsi si la table TA a NA lignes et la table TB a NB lignes, la table résultante aura NA x NB lignes. C&#x27;est ce que montre la copie d&#x27;écran ci-dessus. Par ailleurs, chaque ligne a les colonnes des deux tables. Les colonnes <em>coli</em> précisées dans l&#x27;ordre [SELECT <em>col1</em>, <em>col2</em>, ... FROM ...] indiquent celles qu&#x27;il faut retenir. Ici le mot clé * indique que toutes les colonnes de la table résultante sont demandées. On dit parfois que la table résultante de l&#x27;ordre SQL précédent est le <strong>produit cartésien</strong> des tables TA et TB.</p>
+<p>Ci-dessus, chaque ligne de la table TA a été associée à chaque ligne de la table TB. En général on veut associer à une ligne de TA, les lignes de TB qui ont <strong>une relation</strong> avec elle. Cette relation prend souvent la forme d&#x27;une contrainte de clé étrangère. C&#x27;est le cas ici. A une ligne de la table TA, on peut associer les lignes de la table TB qui vérifient la relation TB.IDTA=TA.ID. Il y a plusieurs façons de demander cela :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="k">select</span><span class="w"> </span><span class="n">TA</span><span class="p">.</span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">TA</span><span class="p">.</span><span class="k">data</span><span class="p">,</span><span class="w"> </span><span class="n">TB</span><span class="p">.</span><span class="n">valeur</span><span class="p">,</span><span class="w"> </span><span class="n">TB</span><span class="p">.</span><span class="n">IDTA</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">TA</span><span class="p">,</span><span class="w"> </span><span class="n">TB</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">TA</span><span class="p">.</span><span class="n">ID</span><span class="o">=</span><span class="n">TB</span><span class="p">.</span><span class="n">IDTA</span>
+</code></pre></div>
+<p>L&#x27;ordre SQL précédent est analogue au précédent avec cependant deux différences :</p>
+<ul>
+  <li>les lignes résultat du produit cartésien TA x TB sont filtrées par une clause WHERE qui  associe à une ligne de la table TA, les seules lignes de la table TB qui vérifient la relation TB.IDTA=TA.ID
+  </li>
+  <li>on ne demande que certaines colonnes avec la syntaxe [T.col] où T est le nom d&#x27;une table et col le nom d&#x27;une colonne de cette table. Cette syntaxe permet de lever l&#x27;ambiguïté qui pourrait surgir si deux tables avaient des colonnes de même nom. Lorsque cette ambiguïté n&#x27;existe pas, on peut utiliser la syntaxe [col] sans préciser la table de cette colonne.
+  </li>
+</ul>
+
+<p>Le résultat obtenu est le suivant :</p>
+<p><img src="images/10000000000000CA000000467C36DE6B.png" style="width:4.277cm;height:1.478cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000CA000000467C36DE6B.png" /></p>
+<p>Le même résultat peut être obtenu avec l&#x27;ordre SQL suivant :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="k">select</span><span class="w"> </span><span class="n">TA</span><span class="p">.</span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">TA</span><span class="p">.</span><span class="k">data</span><span class="p">,</span><span class="w"> </span><span class="n">TB</span><span class="p">.</span><span class="n">valeur</span><span class="p">,</span><span class="w"> </span><span class="n">TB</span><span class="p">.</span><span class="n">IDTA</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">TA</span><span class="w"> </span><span class="k">inner</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">TB</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">TA</span><span class="p">.</span><span class="n">ID</span><span class="o">=</span><span class="n">TB</span><span class="p">.</span><span class="n">idta</span>
+</code></pre></div>
+<p>Du terme [inner join] vient le nom de &quot;jointure interne&quot; donné à ce type d&#x27;opérations entre deux tables. On verra qu&#x27;il existe une &quot;jointure externe&quot;. Dans une jointure interne, l&#x27;ordre des tables dans la requête n&#x27;a pas de conséquences sur le résultat : <strong>FROM TA inner join TB</strong> est équivalent à <strong>FROM TB inner join TA</strong>.</p>
+<p>L&#x27;ordre SQL précédent ne met dans la table résultante que les lignes de la table TA référencées par au moins une ligne de la table TB. Ainsi la ligne de TA [3, data3] n&#x27;apparaît pas dans le résultat car elle n&#x27;est pas référencée par une ligne de TB. On peut vouloir toutes les lignes de TA, qu&#x27;elles soient ou non référencées par une ligne de TB. On utilise alors une <strong>jointure externe</strong> entre les deux tables :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">TA</span><span class="p">.</span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">TA</span><span class="p">.</span><span class="k">data</span><span class="p">,</span><span class="w"> </span><span class="n">TB</span><span class="p">.</span><span class="n">valeur</span><span class="p">,</span><span class="w"> </span><span class="n">TB</span><span class="p">.</span><span class="n">IDTA</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">TA</span><span class="w"> </span><span class="k">left</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">TB</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">TA</span><span class="p">.</span><span class="n">ID</span><span class="o">=</span><span class="w"> </span><span class="n">TB</span><span class="p">.</span><span class="n">IDTA</span><span class="w"> </span>
+</code></pre></div>
+<p><img src="images/10000000000000CA0000005831DE623C.png" style="width:4.277cm;height:1.857cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000CA0000005831DE623C.png" /></p>
+<p>On a ici une jointure externe gauche &quot;<strong>left outer join</strong>&quot;. Pour comprendre le terme &quot;FROM TA left outer join TB&quot;, il faut imaginer une jointure avec la table TA à gauche et la table TB à droite. Toutes les lignes de la table de gauche se retrouvent dans le résultat d&#x27;une jointure externe gauche même celles pour qui la relation de jointure n&#x27;est pas vérifiée. Cette relation de jointure n&#x27;est pas forcément une contrainte de clé étrangère même si c&#x27;est néanmoins le cas le plus courant.</p>
+<p>Dans l&#x27;ordre suivant :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">TA</span><span class="p">.</span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">TA</span><span class="p">.</span><span class="k">data</span><span class="p">,</span><span class="w"> </span><span class="n">TB</span><span class="p">.</span><span class="n">valeur</span><span class="p">,</span><span class="w"> </span><span class="n">TB</span><span class="p">.</span><span class="n">IDTA</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">TB</span><span class="w"> </span><span class="k">left</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">TA</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">TA</span><span class="p">.</span><span class="n">ID</span><span class="o">=</span><span class="w"> </span><span class="n">TB</span><span class="p">.</span><span class="n">IDTA</span>
+</code></pre></div>
+<p>c&#x27;est la table TB qui est à &quot;gauche&quot; dans la jointure externe. On retrouvera donc toutes les lignes de TB dans le résultat :</p>
+<p><img src="images/10000000000000C9000000461F95A28D.png" style="width:4.247cm;height:1.478cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000C9000000461F95A28D.png" /></p>
+<p>Contrairement à la jointure interne, l&#x27;ordre des tables a donc une importance. Il existe également des jointures externes droites :</p>
+<ul>
+  <li>FROM TA left outer join TB est équivalent à FROM TB right outer join TA : la table TA est à gauche
+  </li>
+  <li>FROM TB left outer join TA est équivalent à FROM TA right outer join TB : la table TB est à gauche
+  </li>
+</ul>
+
+<p>Les bases de l&#x27;exploitation simultanée de plusieurs tables étant maintenant connues, nous pouvons aborder des opérations de consultation plus complexes sur les bases de données.</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner">
+
+      <div>
+        <a href="https://tahe.developpez.com" target="_blank">
+          https://tahe.developpez.com
+        </a>
+        <br>
+        Ce cours-tutoriel écrit par <strong>Serge Tahé</strong> est mis à disposition du public selon les termes de la
+        <em>Licence Creative Commons Attribution – Pas d’Utilisation Commerciale –
+        Partage dans les Mêmes Conditions 3.0 non transposé</em>.
+      </div>
+
+    </div>
+  </div>
+
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.indexes", "navigation.expand", "toc.integrate", "navigation.top"], "search": "assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="javascripts/focus.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1236 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Introduction au langage SQL avec le SGBD Firebird">
+      
+      
+        <meta name="author" content="Serge Tahé">
+      
+      
+        <link rel="canonical" href="https://stahe.github.io/sql-firebird-janv-2006/approfondissement-du-langage-sql.html">
+      
+      
+        <link rel="prev" href="relations-entre-tables.html">
+      
+      
+        <link rel="next" href="gestion-de-lacces-concurrent-aux-donnees.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>6. Approfondissement du langage SQL - Introduction au langage SQL avec le SGBD Firebird</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/focus.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EBZC3JVJNR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var siteName = "Introduction au langage SQL avec le SGBD Firebird";
+    gtag('config', 'G-EBZC3JVJNR', {
+        'page_title': siteName
+    });
+  </script>
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#6-approfondissement-du-langage-sql" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Introduction au langage SQL avec le SGBD Firebird" class="md-header__button md-logo" aria-label="Introduction au langage SQL avec le SGBD Firebird" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Introduction au langage SQL avec le SGBD Firebird
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              6. Approfondissement du langage SQL
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Passer au mode sombre"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Passer au mode sombre" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Passer au mode clair"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Passer au mode clair" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://stahe.github.io/sql-firebird-janv-2006" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Introduction au langage SQL avec le SGBD Firebird" class="md-nav__button md-logo" aria-label="Introduction au langage SQL avec le SGBD Firebird" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Introduction au langage SQL avec le SGBD Firebird
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://stahe.github.io/sql-firebird-janv-2006" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tutoriel-firebird.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Tutoriel Firebird
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-au-langage-sql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Introduction au langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="les-expressions-du-langage-sql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Les expressions du langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relations-entre-tables.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Relations entre tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Approfondissement du langage SQL
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="approfondissement-du-langage-sql.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Approfondissement du langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#61-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1. Introduction
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.1. Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#611-la-table-clients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.1. la table CLIENTS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#612-la-table-articles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.2. la table ARTICLES
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#613-la-table-commandes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.3. la table COMMANDES
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#614-la-table-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1.4. la table DETAILS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#62-la-commande-select" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2. La commande SELECT
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.2. La commande SELECT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#621-syntaxe-dune-requete-multi-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2.1. Syntaxe d&#x27;une requête multi-tables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#622-lauto-jointure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2.2. L&#x27;auto-jointure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#623-jointure-externe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2.3. Jointure externe
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#624-requetes-imbriquees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2.4. Requêtes imbriquées
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#625-requetes-correlees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2.5. Requêtes corrélées
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#626-criteres-de-choix-pour-lecriture-du-select" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2.6. Critères de choix pour l&#x27;écriture du SELECT
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#63-extensions-de-syntaxe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3. Extensions de syntaxe
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gestion-de-lacces-concurrent-aux-donnees.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Gestion de l'accès concurrent aux données
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="installer-et-utiliser-un-pilote-odbc-pour-firebird.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Installer et utiliser un pilote ODBC pour [Firebird]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="6-approfondissement-du-langage-sql">6. Approfondissement du langage SQL</h1>
+<h2 id="61-introduction">6.1. Introduction</h2>
+<p>Dans ce chapitre nous présentons</p>
+<ul>
+  <li>d&#x27;autres syntaxes de la commande SELECT qui en font une commande de consultation très puissante notamment pour consulter plusieurs tables à la fois.
+  </li>
+  <li>des syntaxes élargies de commandes déjà étudiées
+  </li>
+</ul>
+
+<p>Pour illustrer les diverses commandes, nous travaillerons avec les tables suivantes utilisées pour la gestion des commandes dans une PME de diffusion de livres :</p>
+<h3 id="611-la-table-clients">6.1.1. la table CLIENTS</h3>
+<p>Elle mémorise des informations sur les clients de la PME :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/1000000000000106000000CCCC752293.png" style="display:inline-block; margin:4px;width:5.547cm;height:4.318cm;" class="odt-zoomable" data-zoom-src="images/1000000000000106000000CCCC752293.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;">&nbsp;</td></tr></table>
+
+<p><img src="images/10000000000002EA000000BDDB8C27BC.png" style="width:13.818cm;height:3.498cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000002EA000000BDDB8C27BC.png" /></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ID
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">n° identifiant le client de façon unique - clé primaire</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>NOM
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">nom du client</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>STATUT
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">I=Individu, E=Entreprise, A=Administration</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>PRENOM
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">prénom dans le cas d&#x27;un individu</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>CONTACT
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Nom de la personne à contacter chez le client (dans le cas d&#x27;une entreprise ou d&#x27;une administration)</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>RUE
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Adresse du client - rue</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>VILLE
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">ville</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>CPOSTAL
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">code postal</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>TELEPH
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Téléphone</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>DEPUIS
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Client depuis quelle date ?</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>DEBITEUR
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">O (Oui) si le client doit de l&#x27;argent à l&#x27;entreprise et N (Non) sinon.</p></td></tr></table>
+
+<h3 id="612-la-table-articles">6.1.2. la table ARTICLES</h3>
+<p>Elle mémorise des informations sur les produits vendus, ici des livres. Sa structure est la suivante :</p>
+<p><img src="images/100000000000012D00000111F02EADDB.png" style="width:6.368cm;height:5.779cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000012D00000111F02EADDB.png" /></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>ISBN
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">n° identifiant un livre de façon unique (ISBN= International Standard Book Number) - clé primaire</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>TITRE
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Titre du livre</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>CODEDITEUR
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Code identifiant un éditeur de façon unique</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>AUTEUR
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Nom de l&#x27;auteur</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>RESUME
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Résumé du livre</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>QTEANCOUR
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Quantité vendue dans l&#x27;année</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>QTEANPREC
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Quantité vendue l&#x27;année précédente</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>DERNVENTE
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">date de la dernière vente</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>QTERECUE
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Quantité de la dernière livraison</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>DERNLIV
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Date de la dernière livraison</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>PRIXVENTE
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Prix de vente</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>COUT
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Coût d&#x27;achat</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>MINCDE
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Quantité minimale à commander</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>MINSTOCK
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Seuil minimal du stock</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>QTESTOCK
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Quantité en stock</p></td></tr></table>
+
+<p>Son contenu pourrait être le suivant :</p>
+<p><img src="images/10000000000003DF0000007812E326FD.png" style="width:16.933cm;height:2.048cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000003DF0000007812E326FD.png" /></p>
+<h3 id="613-la-table-commandes">6.1.3. la table COMMANDES</h3>
+<p>Elle enregistre les informations sur les commandes faites par les clients. Sa structure est la suivante :</p>
+<p><img src="images/10000000000001410000005798884DB4.png" style="width:6.787cm;height:1.838cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001410000005798884DB4.png" /></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>NOCMD
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">N° identifiant une commande de façon unique - clé primaire</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>IDCLI
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">N° du client faisant cette commande - clé étangère - référence CLIENTS(ID)</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>DATE_CMD
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Date de saisie de cette commande</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>ANNULE
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">O (Oui) si la commande a été annulée et N (Non) sinon.</p></td></tr></table>
+
+<p><img src="images/100000000000010D000000992E8A3DB3.png" style="width:5.689cm;height:3.239cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000010D000000992E8A3DB3.png" /></p>
+<h3 id="614-la-table-details">6.1.4. la table DETAILS</h3>
+<p>Elle contient les détails d&#x27;une commande, c&#x27;est à dire les références et quantités des livres commandés. Sa structure est la suivante :</p>
+<p><img src="images/100000000000011F00000058C4AC6156.png" style="width:6.068cm;height:1.857cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000011F00000058C4AC6156.png" /></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>NOCMD
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">N° de la commande - clé étrangère référençant la colonne NOCMD de la table COMMANDES</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>ISBN
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">N° du livre commandé - clé étrangère référençant la colonne ISBN de la table LIVRES</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>QTE
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Quantité commandée</p></td></tr></table>
+
+<p>Son contenu pourrait être le suivant :</p>
+<p><img src="images/10000000000000DB000000F0554D0F9F.png" style="width:4.639cm;height:5.078cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000DB000000F0554D0F9F.png" /></p>
+<p>Ci-dessus, on voit que la commande n° 3 (NOCMD) concerne trois livres. Cela veut dire que le client a commandé trois livres en même temps. Les références de ce client peuvent être trouvées dans la table [COMMANDES] où l&#x27;on voit que la commande n° 3 a été effectuée par le client n° 5. La table [CLIENTS] nous apprend que le client n° 5 est la société NetLogos de Segré.</p>
+<h2 id="62-la-commande-select">6.2. La commande SELECT</h2>
+<p>Nous nous proposons ici d&#x27;approfondir notre connaissance de la commande SELECT en présentant de nouvelles syntaxes de celle-ci.</p>
+<h3 id="621-syntaxe-dune-requete-multi-tables">6.2.1. Syntaxe d&#x27;une requête multi-tables</h3>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>syntaxe
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>SELECT</b> <i>colonne1, colonne2, ...</i> </p><p style="margin:0;"><b>FROM</b> <i>table1, table2, ..., tablep</i></p><p style="margin:0;"><b>WHERE</b> <i>condition</i></p><p style="margin:0;"><b>ORDER BY</b> ...</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>action
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">La nouveauté ici vient du fait que les colonnes <i>colonne1, colonne2, ...</i> proviennent de plusieurs tables <i>table1, table2</i>, ... Si deux tables ont des colonnes de même nom, on lève l&#x27;ambigüité par la notation <i>tablei.colonnej</i>. La <i>condition</i> peut porter sur les colonnes des différentes tables.</p></td></tr></table>
+
+<p>Fonctionnement</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>1
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">La table produit cartésien de <i>table1, table2, ..., tablep</i> est réalisée. Si <i>ni</i> est le nombre de lignes de <i>tablei</i>, la table construite a donc <i>n1*n2*...*np</i> lignes comportant l&#x27;ensemble des colonnes des différentes tables.</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">La <i>condition</i> du <b>WHERE</b> est appliquée à cette table. Une nouvelle table est ainsi produite</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>3
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Celle-ci est ordonnée selon le mode indiqué dans <b>ORDER</b>.</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>4
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Les colonnes demandées derrière <b>SELECT</b> sont affichées.</p></td></tr></table>
+
+<p><strong>Exemples</strong></p>
+<p>On utilise les tables présentées précédemment. On veut connaître le détail des commandes passées après le 25 septembre :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="k">select</span><span class="w"> </span><span class="n">details</span><span class="p">.</span><span class="n">nocmd</span><span class="p">,</span><span class="n">isbn</span><span class="p">,</span><span class="n">qte</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">commandes</span><span class="p">,</span><span class="n">details</span>
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="w">  </span><span class="k">where</span><span class="w"> </span><span class="n">commandes</span><span class="p">.</span><span class="n">datecmd</span><span class="o">&gt;</span><span class="s1">&#39;25-sep-91&#39;</span>
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">details</span><span class="p">.</span><span class="n">nocmd</span><span class="o">=</span><span class="n">commandes</span><span class="p">.</span><span class="n">nocmd</span>
+</code></pre></div>
+<p><img src="images/10000000000000BB000000468E8D5B3D.png" style="width:3.958cm;height:1.478cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000BB000000468E8D5B3D.png" /></p>
+<p>On remarquera que derrière FROM, on met le nom de toutes les tables dont on référence les colonnes. Dans l&#x27;exemple précédent, les colonnes sélectionnées appartiennent toutes à la table DETAILS. Cependant la condition fait référence à la table COMMANDES. D&#x27;où la nécessité de nommer cette dernière derrière le FROM. L&#x27;opération qui teste l&#x27;égalité de colonnes de deux tables différentes est souvent appelée une équi-jointure.</p>
+<p>La requête SELECT aurait pu être également écrite de la façon suivante :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">details</span><span class="p">.</span><span class="n">nocmd</span><span class="p">,</span><span class="n">isbn</span><span class="p">,</span><span class="n">qte</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">commandes</span>
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="w">    </span><span class="k">inner</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">details</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">details</span><span class="p">.</span><span class="n">nocmd</span><span class="o">=</span><span class="n">commandes</span><span class="p">.</span><span class="n">nocmd</span>
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">commandes</span><span class="p">.</span><span class="n">datecmd</span><span class="o">&gt;</span><span class="s1">&#39;25-sep-91&#39;</span>
+</code></pre></div>
+<p>Continuons nos exemples. On désire le même résultat que précédemment mais avec le titre du livre commandé, plutôt que son n° ISBN :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="k">select</span><span class="w"> </span><span class="n">commandes</span><span class="p">.</span><span class="n">nocmd</span><span class="p">,</span><span class="w"> </span><span class="n">articles</span><span class="p">.</span><span class="n">titre</span><span class="p">,</span><span class="w"> </span><span class="n">details</span><span class="p">.</span><span class="n">qte</span>
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="w">  </span><span class="k">from</span><span class="w"> </span><span class="n">commandes</span><span class="p">,</span><span class="n">articles</span><span class="p">,</span><span class="n">details</span>
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="w">  </span><span class="k">where</span><span class="w"> </span><span class="n">commandes</span><span class="p">.</span><span class="n">datecmd</span><span class="o">&gt;</span><span class="s1">&#39;25-sep-91&#39;</span>
+<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">details</span><span class="p">.</span><span class="n">nocmd</span><span class="o">=</span><span class="n">commandes</span><span class="p">.</span><span class="n">nocmd</span>
+<a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">details</span><span class="p">.</span><span class="n">isbn</span><span class="o">=</span><span class="n">articles</span><span class="p">.</span><span class="n">isbn</span>
+</code></pre></div>
+<p><img src="images/1000000000000100000000469B800507.png" style="width:5.419cm;height:1.478cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000100000000469B800507.png" /></p>
+<p>Le même résultat est obtenu avec la requête SQL suivante, moins lisible :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">details</span><span class="p">.</span><span class="n">nocmd</span><span class="p">,</span><span class="n">articles</span><span class="p">.</span><span class="n">titre</span><span class="p">,</span><span class="n">details</span><span class="p">.</span><span class="n">qte</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">details</span>
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="w">    </span><span class="k">inner</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">commandes</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">details</span><span class="p">.</span><span class="n">nocmd</span><span class="o">=</span><span class="n">commandes</span><span class="p">.</span><span class="n">nocmd</span>
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="w">    </span><span class="k">inner</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">articles</span><span class="w"> </span><span class="k">on</span><span class="w">  </span><span class="n">details</span><span class="p">.</span><span class="n">isbn</span><span class="o">=</span><span class="n">articles</span><span class="p">.</span><span class="n">isbn</span>
+<a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">commandes</span><span class="p">.</span><span class="n">datecmd</span><span class="o">&gt;</span><span class="s1">&#39;25-sep-91&#39;</span>
+</code></pre></div>
+<p>Ci-dessus, deux jointures internes sont faites avec la table [DETAILS] :</p>
+<ul>
+  <li>l&#x27;une avec la table [COMMANDES] pour avoir accès à la date de commande d&#x27;un livre
+  </li>
+  <li>l&#x27;une avec la table [ARTICLES] pour avoir accès au titre du livre commandé
+  </li>
+</ul>
+
+<p>On veut de plus le nom du client qui fait la commande :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="k">select</span><span class="w"> </span><span class="n">commandes</span><span class="p">.</span><span class="n">nocmd</span><span class="p">,</span><span class="w"> </span><span class="n">articles</span><span class="p">.</span><span class="n">titre</span><span class="p">,</span><span class="w"> </span><span class="n">qte</span><span class="w"> </span><span class="p">,</span><span class="n">clients</span><span class="p">.</span><span class="n">nom</span>
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a><span class="w">  </span><span class="k">from</span><span class="w"> </span><span class="n">commandes</span><span class="p">,</span><span class="n">details</span><span class="p">,</span><span class="n">articles</span><span class="p">,</span><span class="n">clients</span>
+<a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a><span class="w">  </span><span class="k">where</span><span class="w"> </span><span class="n">commandes</span><span class="p">.</span><span class="n">datecmd</span><span class="o">&gt;</span><span class="s1">&#39;25-sep-91&#39;</span>
+<a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a><span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">details</span><span class="p">.</span><span class="n">nocmd</span><span class="o">=</span><span class="n">commandes</span><span class="p">.</span><span class="n">nocmd</span>
+<a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a><span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">details</span><span class="p">.</span><span class="n">isbn</span><span class="o">=</span><span class="n">articles</span><span class="p">.</span><span class="n">isbn</span>
+<a id="__codelineno-43-6" name="__codelineno-43-6" href="#__codelineno-43-6"></a><span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">commandes</span><span class="p">.</span><span class="n">idcli</span><span class="o">=</span><span class="n">clients</span><span class="p">.</span><span class="n">id</span>
+</code></pre></div>
+<p><img src="images/1000000000000144000000468E42B5D0.png" style="width:6.858cm;height:1.478cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000144000000468E42B5D0.png" /></p>
+<p>On veut de plus les dates de commande et un affichage par ordre décroissant de ces dates :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="k">select</span><span class="w"> </span><span class="n">commandes</span><span class="p">.</span><span class="n">nocmd</span><span class="p">,</span><span class="w"> </span><span class="n">commandes</span><span class="p">.</span><span class="n">datecmd</span><span class="p">,</span><span class="w"> </span><span class="n">articles</span><span class="p">.</span><span class="n">titre</span><span class="p">,</span><span class="w"> </span><span class="n">qte</span><span class="w"> </span><span class="p">,</span><span class="n">clients</span><span class="p">.</span><span class="n">nom</span>
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="w">    </span><span class="k">from</span><span class="w"> </span><span class="n">commandes</span><span class="p">,</span><span class="n">details</span><span class="p">,</span><span class="n">articles</span><span class="p">,</span><span class="n">clients</span>
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">commandes</span><span class="p">.</span><span class="n">datecmd</span><span class="o">&gt;</span><span class="s1">&#39;25-sep-91&#39;</span>
+<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="n">details</span><span class="p">.</span><span class="n">nocmd</span><span class="o">=</span><span class="n">commandes</span><span class="p">.</span><span class="n">nocmd</span>
+<a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a><span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="n">details</span><span class="p">.</span><span class="n">isbn</span><span class="o">=</span><span class="n">articles</span><span class="p">.</span><span class="n">isbn</span>
+<a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a><span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="n">commandes</span><span class="p">.</span><span class="n">idcli</span><span class="o">=</span><span class="n">clients</span><span class="p">.</span><span class="n">id</span>
+<a id="__codelineno-44-7" name="__codelineno-44-7" href="#__codelineno-44-7"></a><span class="w">    </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">commandes</span><span class="p">.</span><span class="n">datecmd</span><span class="w"> </span><span class="n">descending</span>
+</code></pre></div>
+<p><img src="images/10000000000001AA00000045E498CFA3.png" style="width:9.019cm;height:1.459cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001AA00000045E498CFA3.png" /></p>
+<p>Voici quelques règles à observer dans les jointures :</p>
+<ol>
+  <li>Derrière SELECT, on met les colonnes que l&#x27;on désire obtenir à l&#x27;affichage. Si la colonne existe dans diverses tables, on la fait précéder du nom de la table.
+  </li>
+  <li>Derrière FROM, on met toutes les tables qui seront explorées par le SELECT, c&#x27;est à dire les tables propriétaires des colonnes qui se trouvent derrière SELECT et WHERE.
+  </li>
+</ol>
+
+<h3 id="622-lauto-jointure">6.2.2. L&#x27;auto-jointure</h3>
+<p>On veut connaître les livres qui ont un prix de vente supérieur à celui du livre &#x27;Using SQL&#x27; :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="k">select</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">titre</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">articles</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">articles</span><span class="w"> </span><span class="n">b</span>
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="w">  </span><span class="k">where</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">titre</span><span class="o">=</span><span class="s1">&#39;Using SQL&#39;</span>
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="w">  </span><span class="k">and</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">prixvente</span><span class="o">&gt;</span><span class="n">b</span><span class="p">.</span><span class="n">prixvente</span>
+</code></pre></div>
+<p><img src="images/10000000000000990000003514713338.png" style="width:3.239cm;height:1.118cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000990000003514713338.png" /></p>
+<p>Les deux tables de la jointure sont ici identiques : la table <em>articles</em>. Pour les différencier, on leur donne un alias : <em>from articles a, articles b.</em> L&#x27;alias de la première table s&#x27;appelle <em>a</em> et celui de la seconde, <em>b</em>. Cette syntaxe peut s&#x27;utiliser même si les tables sont différentes. Lors de l&#x27;utilisation d&#x27;un alias, celui-ci doit être utilisé partout dans la commande SELECT en lieu et place de la table qu&#x27;il désigne.</p>
+<h3 id="623-jointure-externe">6.2.3. Jointure externe</h3>
+<p>On veut connaître les clients qui ont acheté quelque chose en septembre avec la date de la commande. Les autres clients sont affichés sans cette date :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="k">select</span><span class="w"> </span><span class="n">clients</span><span class="p">.</span><span class="n">nom</span><span class="p">,</span><span class="n">commandes</span><span class="p">.</span><span class="n">datecmd</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">clients</span>
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="w">    </span><span class="k">left</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">commandes</span><span class="w">  </span><span class="k">on</span><span class="w"> </span><span class="n">clients</span><span class="p">.</span><span class="n">id</span><span class="o">=</span><span class="n">commandes</span><span class="p">.</span><span class="n">idcli</span>
+<a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">datecmd</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="s1">&#39;01-sep-91&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="s1">&#39;30-sep-91&#39;</span>
+</code></pre></div>
+<p><img src="images/10000000000000C60000009D26D9D567.png" style="width:4.187cm;height:3.318cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000C60000009D26D9D567.png" /></p>
+<p>On est étonné ici de ne pas avoir le bon résultat. On devrait avoir tous les clients présents dans la table [CLIENTS],  ce qui n&#x27;est pas le cas. Lorsqu&#x27;on réfléchit au fonctionnement de la jointure externe, on réalise que les clients n&#x27;ayant pas acheté ont été associées à une ligne vide de la table COMMANDES et donc avec une date vide (valeur NULL dans la terminologie SQL). Cette date ne vérifie pas alors la condition fixée sur la date et le client correspondant n&#x27;est pas affiché. Essayons autre chose :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="k">select</span><span class="w"> </span><span class="n">clients</span><span class="p">.</span><span class="n">nom</span><span class="p">,</span><span class="n">commandes</span><span class="p">.</span><span class="n">datecmd</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">clients</span>
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="w">    </span><span class="k">left</span><span class="w"> </span><span class="k">outer</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">commandes</span><span class="w">  </span><span class="k">on</span><span class="w"> </span><span class="n">clients</span><span class="p">.</span><span class="n">id</span><span class="o">=</span><span class="n">commandes</span><span class="p">.</span><span class="n">idcli</span>
+<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="p">(</span><span class="n">commandes</span><span class="p">.</span><span class="n">datecmd</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="s1">&#39;01-sep-91&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="s1">&#39;30-sep-91&#39;</span><span class="p">)</span>
+<a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a><span class="w">        </span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="n">commandes</span><span class="p">.</span><span class="n">datecmd</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">null</span><span class="p">)</span>
+</code></pre></div>
+<p><img src="images/10000000000000C6000000F07104897A.png" style="width:4.187cm;height:5.078cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000C6000000F07104897A.png" /></p>
+<p>On obtient cette fois-ci la réponse correcte à notre question.</p>
+<h3 id="624-requetes-imbriquees">6.2.4. Requêtes imbriquées</h3>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>syntaxe
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>SELECT</b> <i>colonne[s]</i> FROM <i>table[s]</i></p><p style="margin:0;"><b>WHERE</b> <i>expression opérateur requête</i></p><p style="margin:0;"><b>ORDER BY</b> ...</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>fonctionnement
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><i>requête</i> est une commande SELECT qui délivre un  groupe de 0, 1 ou plusieurs valeurs. On a alors une condition <b>WHERE</b> du type</p><p style="margin:0;">    <b>expression opérateur (val1, val2, ..., vali)</b></p><p style="margin:0;"><i>expression</i> et <i>vali</i> doivent être de même type. Si la requête délivre une seule valeur, on est ramené à une condition du type</p><p style="margin:0;">    <b>expression opérateur valeur</b></p><p style="margin:0;">que nous connaissons bien. Si la requête délivre une liste de valeurs, on pourra employer les opérateurs suivants :</p><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>IN
+</code></pre></div>
+</div><p style="margin:0;"><i>expression</i> <b>IN</b> <i>(val1, val2, ..., vali) : </i><b>vraie</b> si <i>expression</i> a pour valeur l&#x27;un des éléments de la liste <i>vali</i>.</p><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>NOT IN
+</code></pre></div>
+</div><p style="margin:0;">inverse de <b>IN</b></p><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>ANY
+</code></pre></div>
+</div><p style="margin:0;">doit être précédé de =,!=,&gt;,&gt;=,&lt;,&lt;=</p><p style="margin:0;"><i>expression</i> &gt;= <b>ANY</b> <i>(val1, val2, .., valn) : </i>vraie si <i>expression</i> est &gt;= à l&#x27;une des valeurs <i>vali</i> de la liste</p><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>ALL
+</code></pre></div>
+</div><p style="margin:0;">doit être précédé de =,!=,&gt;,&gt;=,&lt;,&lt;=</p><p style="margin:0;"><i>expression</i> &gt;= <b>ALL</b> <i>(val1, val2, .., valn)</i> : <b>vraie</b> si expression est &gt;= à toutes les valeurs vali de la liste</p><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>EXISTS 
+</code></pre></div>
+</div><p style="margin:0;">requête : vraie si la <i>requête</i> rend au moins une ligne.</p></td></tr></table>
+
+<p><strong>Exemples</strong></p>
+<p>On reprend la question déjà résolue par une équi-jointure : afficher les titres ayant un prix de vente supérieur à celui du livre &#x27;Using SQL&#x27;.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ARTICLES</span>
+<a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">prixvente</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">prixvente</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ARTICLES</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">titre</span><span class="o">=</span><span class="s1">&#39;Using SQL&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><img src="images/10000000000000B9000000361BEA796C.png" style="width:3.918cm;height:1.138cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000B9000000361BEA796C.png" /></p>
+<p>Cette solution semble plus intuitive que celle de l&#x27;équi-jointure. On fait un premier filtrage avec un SELECT, puis un second sur le résultat obtenu. On peut opérer ainsi plusieurs filtrages en série.</p>
+<p>On veut connaître les titres ayant un prix de vente supérieur au prix moyen de vente :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ARTICLES</span>
+<a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">prixvente</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="k">avg</span><span class="p">(</span><span class="n">prixvente</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ARTICLES</span><span class="p">)</span>
+</code></pre></div>
+<p><img src="images/10000000000000B7000000455DE2D15A.png" style="width:3.868cm;height:1.459cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000B7000000455DE2D15A.png" /></p>
+<p>Quels sont les clients ayant commandé les titres résultat de la requête précédente ?</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="k">select</span><span class="w"> </span><span class="k">distinct</span><span class="w"> </span><span class="n">idcli</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">COMMANDES</span><span class="p">,</span><span class="n">DETAILS</span>
+<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">DETAILS</span><span class="p">.</span><span class="n">isbn</span><span class="w"> </span><span class="k">in</span>
+<a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a><span class="w">    </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">isbn</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ARTICLES</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">prixvente</span>
+<a id="__codelineno-57-4" name="__codelineno-57-4" href="#__codelineno-57-4"></a><span class="w">        </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="k">avg</span><span class="p">(</span><span class="n">prixvente</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ARTICLES</span><span class="p">))</span>
+<a id="__codelineno-57-5" name="__codelineno-57-5" href="#__codelineno-57-5"></a><span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="n">COMMANDES</span><span class="p">.</span><span class="n">nocmd</span><span class="o">=</span><span class="n">DETAILS</span><span class="p">.</span><span class="n">nocmd</span>
+</code></pre></div>
+<p><img src="images/100000000000004200000045E07D4FCA.png" style="width:1.399cm;height:1.459cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000004200000045E07D4FCA.png" /></p>
+<p><strong>Explications</strong></p>
+<ol>
+  <li>on sélectionne dans la table DETAILS les codes ISBN se trouvant parmi les livres ayant un prix supérieur au prix moyen des livres.
+  </li>
+  <li>dans les lignes sélectionnées de l&#x27;étape précédente, il n&#x27;y a pas le code client IDCLI. Il se trouve dans la table COMMANDES. Le lien entre les deux tables se fait par le n° de commande NOCMD, d&#x27;où l&#x27;équi-jointure COMMANDES.nocmd=DETAILS.nocmd.
+  </li>
+  <li>Un même client peut avoir acheté plusieurs fois l&#x27;un des livres concernés, auquel cas on aura son code IDCLI plusieurs fois. Pour éviter cela, on met le mot clé DISTINCT derrière SELECT. DISTINCT de façon générale élimine les doublons dans les lignes résultat d&#x27;un SELECT.
+  </li>
+  <li>pour avoir le nom du client, il nous faudrait faire une équi-jointure supplémentaire entre les tables COMMANDES et CLIENTS comme le montre la requête qui suit.
+  </li>
+</ol>
+
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="k">distinct</span><span class="w"> </span><span class="n">CLIENTS</span><span class="p">.</span><span class="n">nom</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">COMMANDES</span><span class="p">,</span><span class="n">DETAILS</span><span class="p">,</span><span class="n">CLIENTS</span>
+<a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">DETAILS</span><span class="p">.</span><span class="n">isbn</span><span class="w"> </span><span class="k">in</span>
+<a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a><span class="w">    </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">isbn</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ARTICLES</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">prixvente</span>
+<a id="__codelineno-58-4" name="__codelineno-58-4" href="#__codelineno-58-4"></a><span class="w">        </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="k">avg</span><span class="p">(</span><span class="n">prixvente</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ARTICLES</span><span class="p">))</span>
+<a id="__codelineno-58-5" name="__codelineno-58-5" href="#__codelineno-58-5"></a><span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="n">COMMANDES</span><span class="p">.</span><span class="n">nocmd</span><span class="o">=</span><span class="n">DETAILS</span><span class="p">.</span><span class="n">nocmd</span>
+<a id="__codelineno-58-6" name="__codelineno-58-6" href="#__codelineno-58-6"></a><span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="n">COMMANDES</span><span class="p">.</span><span class="n">IDCLI</span><span class="o">=</span><span class="n">CLIENTS</span><span class="p">.</span><span class="n">ID</span>
+</code></pre></div>
+<p><img src="images/100000000000006300000045EAF6B60A.png" style="width:2.099cm;height:1.459cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000006300000045EAF6B60A.png" /></p>
+<p>Trouver les clients qui n&#x27;ont pas fait de commande depuis le 24 septembre :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="k">select</span><span class="w"> </span><span class="n">nom</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">CLIENTS</span>
+<a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">clients</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">in</span>
+<a id="__codelineno-59-3" name="__codelineno-59-3" href="#__codelineno-59-3"></a><span class="w">    </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="k">distinct</span><span class="w"> </span><span class="n">commandes</span><span class="p">.</span><span class="n">idcli</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">commandes</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">datecmd</span><span class="o">&gt;=</span><span class="s1">&#39;24-sep-91&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><img src="images/1000000000000062000000697F66C567.png" style="width:2.069cm;height:2.219cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000062000000697F66C567.png" /></p>
+<p>Nous avons vu qu&#x27;on pouvait filtrer des lignes autrement qu&#x27;avec la clause WHERE : en utilisant la clause HAVING en conjonction avec la clause GROUP BY. La clause HAVING <strong>filtre des groupes de lignes</strong>.</p>
+<p>De la même façon que pour la clause WHERE, la syntaxe</p>
+<div class="highlight"><pre><span></span><code> **HAVING** *expression opérateur requête*
+</code></pre></div>
+<p>est possible, avec la contrainte déjà présentée que <em>expression</em> doit être l&#x27;une des expressions <em>expri</em> de la clause</p>
+<div class="highlight"><pre><span></span><code> **GROUP BY** *expr1, expr2*, ...
+</code></pre></div>
+<p><strong>Exemples</strong></p>
+<p>Quelles sont les quantités vendues pour les livres de plus de 200F ?</p>
+<p>Affichons tout d&#x27;abord les quantités vendues par titre :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="k">select</span><span class="w"> </span><span class="n">ARTICLES</span><span class="p">.</span><span class="n">titre</span><span class="p">,</span><span class="k">sum</span><span class="p">(</span><span class="n">qte</span><span class="p">)</span><span class="w"> </span><span class="n">QTE</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ARTICLES</span><span class="p">,</span><span class="w"> </span><span class="n">DETAILS</span>
+<a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">DETAILS</span><span class="p">.</span><span class="n">isbn</span><span class="o">=</span><span class="n">ARTICLES</span><span class="p">.</span><span class="n">isbn</span>
+<a id="__codelineno-60-3" name="__codelineno-60-3" href="#__codelineno-60-3"></a><span class="w">    </span><span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">titre</span>
+</code></pre></div>
+<p><img src="images/10000000000000C400000078499745AB.png" style="width:4.149cm;height:2.538cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000C400000078499745AB.png" /></p>
+<p>Maintenant, filtrons les titres :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">ARTICLES</span><span class="p">.</span><span class="n">titre</span><span class="p">,</span><span class="k">sum</span><span class="p">(</span><span class="n">qte</span><span class="p">)</span><span class="w"> </span><span class="n">QTE</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ARTICLES</span><span class="p">,</span><span class="w"> </span><span class="n">DETAILS</span>
+<a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">DETAILS</span><span class="p">.</span><span class="n">isbn</span><span class="o">=</span><span class="n">ARTICLES</span><span class="p">.</span><span class="n">isbn</span>
+<a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a><span class="w">    </span><span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">titre</span>
+<a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a><span class="w">    </span><span class="k">having</span><span class="w"> </span><span class="n">titre</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ARTICLES</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">prixvente</span><span class="o">&gt;</span><span class="mi">200</span><span class="p">)</span>
+</code></pre></div>
+<p><img src="images/10000000000000C300000069973ECCBA.png" style="width:4.128cm;height:2.219cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000C300000069973ECCBA.png" /></p>
+<p>De façon peut-être plus évidente on aurait pu écrire :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="k">select</span><span class="w"> </span><span class="n">ARTICLES</span><span class="p">.</span><span class="n">titre</span><span class="p">,</span><span class="k">sum</span><span class="p">(</span><span class="n">qte</span><span class="p">)</span><span class="w"> </span><span class="n">QTE</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ARTICLES</span><span class="p">,</span><span class="w"> </span><span class="n">DETAILS</span>
+<a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">DETAILS</span><span class="p">.</span><span class="n">isbn</span><span class="o">=</span><span class="n">ARTICLES</span><span class="p">.</span><span class="n">isbn</span>
+<a id="__codelineno-62-3" name="__codelineno-62-3" href="#__codelineno-62-3"></a><span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="n">ARTICLES</span><span class="p">.</span><span class="n">prixvente</span><span class="o">&gt;</span><span class="mi">200</span>
+<a id="__codelineno-62-4" name="__codelineno-62-4" href="#__codelineno-62-4"></a><span class="w">    </span><span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">titre</span>
+</code></pre></div>
+<p><img src="images/10000000000000C500000067A841E54B.png" style="width:4.168cm;height:2.178cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000C500000067A841E54B.png" /></p>
+<h3 id="625-requetes-correlees">6.2.5. Requêtes corrélées</h3>
+<p>Dans le cas des requêtes imbriquées, on a une requête parent (la requête la plus externe) et une requête fille (la requête la plus interne). La requête mère n&#x27;est évaluée que lorsque la requête fille l&#x27;a été complètement.</p>
+<p>Les requêtes corrélées ont la même syntaxe au détail près suivant : la requête fille fait une jointure sur la table de la requête mère. Dans ce cas, l&#x27;ensemble requête mère-requête fille est évalué de façon répétée pour chaque ligne de la table mère.</p>
+<p><strong>Exemple</strong></p>
+<p>Nous reprenons l&#x27;exemple où nous désirons les noms des clients n&#x27;ayant pas fait de commande depuis le 24 septembre :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span>
+<a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a><span class="k">select</span><span class="w"> </span><span class="n">nom</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">clients</span>
+<a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">exists</span>
+<a id="__codelineno-63-4" name="__codelineno-63-4" href="#__codelineno-63-4"></a><span class="w">        </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">idcli</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">commandes</span>
+<a id="__codelineno-63-5" name="__codelineno-63-5" href="#__codelineno-63-5"></a><span class="w">            </span><span class="k">where</span><span class="w"> </span><span class="n">datecmd</span><span class="o">&gt;=</span><span class="s1">&#39;24-sep-91&#39;</span>
+<a id="__codelineno-63-6" name="__codelineno-63-6" href="#__codelineno-63-6"></a><span class="w">                </span><span class="k">and</span><span class="w"> </span><span class="n">commandes</span><span class="p">.</span><span class="n">idcli</span><span class="o">=</span><span class="n">clients</span><span class="p">.</span><span class="n">id</span><span class="p">)</span>
+</code></pre></div>
+<p><img src="images/100000000000006600000067D7A37F6F.png" style="width:2.159cm;height:2.178cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000006600000067D7A37F6F.png" /></p>
+<p>La requête mère s&#x27;exerce sur la table <em>clients</em>. La requête fille fait une jointure entre les tables <em>clients</em> et <em>commandes</em>. On a donc une requête corrélée. Pour chaque ligne de la table <em>clients</em>, la requête fille s&#x27;exécute : elle cherche le code <em>id</em> du client dans les commandes faites après le 24 septembre. Si elle n&#x27;en trouve pas (<em>not exists</em>), le nom du client est affiché. Ensuite, on passe à la ligne suivante de la table <em>clients</em>.</p>
+<h3 id="626-criteres-de-choix-pour-lecriture-du-select">6.2.6. Critères de choix pour l&#x27;écriture du SELECT</h3>
+<p>Nous avons vu, à plusieurs reprises, qu&#x27;il était possible d&#x27;obtenir un même résultat par différentes écritures du SELECT. Prenons un exemple : Afficher les clients ayant commandé quelque chose :</p>
+<p><strong>Jointure</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a><span class="k">SQL</span><span class="o">&gt;</span>
+<a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a><span class="k">select</span><span class="w"> </span><span class="k">distinct</span><span class="w"> </span><span class="n">nom</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">clients</span><span class="p">,</span><span class="n">commandes</span>
+<a id="__codelineno-64-3" name="__codelineno-64-3" href="#__codelineno-64-3"></a><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">clients</span><span class="p">.</span><span class="n">id</span><span class="o">=</span><span class="n">commandes</span><span class="p">.</span><span class="n">idcli</span>
+</code></pre></div>
+<p><img src="images/100000000000006600000068EBEEBF10.png" style="width:2.159cm;height:2.198cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000006600000068EBEEBF10.png" /></p>
+<p><strong>Requêtes imbriquées</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span>
+<a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a><span class="k">select</span><span class="w"> </span><span class="n">nom</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">clients</span>
+<a id="__codelineno-65-3" name="__codelineno-65-3" href="#__codelineno-65-3"></a><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">idcli</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">commandes</span><span class="p">)</span>
+</code></pre></div>
+<p>donne le même résultat.</p>
+<p><strong>Requêtes corrélées</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a><span class="k">SQL</span><span class="o">&gt;</span>
+<a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a><span class="k">select</span><span class="w"> </span><span class="n">nom</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">clients</span>
+<a id="__codelineno-66-3" name="__codelineno-66-3" href="#__codelineno-66-3"></a><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="k">exists</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">commandes</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">commandes</span><span class="p">.</span><span class="n">idcli</span><span class="o">=</span><span class="n">clients</span><span class="p">.</span><span class="n">id</span><span class="p">)</span>
+</code></pre></div>
+<p>donne le même résultat.</p>
+<p>Les auteurs Christian MAREE et Guy LEDANT, dans leur livre &#x27; SQL, Initiation, Programmation et Maîtrise&#x27; proposent quelques critères de choix :</p>
+<p><strong>Performances</strong></p>
+<p>L&#x27;utilisateur ne sait pas comment le SGBD &quot;se débrouille&quot; pour trouver les résultats qu&#x27;il demande. Ce n&#x27;est donc que par expérience, qu&#x27;il découvrira que telle écriture est plus performante qu&#x27;une autre. MAREE et LEDANT affirment par expérience que les requêtes corrélées semblent généralement plus lentes que les requêtes imbriquées ou les jointures.</p>
+<p><strong>Formulation</strong></p>
+<p>La formulation par requêtes imbriquées est souvent plus lisible et plus intuitive que la jointure. Elle n&#x27;est cependant pas toujours utilisable. Deux points sont notamment à observer :</p>
+<ul>
+  <li>Les tables propriétaires des colonnes arguments du SELECT ( SELECT col1, col2, ...) doivent être nommées derrière le mot clé FROM. Le produit cartésien de ces tables est alors effectué, ce qu&#x27;on appelle une jointure.
+  </li>
+</ul>
+
+<ul>
+  <li>Lorsque la requête affiche des résultats provenant d&#x27;<b>une seule table</b>, et que le filtrage des lignes de cette dernière impose la consultation d&#x27;une autre table, les requêtes imbriquées peuvent être utilisées.
+  </li>
+</ul>
+
+<h2 id="63-extensions-de-syntaxe">6.3. Extensions de syntaxe</h2>
+<p>Pour des questions de commodité, nous avons le plus souvent présenté des syntaxes réduites des différentes commandes. Dans cette section, nous en présentons des syntaxes élargies. Elles se comprennent d&#x27;elles-mêmes car elles sont analogues à celles de la commande SELECT largement étudiée.</p>
+<p><strong>INSERT</strong></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a>syntaxe1
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>INSERT INTO</b> <i>table</i> <i>(col1, col2, ..)</i> <b>VALUES</b> <i>(val1, val2, ...)</i></p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a>syntaxe2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>INSERT INTO</b> <i>table</i> <i>(col1, col2, ..)</i> <i>(requête)</i></p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a>explication
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Ces deux syntaxes ont été présentées</p></td></tr></table>
+
+<p><strong>DELETE</strong></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-70-1" name="__codelineno-70-1" href="#__codelineno-70-1"></a>syntaxe1
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>DELETE FROM</b> <i>table</i> <b>WHERE</b> <i>condition</i></p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-71-1" name="__codelineno-71-1" href="#__codelineno-71-1"></a>explication
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Cette syntaxe est connue. Ajoutons que la condition peut contenir une requête avec la syntaxe <i>WHERE</i> <i>expression opérateur (requête)</i></p></td></tr></table>
+
+<p><strong>UPDATE</strong></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-72-1" name="__codelineno-72-1" href="#__codelineno-72-1"></a>syntaxe1
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>UPDATE</b> <i>table</i></p><p style="margin:0;"><b>SET</b> <i>col1=expr1, col2=expr2, ...</i></p><p style="margin:0;"><b>WHERE</b> <i>condition</i></p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-73-1" name="__codelineno-73-1" href="#__codelineno-73-1"></a>explication
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Cette syntaxe a déjà été présentée. Ajoutons que la condition peut contenir une requête avec la syntaxe <b>WHERE</b> <i>expression opérateur (requête)</i></p></td></tr></table>
+
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-74-1" name="__codelineno-74-1" href="#__codelineno-74-1"></a>syntaxe2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>UPDATE</b> <i>table</i></p><p style="margin:0;"><b>SET</b> <i>(col1, col2, ..)= requête1</i>, <i>(cola, colb, ..)= requête2</i>, ...</p><p style="margin:0;"><b>WHERE</b> <i>condition</i></p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-75-1" name="__codelineno-75-1" href="#__codelineno-75-1"></a>explication
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Les valeurs affectées aux différentes colonnes peuvent provenir d&#x27;une requête.</p></td></tr></table>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner">
+
+      <div>
+        <a href="https://tahe.developpez.com" target="_blank">
+          https://tahe.developpez.com
+        </a>
+        <br>
+        Ce cours-tutoriel écrit par <strong>Serge Tahé</strong> est mis à disposition du public selon les termes de la
+        <em>Licence Creative Commons Attribution – Pas d’Utilisation Commerciale –
+        Partage dans les Mêmes Conditions 3.0 non transposé</em>.
+      </div>
+
+    </div>
+  </div>
+
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.indexes", "navigation.expand", "toc.integrate", "navigation.top"], "search": "assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="javascripts/focus.js"></script>
+      
+    
+  </body>
+</html>

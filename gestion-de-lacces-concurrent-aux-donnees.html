@@ -1,0 +1,1121 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Introduction au langage SQL avec le SGBD Firebird">
+      
+      
+        <meta name="author" content="Serge Tahé">
+      
+      
+        <link rel="canonical" href="https://stahe.github.io/sql-firebird-janv-2006/gestion-de-lacces-concurrent-aux-donnees.html">
+      
+      
+        <link rel="prev" href="approfondissement-du-langage-sql.html">
+      
+      
+        <link rel="next" href="installer-et-utiliser-un-pilote-odbc-pour-firebird.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>7. Gestion de l'accès concurrent aux données - Introduction au langage SQL avec le SGBD Firebird</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/focus.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EBZC3JVJNR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var siteName = "Introduction au langage SQL avec le SGBD Firebird";
+    gtag('config', 'G-EBZC3JVJNR', {
+        'page_title': siteName
+    });
+  </script>
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#7-gestion-de-lacces-concurrent-aux-donnees" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Introduction au langage SQL avec le SGBD Firebird" class="md-header__button md-logo" aria-label="Introduction au langage SQL avec le SGBD Firebird" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Introduction au langage SQL avec le SGBD Firebird
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              7. Gestion de l'accès concurrent aux données
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Passer au mode sombre"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Passer au mode sombre" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Passer au mode clair"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Passer au mode clair" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://stahe.github.io/sql-firebird-janv-2006" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Introduction au langage SQL avec le SGBD Firebird" class="md-nav__button md-logo" aria-label="Introduction au langage SQL avec le SGBD Firebird" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Introduction au langage SQL avec le SGBD Firebird
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://stahe.github.io/sql-firebird-janv-2006" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tutoriel-firebird.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Tutoriel Firebird
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-au-langage-sql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Introduction au langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="les-expressions-du-langage-sql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Les expressions du langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relations-entre-tables.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Relations entre tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="approfondissement-du-langage-sql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Approfondissement du langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Gestion de l'accès concurrent aux données
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="gestion-de-lacces-concurrent-aux-donnees.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Gestion de l'accès concurrent aux données
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#71-creation-dutilisateurs-firebird" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1. Création d&#x27;utilisateurs Firebird
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#72-accorder-des-droits-dacces-aux-utilisateurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2. Accorder des droits d&#x27;accès aux utilisateurs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#73-les-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3. Les transactions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.3. Les transactions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#731-niveaux-detancheite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3.1. Niveaux d&#x27;étanchéité
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#732-le-mode-snapshot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3.2. Le mode snapshot
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.3.2. Le mode snapshot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#7321-principe-de-la-lecture-coherente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3.2.1. Principe de la lecture cohérente
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7322-modification-simultanee-par-deux-transactions-dun-meme-objet-de-la-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3.2.2. Modification simultanée par deux transactions d&#x27;un même objet de la base
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7323-le-mode-repeatable-read" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3.2.3. Le mode Repeatable Read
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#733-le-mode-committed-read" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3.3. Le mode Committed Read
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="installer-et-utiliser-un-pilote-odbc-pour-firebird.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Installer et utiliser un pilote ODBC pour [Firebird]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="7-gestion-de-lacces-concurrent-aux-donnees">7. Gestion de l&#x27;accès concurrent aux données</h1>
+<p>Nous avons jusqu&#x27;à maintenant utilisé des tables dont nous étions les seuls utilisateurs. Dans la pratique, sur une machine multi-utilisateurs, les données sont le plus souvent partagées entre différents utilisateurs. Se pose alors la question : Qui peut utiliser telle ou telle table et sous quelle forme (consultation, insertion, suppression, ajout, ...) ?</p>
+<h2 id="71-creation-dutilisateurs-firebird">7.1. Création d&#x27;utilisateurs Firebird</h2>
+<p>Lorsque nous avons travaillé avec IB-Expert, nous nous sommes connectés en tant qu&#x27;utilisateur SYSDBA. On peut retrouver cette information dans les propriétés de la connexion ouverte au SGBD :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000015C0000019296125B1C.png" style="display:inline-block; margin:4px;width:7.37cm;height:8.511cm;" class="odt-zoomable" data-zoom-src="images/100000000000015C0000019296125B1C.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E9000000A7423AE975.png" style="display:inline-block; margin:4px;width:4.93cm;height:3.53cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E9000000A7423AE975.png" /></td></tr></table>
+
+<p>A droite, on voit que l&#x27;utilisateur connecté est [SYSDBA]. Ce qu&#x27;on ne voit pas c&#x27;est son mot de passe [masterkey]. [SYSDBA] est un utilisateur particulier de Firebird : il a tous les droits sur tous les objets gérés par le SGBD. On peut créer de nouveaux utilisateurs avec IBExpert avec l&#x27;option [Tools / User Manager] ou l&#x27;icône suivante :</p>
+<p><img src="images/100000000000008A0000005D9B410705.png" style="width:2.919cm;height:1.97cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000008A0000005D9B410705.png" /></p>
+<p>Nous obtenons la fenêtre de de gestion des utilisateurs :</p>
+<p><img src="images/1000000000000207000000E8DB4E2E45.png" style="width:10.991cm;height:4.911cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000207000000E8DB4E2E45.png" /></p>
+<p>Le bouton [Add] permet de créer de nouveaux utilisateurs :</p>
+<p><img src="images/10000000000000B700000085F8583085.png" style="width:3.87cm;height:2.82cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000B700000085F8583085.png" /></p>
+<p>Créons ainsi les utilisateurs suivants :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>nom</b></p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>mot de passe</b></p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">ADMIN1</p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">admin1</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">ADMIN2</p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">admin2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">SELECT1</p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">select1</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">SELECT2</p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">select2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">UPDATE1</p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">update1</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">UPDATE2</p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">update2</p></td></tr></table>
+
+<h2 id="72-accorder-des-droits-dacces-aux-utilisateurs">7.2. Accorder des droits d&#x27;accès aux utilisateurs</h2>
+<p>Une base appartient à celui qui l&#x27;a créée. Les bases que nous avons créées jusqu&#x27;à maintenant appartenaient à l&#x27;utilisateur [SYSDBA]. Pour illustrer la notion de droits, créons (Database / Create Database) une nouvelle base de données sous l&#x27;identité [ADMIN1, admin1] :</p>
+<p><img src="images/10000000000001F500000145D25B9213.png" style="width:10.599cm;height:6.879cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001F500000145D25B9213.png" /></p>
+<p>et enregistrons-la avec l&#x27;alias DBACCES (ADMIN1). L&#x27;utilisation d&#x27;alias permet d&#x27;ouvrir des connexions sur une même base en leur donnant des identifiants différents, ce qui permet de mieux les repérer dans l&#x27;explorateur de bases d&#x27;IBExpert. :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000001E5000000E133233BDB.png" style="display:inline-block; margin:4px;width:10.269cm;height:4.761cm;" class="odt-zoomable" data-zoom-src="images/10000000000001E5000000E133233BDB.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000D5000000F56D3B7495.png" style="display:inline-block; margin:4px;width:4.51cm;height:5.189cm;" class="odt-zoomable" data-zoom-src="images/10000000000000D5000000F56D3B7495.png" /></td></tr></table>
+
+<p>Créons maintenant les deux tables TA et TB suivantes :</p>
+<p><strong>Table TA</strong></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/1000000000000116000000341E315274.png" style="display:inline-block; margin:4px;width:5.881cm;height:1.101cm;" class="odt-zoomable" data-zoom-src="images/1000000000000116000000341E315274.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/1000000000000057000000463EF052AB.png" style="display:inline-block; margin:4px;width:1.84cm;height:1.48cm;" class="odt-zoomable" data-zoom-src="images/1000000000000057000000463EF052AB.png" /></td></tr></table>
+
+<p><strong>Table TB</strong></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000001170000003589A1C09D.png" style="display:inline-block; margin:4px;width:5.911cm;height:1.12cm;" class="odt-zoomable" data-zoom-src="images/10000000000001170000003589A1C09D.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000006100000047EE0118EB.png" style="display:inline-block; margin:4px;width:2.05cm;height:1.499cm;" class="odt-zoomable" data-zoom-src="images/100000000000006100000047EE0118EB.png" /></td></tr></table>
+
+<p>Ces tables n&#x27;ont pas de lien entre elles.</p>
+<p>Avec IB-Expert, créons une seconde connexion à la base [DBACCES], cette fois-ci sous le nom [ADMIN2 / admin2]. Nous utilisons pour cela l&#x27;option [Database / Register Database] :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/1000000000000130000000D5CA65170A.png" style="display:inline-block; margin:4px;width:6.429cm;height:4.51cm;" class="odt-zoomable" data-zoom-src="images/1000000000000130000000D5CA65170A.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000D100000105AF51EAFC.png" style="display:inline-block; margin:4px;width:4.42cm;height:5.519cm;" class="odt-zoomable" data-zoom-src="images/10000000000000D100000105AF51EAFC.png" /></td></tr></table>
+
+<p>Positionnons-nous sur DBACCES(ADMIN2) et ouvrons un éditeur SQL (Shift + F12) :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000028D000000C7A41D8116.png" style="display:inline-block; margin:4px;width:8.64cm;height:2.633cm;" class="odt-zoomable" data-zoom-src="images/100000000000028D000000C7A41D8116.png" /></td></tr></table>
+
+<p>Nous aurons l&#x27;occasion d&#x27;utiliser diverses connexions sur la même base [DBACCES]. Pour chacune d&#x27;entre-elles, nous aurons un éditeur SQL. En [1], l&#x27;éditeur SQL indique l&#x27;alias de la base connectée. Utilisez cette indication pour savoir dans quel éditeur SQL vous êtes. Cela va avoir son importance car nous allons créer des connexions qui n&#x27;auront pas les mêmes droits d&#x27;accès sur les objets de la base.</p>
+<p>Demandons le contenu de la table TA :</p>
+<p><img src="images/10000000000000E700000069D967D2BE.png" style="width:4.89cm;height:2.221cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000E700000069D967D2BE.png" /></p>
+<p>Nous obtenons le message d&#x27;erreur suivant :</p>
+<p><img src="images/100000000000017A0000008A0E627BB5.png" style="width:7.999cm;height:2.919cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000017A0000008A0E627BB5.png" /></p>
+<p>Que signifie-t-il ? La base [DBACCESS] a été créée par l&#x27;utilisateur [ADMIN1] et est donc sa propriété. Seul lui a accès aux différents objets de cette base. Il peut accorder des droits d&#x27;accès à d&#x27;autres utilisateurs avec la commande SQL GRANT. Celle-ci a diverses syntaxes. L&#x27;une d&#x27;elles est la suivante :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>syntaxe
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>GRANT</b> <i>privilège1, privilège2, ...</i>| <b>ALL PRIVILEGES</b></p><p style="margin:0;"><b>ON</b> <i>table/vue</i></p><p style="margin:0;"><b>TO</b> <i>utilisateur1, utilisateur2, ...</i>| <b>PUBLIC</b></p><p style="margin:0;"><b>[ WITH GRANT OPTION ]</b></p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>action
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">accorde des privilèges d&#x27;accès <i>privilègei</i> ou tous les privilèges (<b>ALL PRIVILEGES</b>) sur la <i>table</i> ou <i>vue</i> aux utilisateurs <i>utilisateuri</i> ou à tous les utilisateurs ( <b>PUBLIC</b> ). La clause <b>WITH GRANT OPTION</b> permet aux utilisateurs ayant reçu les privilèges de les transmettre à leur tour à d&#x27;autres utilisateurs.</p></td></tr></table>
+
+<p>Parmi les privilèges <em>privilègei</em> qui peuvent être accordés se trouvent les suivants :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>DELETE
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">droit d&#x27;utiliser la commande DELETE sur la table ou vue.</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>INSERT
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">droit d&#x27;utiliser la commande INSERT sur la table ou vue</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">SELECT</span>
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">droit d&#x27;utiliser la commande SELECT sur la table ou vue</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">UPDATE</span>
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">droit d&#x27;utiliser la commande UPDATE sur la table ou vue. Ce droit peut être restreint à certaines colonnes par la syntaxe : GRANT update <b>( col1, col2, ...) ON table/vue TO utilisateur1, utilisateur2, ...| </b><b>PUBLIC [ WITH GRANT OPTION ]</b></p></td></tr></table>
+
+<p>Donnons le droit à l&#x27;utilisateur [ADMIN2] le droit SELECT sur la table TA. Seul le propriétaire de la table peut donner ce droit, c.a.d. ici [ADMIN1]. Positionnons-nous sur la connexion DBACCES(ADMIN1) et ouvrons un nouvel éditeur SQL (Shift+F12) :</p>
+<p><img src="images/10000000000000EB00000065E195ADF8.png" style="width:4.971cm;height:2.14cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000EB00000065E195ADF8.png" /></p>
+<p>Par la suite, nous allons passer d&#x27;un éditeur SQL à l&#x27;autre. Pour s&#x27;y retrouver, on peut utiliser l&#x27;option [Windows] du menu :</p>
+<p><img src="images/10000000000001240000010D5AB6B6A2.png" style="width:6.181cm;height:5.69cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001240000010D5AB6B6A2.png" /></p>
+<p>Ci-dessus, on voit les deux éditeurs SQL, chacun associé à un utilisateur particulier. Revenons sur l&#x27;éditeur SQL(ADMIN1) et émettons la commande suivante :</p>
+<p><img src="images/100000000000014E0000006B06009F91.png" style="width:7.07cm;height:2.26cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000014E0000006B06009F91.png" /></p>
+<p>Puis validons-la par un COMMIT :</p>
+<p><img src="images/10000000000000ED0000006BF244E376.png" style="width:5.02cm;height:2.26cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000ED0000006BF244E376.png" /></p>
+<p>Ceci fait, passons dans l&#x27;éditeur de l&#x27;utilisateur ADMIN2 pour refaire le SELECT qui avait échoué :</p>
+<p><img src="images/10000000000000E700000069D967D2BE.png" style="width:4.89cm;height:2.221cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000E700000069D967D2BE.png" /></p>
+<p>Nous obtenons le message d&#x27;erreur suivant :</p>
+<p><img src="images/100000000000017A0000008A0E627BB5.png" style="width:7.999cm;height:2.919cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000017A0000008A0E627BB5.png" /></p>
+<p>L&#x27;utilisateur [ADMIN2] n&#x27;a toujours pas le droit de consulter la table [TA]. En fait, il semble que les droits d&#x27;un utilisateur soient chargés au moment où il se connecte. [ADMIN2] aurait alors toujours les mêmes droits qu&#x27;au début de sa connexion, c&#x27;est à dire aucun. Vérifions-le. Déconnectons l&#x27;utilisateur [ADMIN2] :</p>
+<ul>
+  <li>se placer sur sa connexion
+  </li>
+  <li>demander la déconnexion en cliquant droit sur la connexion et en prenant l&#x27;option [Deconnect from database] ou (Shift + Ctrl + D)
+  </li>
+</ul>
+
+<p><img src="images/1000000000000177000000EF979F69FC.png" style="width:7.939cm;height:5.061cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000177000000EF979F69FC.png" /></p>
+<p>Si un panneau demande un [COMMIT], faites le [COMMIT]. Puis reconnectons l&#x27;utilisateur [ADMIN2] en prenant l&#x27;option [Reconnect] ci-dessus. Ceci fait, revenons sur l&#x27;éditeur SQL (ADMIN2) et rejouons la requête SELECT qui a échoué :</p>
+<p><img src="images/10000000000000E700000069D967D2BE.png" style="width:4.89cm;height:2.221cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000E700000069D967D2BE.png" /></p>
+<p>On obtient alors le résultat suivant :</p>
+<p><img src="images/10000000000000E6000000AF1DF2E5CA.png" style="width:4.87cm;height:3.701cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000E6000000AF1DF2E5CA.png" /></p>
+<p>Cette fois-ci ADMIN2 peut consulter la table TA grâce au droit SELECT que lui a donné son propriétaire ADMIN1. Normalement c&#x27;est le seul droit qu&#x27;il a. Vérifions-le. Toujours dans l&#x27;éditeur SQL (ADMIN2) :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EC0000006D725B9F46.png" style="display:inline-block; margin:4px;width:5.001cm;height:2.311cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EC0000006D725B9F46.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000017A00000086FF19D22D.png" style="display:inline-block; margin:4px;width:7.999cm;height:2.84cm;" class="odt-zoomable" data-zoom-src="images/100000000000017A00000086FF19D22D.png" /></td></tr></table>
+
+<p>L&#x27;écran de droite montre que ADMIN2 n&#x27;a pas le droit DELETE sur la table TA.</p>
+<p>Revenons dans l&#x27;éditeur SQL(ADMIN1) pour donner davantage de droits à l&#x27;utilisateur ADMIN2. Nous émettons successivement les deux commandes suivantes :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000001D70000006B98218311.png" style="display:inline-block; margin:4px;width:8.804cm;height:1.998cm;" class="odt-zoomable" data-zoom-src="images/10000000000001D70000006B98218311.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EB0000006B3C15F66D.png" style="display:inline-block; margin:4px;width:6.218cm;height:2.831cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EB0000006B3C15F66D.png" /></td></tr></table>
+
+<ul>
+  <li>la première commande donne à l&#x27;utilisateur ADMIN2 tous les droits d&#x27;accès à la table [TA] avec de plus la possibilité d&#x27;accorder lui aussi des droits (WITH GRANT OPTION)
+  </li>
+  <li>la deuxième commande valide la précédente
+  </li>
+</ul>
+
+<p>Ceci fait, comme fait précédemment renouvelons la connexion de l&#x27;utilisateur [ADMIN2] (Deconnect / Reconnect) puis dans l&#x27;éditeur SQL(ADMIN2) tapons les commandes suivantes :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EB0000006DFFEDAC8B.png" style="display:inline-block; margin:4px;width:4.971cm;height:2.311cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EB0000006DFFEDAC8B.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EC000000697AB655A5.png" style="display:inline-block; margin:4px;width:5.001cm;height:2.221cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EC000000697AB655A5.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E9000000994A786CC8.png" style="display:inline-block; margin:4px;width:4.93cm;height:3.24cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E9000000994A786CC8.png" /></td></tr></table>
+
+<p>ADMIN2 a pu supprimer toutes les lignes de la table TA. Annulons cette suppression avec un ROLLBACK :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EF0000006BC3984876.png" style="display:inline-block; margin:4px;width:5.061cm;height:2.26cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EF0000006BC3984876.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EC000000697AB655A5.png" style="display:inline-block; margin:4px;width:5.001cm;height:2.221cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EC000000697AB655A5.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EB000000B610B6EC33.png" style="display:inline-block; margin:4px;width:4.971cm;height:3.851cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EB000000B610B6EC33.png" /></td></tr></table>
+
+<p>Vérifions que ADMIN2 peut à son tour donner des droits sur la table TA.</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000001110000006C56EF1671.png" style="display:inline-block; margin:4px;width:5.78cm;height:2.29cm;" class="odt-zoomable" data-zoom-src="images/10000000000001110000006C56EF1671.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EA000000686EB7E2EF.png" style="display:inline-block; margin:4px;width:4.949cm;height:2.2cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EA000000686EB7E2EF.png" /></td></tr></table>
+
+<p>Ouvrons maintenant une connexion sur la base [DBACCES] (Database / Register database) sous le nom [SELECT1 / select1], l&#x27;un des utilisateurs créés précédemment  puis double-cliquons sur le lien ainsi créé dans [Database Explorer] :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/1000000000000133000000D223426DC5.png" style="display:inline-block; margin:4px;width:6.5cm;height:4.45cm;" class="odt-zoomable" data-zoom-src="images/1000000000000133000000D223426DC5.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000D4000001192235BA8D.png" style="display:inline-block; margin:4px;width:4.491cm;height:5.95cm;" class="odt-zoomable" data-zoom-src="images/10000000000000D4000001192235BA8D.png" /></td></tr></table>
+
+<p>Positionnons-nous sur cette nouvelle connexion et ouvrons un nouvel éditeur SQL (Shift + F12) pour y taper les commandes suivantes :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000F100000069043A88B0.png" style="display:inline-block; margin:4px;width:5.099cm;height:2.221cm;" class="odt-zoomable" data-zoom-src="images/10000000000000F100000069043A88B0.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EF000000B4D9E3CC82.png" style="display:inline-block; margin:4px;width:5.061cm;height:3.81cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EF000000B4D9E3CC82.png" /></td></tr></table>
+
+<p>L&#x27;utilisateur SELECT1 a bien le droit SELECT sur la table TA. A-t-il la possibilité de transmettre ce droit à l&#x27;utilisateur SELECT2 ?</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000015B000000D4F9E9E162.png" style="display:inline-block; margin:4px;width:7.34cm;height:4.491cm;" class="odt-zoomable" data-zoom-src="images/100000000000015B000000D4F9E9E162.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;">&nbsp;</td></tr></table>
+
+<p>L&#x27;opération a échoué parce que l&#x27;utilisateur SELECT1 n&#x27;a pas reçu le droit de transmettre le droit SELECT qu&#x27;il a reçu de l&#x27;utilisateur ADMIN2. Il aurait fallu pour cela que l&#x27;utilisateur ADMIN2 utilise la clause WITH GRANT OPTION dans son ordre SQL GRANT. Les règles de transmission sont simples :</p>
+<ul>
+  <li>un utilisateur ne peut transmettre que les droits qu&#x27;il a reçus et pas plus
+  </li>
+  <li>il ne peut les transmettre que s&#x27;il les a reçus avec le privilège [WITH GRANT OPTION]
+  </li>
+</ul>
+
+<p>Un droit accordé peut être retiré avec l&#x27;ordre REVOKE :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>syntaxe
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>REVOKE</b> <i>privilège1, privilège2, ...</i>| <b>ALL PRIVILEGES</b></p><p style="margin:0;"><b>ON</b> <i>table/vue</i></p><p style="margin:0;"><b>FROM</b> <i>utilisateur1, utilisateur2, ...</i>| <b>PUBLIC</b></p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>action
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">supprime des privilèges d&#x27;accès <i>privilègei</i> ou tous les privilèges (<b>ALL PRIVILEGES</b>) sur la <i>table</i> ou <i>vue</i> aux utilisateurs <i>utilisateuri</i> ou à tous les utilisateurs ( <b>PUBLIC</b> ).</p></td></tr></table>
+
+<p>Essayons. Revenons dans l&#x27;éditeur SQL d&#x27;ADMIN2 pour enlever le droit SELECT que nous avons donné à l&#x27;utilisateur SELECT1 :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000001540000006EF0F0061B.png" style="display:inline-block; margin:4px;width:7.2cm;height:2.33cm;" class="odt-zoomable" data-zoom-src="images/10000000000001540000006EF0F0061B.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EC0000006E2B2FA137.png" style="display:inline-block; margin:4px;width:4.971cm;height:2.33cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EC0000006E2B2FA137.png" /></td></tr></table>
+
+<p>Déconnectons puis reconnectons la connexion de l&#x27;utilisateur SELECT1. Puis dans l&#x27;éditeur SQL (SELECT1) demandons le contenu de la table TA :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EE0000006C5C307E03.png" style="display:inline-block; margin:4px;width:5.039cm;height:2.29cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EE0000006C5C307E03.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000017B0000008878D48374.png" style="display:inline-block; margin:4px;width:8.02cm;height:2.88cm;" class="odt-zoomable" data-zoom-src="images/100000000000017B0000008878D48374.png" /></td></tr></table>
+
+<p>L&#x27;utilisateur SELECT1 a bien perdu son droit de lecture de la table TA. On notera que c&#x27;est ADMIN2 qui lui avait donné ce droit et c&#x27;est ADMIN2 qui le lui a retiré. Si ADMIN1 essaie de le lui retirer, aucune erreur n&#x27;est signalée mais on peut constater ensuite que SELECT1 a gardé son droit SELECT.</p>
+<p>Un droit peut être donné à tous avec la syntaxe : GRANT droit(s) ON table / vue TO <strong>PUBLIC</strong>. Donnons ainsi le droit SELECT sur la table TA à tous. On peut utiliser ADMIN1 ou ADMIN2 pour le faire. Nous utilisons ADMIN2 :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000010B000000695980CEF6.png" style="display:inline-block; margin:4px;width:5.65cm;height:2.221cm;" class="odt-zoomable" data-zoom-src="images/100000000000010B000000695980CEF6.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E80000006F8F6016BF.png" style="display:inline-block; margin:4px;width:4.911cm;height:2.35cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E80000006F8F6016BF.png" /></td></tr></table>
+
+<p>Créons une connexion sur la base avec l&#x27;utilisateur USER1 / user1 :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000012D000000D941A6E79B.png" style="display:inline-block; margin:4px;width:6.369cm;height:4.59cm;" class="odt-zoomable" data-zoom-src="images/100000000000012D000000D941A6E79B.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000DA00000098652A73B2.png" style="display:inline-block; margin:4px;width:4.611cm;height:3.221cm;" class="odt-zoomable" data-zoom-src="images/10000000000000DA00000098652A73B2.png" /></td></tr></table>
+
+<p>Avec la connexion DBACCES(USER1), ouvrons un nouvel éditeur SQL (Shift + F12) et tapons les commandes suivantes :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E60000006B00BEEFFE.png" style="display:inline-block; margin:4px;width:4.87cm;height:2.26cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E60000006B00BEEFFE.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E1000000B78A269E42.png" style="display:inline-block; margin:4px;width:4.761cm;height:3.87cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E1000000B78A269E42.png" /></td></tr></table>
+
+<p>L&#x27;utilisateur USER1 a bien le droit SELECT sur la table TA.</p>
+<h2 id="73-les-transactions">7.3. Les transactions</h2>
+<h3 id="731-niveaux-detancheite">7.3.1. Niveaux d&#x27;étanchéité</h3>
+<p>Nous quittons maintenant le problème des droits d&#x27;accès aux objets d&#x27;une base de données pour aborder celui des accès concurrents à ces objets. Deux utilisateurs ayant les droits d&#x27;accès suffisants à un objet de la base, une table par exemple, veulent l&#x27;utiliser en même temps. Que se passe-t-il ?</p>
+<p>Chaque utilisateur travaille au sein d&#x27;une transaction. Une transaction est une suite d&#x27;ordres SQL qui est exécutée de façon &quot;atomique&quot; : </p>
+<ul>
+  <li>soit toutes les opérations réussissent
+  </li>
+  <li>soit l&#x27;une d&#x27;elles échoue et alors toutes celles qui ont précédé sont annulées
+  </li>
+</ul>
+
+<p>Au final, les opérations d&#x27;une transaction ont soit toutes été appliquées avec succès soit aucune n&#x27;a été appliquée. Lorsque l&#x27;utilisateur a lui-même la maîtrise de la transaction (le cas dans tout ce document), il valide une transaction par un ordre COMMIT ou l&#x27;annule par un ordre ROLLBACK.</p>
+<p>Chaque utilisateur travaille dans une transaction qui lui appartient. On distingue habituellement quatre niveaux d&#x27;étanchéité entre les différents utilisateurs :</p>
+<ul>
+  <li>Uncommitted Read
+  </li>
+  <li>Committed Read
+  </li>
+  <li>Repeatable Read
+  </li>
+  <li>Serializable
+  </li>
+</ul>
+
+<p><strong>Uncommitted Read</strong></p>
+<p>Ce mode d&#x27;isolation est également appelé &quot;Dirty Read&quot;. Voici un exemple de ce qui se peut se passer dans ce mode :</p>
+<ol>
+  <li>un utilisateur U1 commence une transaction sur une table T
+  </li>
+  <li>un utilisateur U2 commence une transaction sur cette même table T
+  </li>
+  <li>l&#x27;utilisateur U1 modifie des lignes de la table T mais ne les valide pas encore
+  </li>
+  <li>l&#x27;utilisateur U2 &quot;voit&quot; ces modifications et prend des décisions à partir de ce qu&#x27;il voit
+  </li>
+  <li>l&#x27;utilisateur annule sa transaction par un ROLLBACK
+  </li>
+</ol>
+
+<p>On voit qu&#x27;en 4, l&#x27;utilisateur U2 a pris une décision à partir de données qui s&#x27;avèreront fausses ultérieurement.</p>
+<p><strong>Committed Read</strong></p>
+<p>Ce mode d&#x27;isolation évite l&#x27;écueil précédent. Dans ce mode, l&#x27;utilisateur U2 à l&#x27;étape 4 ne &quot;verra&quot; pas les modifications apportées par l&#x27;utilisateur U1 à la table T. Il ne les verra qu&#x27;après que U1 ait fait un COMMIT de sa transaction.</p>
+<p>Dans ce mode, également appelé &quot;Unrepeatable Read&quot;, on peut rencontrer les situations suivantes :</p>
+<ol>
+  <li>un utilisateur U1 commence une transaction sur une table T
+  </li>
+  <li>un utilisateur U2 commence une transaction sur cette même table T
+  </li>
+  <li>l&#x27;utilisateur U2 fait un SELECT pour obtenir la moyenne d&#x27;une colonne C des lignes de T vérifiant une certaine condition
+  </li>
+  <li>l&#x27;utilisateur U1 modifie (UPDATE) certaines valeurs de la colonne C de T et les valide (COMMIT)
+  </li>
+  <li>l&#x27;utilisateur U2 refait le même SELECT qu&#x27;en 3. Il découvrira que la moyenne de la colonne C a changé à cause des modifications faites par U1.
+  </li>
+</ol>
+
+<p>Maintenant l&#x27;utilisateur U2 ne voit que les modifications &quot;validées&quot; par U1. Mais alors qu&#x27;il reste dans la même transaction, deux opérations identiques 3 et 5 donnent des résultats différents. Le terme &quot;Unrepeatable Read&quot; désigne cette situation. C&#x27;est une situation ennuyeuse pour quelqu&#x27;un qui désire avoir une image stable de la table T.</p>
+<p><strong>Repeatable Read</strong></p>
+<p>Dans ce mode d&#x27;isolation, un utilisateur est assuré d&#x27;avoir les mêmes résultats pour ses lectures de la base tant qu&#x27;il reste dans la même transaction. Il travaille sur une photo sur laquelle ne sont jamais répercutées les modifications apportées par les autres transactions, mêmes validées. Il ne verra celles-ci que lorsque lui-même terminera sa transaction par un COMMIT ou ROLLBACK.</p>
+<p>Ce mode d&#x27;isolation n&#x27;est cependant pas encore parfait. Après l&#x27;opération 3 ci-dessus, les lignes consultées par l&#x27;utilisateur U2 sont verrouillées. Lors de l&#x27;opération 4, l&#x27;utilisateur U1 ne pourra pas modifier (UPDATE) les valeurs de la colonne C de ces lignes. Il peut cependant rajouter des lignes (INSERT). Si certaines des lignes ajoutées vérifient la condition testée en 3, l&#x27;opération 5 donnera une moyenne différente de celle trouvée en 3 à cause des lignes rajoutées.</p>
+<p>Pour résoudre ce nouveau problème, il faut passer en isolation &quot;Serializable&quot;.</p>
+<p><strong>Serializable</strong></p>
+<p>Dans ce mode d&#x27;isolation, les transactions sont complètement étanches les unes des autres. Il assure que le résultat de deux transactions menées simultanément donneront le même résultat que si elles étaient faites l&#x27;une après l&#x27;autre. Pour arriver à ce résultat, lors de l&#x27;opération 4 où l&#x27;utilisateur U1 veut ajouter des lignes qui changeraient le résultat du SELECT de l&#x27;utilisateur U1, il en sera empêché. Un message d&#x27;erreur lui indiquera que l&#x27;insertion n&#x27;est pas possible. Elle le deviendra lorsque l&#x27;utilisateur U2 aura validé sa transaction.</p>
+<p>Les quatres niveaux SQL d&#x27;isolation des transactions ne sont pas disponibles dans tous les SGBD. Firebird fournit les niveaux d&#x27;isolation suivants :</p>
+<ul>
+  <li><b>snapshot</b> : mode d&#x27;isolation par défaut. Correspond au mode &quot;Repeatable Read&quot; du standard SQL.
+  </li>
+  <li><b>committed read</b> :  correspond au mode &quot;<b>committed read</b>&quot; du standard SQL
+  </li>
+</ul>
+
+<p>Ce niveau d&#x27;isolation est fixé par la commande SET TRANSACTION :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>syntaxe
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">SET TRANSACTION</p><p style="margin:0;">[<u>READ WRITE</u> | READ ONLY]</p><p style="margin:0;">[<u>WAIT</u>|NOWAIT] </p><p style="margin:0;">ISOLATION LEVEL [<u>SNAPSHOT</u> | READ COMMITTED]</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>fonctionnement
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">les mots clés soulignés sont les valeurs par défaut</p><p style="margin:0;">READ WRITE : la transaction peut lire et écrire</p><p style="margin:0;">READ ONLY : la transaction ne peut que lire</p><p style="margin:0;">WAIT : en cas de conflit entre deux transactions, celle qui n&#x27;a pu faire son opération attend que l&#x27;autre transaction soit validée. Elle ne peut plus émettre d&#x27;ordres SQL.</p><p style="margin:0;">NOWAIT : la transaction qui n&#x27;a pu faire son opération n&#x27;est pas bloquée. Elle reçoit un message d&#x27;erreur et elle peut continuer à travailler.</p><p style="margin:0;">ISOLATION LEVEL [<u>SNAPSHOT</u> | READ COMMITTED] : niveau d&#x27;isolation</p></td></tr></table>
+
+<p>Essayons. Dans l&#x27;éditeur SQL(ADMIN1) on tape la commande SQL suivante :</p>
+<p><img src="images/10000000000001EC000000BDD870A5C8.png" style="width:10.41cm;height:4.001cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001EC000000BDD870A5C8.png" /></p>
+<p>On voit qu&#x27;elle n&#x27;a pas été autorisée. On ne sait pourquoi... </p>
+<p>IB-Expert permet de fixer d&#x27;une autre façon le mode d&#x27;isolation. Cliquons droit sur la connexion DBACCES(ADMIN1) pour prendre l&#x27;option [Database Registration Info] :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000016A0000015D0BF1E0D0.png" style="display:inline-block; margin:4px;width:6.699cm;height:6.459cm;" class="odt-zoomable" data-zoom-src="images/100000000000016A0000015D0BF1E0D0.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000026F00000176ABC54C0F.png" style="display:inline-block; margin:4px;width:9.89cm;height:5.941cm;" class="odt-zoomable" data-zoom-src="images/100000000000026F00000176ABC54C0F.png" /></td></tr></table>
+
+<p>L&#x27;écran de droite montre la présence d&#x27;une option [Transactions]. Elle va nous permettre de fixer le niveau d&#x27;isolation des transactions. Nous le fixons ici à [snapshot]. Nous faisons de même avec la connexion DBACCES(ADMIN2).</p>
+<h3 id="732-le-mode-snapshot">7.3.2. Le mode snapshot</h3>
+<p>Examinons le niveau d&#x27;isolation <em>snapshot</em> qui est le mode d&#x27;isolation par défaut de Firebird. Lorsque l&#x27;utilisateur commence une transaction, une photo est prise de la base. L&#x27;utilisateur va alors travailler sur cette photo. Chaque utilisateur travaille ainsi sur une photo de la base qui lui est propre. S&#x27;il apporte des modifications à celle-ci, les autres utilisateurs ne les voient pas. Ils ne les verront que lorsque l&#x27;utilisateur les ayant faites les aura validées par un COMMIT.</p>
+<p>On peut considérer deux cas :</p>
+<ul>
+  <li>un utilisateur lit la table (select) pendant qu&#x27;un autre est en train de la modifier (insert, update, delete)
+  </li>
+  <li>les deux utilisateurs veulent modifier la table en même temps
+  </li>
+</ul>
+
+<h4 id="7321-principe-de-la-lecture-coherente">7.3.2.1. Principe de la lecture cohérente</h4>
+<p>Soient deux utilisateurs <em>U1</em> et <em>U2</em> travaillant sur la même table <em>TAB</em> :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>      --------+----------+--------+-------+----------------------
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>              T1a       T2a      T1b     T2b 
+</code></pre></div>
+<p>La transaction de l&#x27;utilisateur <em>U1</em> commence au temps <em>T1a</em> et finit au temps <em>T1b</em>.</p>
+<p>La transaction de l&#x27;utilisateur <em>U2</em> commence au temps <em>T2a</em> et finit au temps <em>T2b</em>.</p>
+<p><em>U1</em> travaille sur une photo de <em>TAB</em> prise au temps <em>T1a</em>. Entre <em>T1a</em> et <em>T1b</em>, il modifie <em>TAB</em>. Les autres utilisateurs n&#x27;auront accès à ces modifications qu&#x27;au temps <em>T1b</em>, lorsque <em>U1</em> fera un <em>COMMIT</em>.</p>
+<p><em>U2</em> travaille sur une photo de <em>TAB</em> prise au temps <em>T2a</em>, donc la même photo qu&#x27;utilisée par <em>U1</em> (si d&#x27;autres utilisateurs n&#x27;ont pas modifié l&#x27;original entre-temps). Il ne &quot;voit&quot; pas les modifications qu&#x27;a pu apporter l&#x27;utilisateur <em>U1</em> sur <em>TAB</em>. Il ne pourra les voir qu&#x27;au temps <em>T1b</em>.</p>
+<p>Illustrons ce point sur notre base [DBACCES]. Nous allons faire travailler simultanément les deux utilisateurs [ADMIN1] et [ADMIN2]. Plaçons-nous sur la connexion DBACCES(ADMIN1) et dans l&#x27;éditeur SQL d&#x27;ADMIN1, faisons les opérations suivantes :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000014C000000669F52CCE0.png" style="display:inline-block; margin:4px;width:6.151cm;height:1.891cm;" class="odt-zoomable" data-zoom-src="images/100000000000014C000000669F52CCE0.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EC0000006A96730CB3.png" style="display:inline-block; margin:4px;width:5.001cm;height:2.24cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EC0000006A96730CB3.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EB000000B392414DC8.png" style="display:inline-block; margin:4px;width:4.971cm;height:3.791cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EB000000B392414DC8.png" /></td></tr></table>
+
+<p>ADMIN1 a modifié la ligne n° 2 de la table TA mais n&#x27;a pas encore validé (COMMIT) son opération. L&#x27;utilisateur ADMIN2 fait alors un SELECT sur la table TA (on passe dans l&#x27;éditeur SQL d&#x27;ADMIN2). Nous sommes avant le temps T2a de l&#x27;exemple.</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E90000006EEB11B30B.png" style="display:inline-block; margin:4px;width:4.93cm;height:2.33cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E90000006EEB11B30B.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E9000000B8DBBAC628.png" style="display:inline-block; margin:4px;width:4.93cm;height:3.889cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E9000000B8DBBAC628.png" /></td></tr></table>
+
+<p>Retour dans l&#x27;éditeur SQL d&#x27;ADMIN1 qui valide son ajout :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E80000006CA52AA273.png" style="display:inline-block; margin:4px;width:4.911cm;height:2.29cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E80000006CA52AA273.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;">&nbsp;</td></tr></table>
+
+<p>Retour dans l&#x27;éditeur SQL d&#x27;ADMIN2 pour refaire le SELECT :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E90000006EEB11B30B.png" style="display:inline-block; margin:4px;width:4.93cm;height:2.33cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E90000006EEB11B30B.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E8000000B64E181B3C.png" style="display:inline-block; margin:4px;width:4.93cm;height:3.851cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E8000000B64E181B3C.png" /></td></tr></table>
+
+<p>ADMIN2 voit les modifications apportées par ADMIN1. Dans le mode snapshot, une transaction ne voit pas les modifications apportées par les autres transactions tant que ces dernières ne sont pas terminées.</p>
+<h4 id="7322-modification-simultanee-par-deux-transactions-dun-meme-objet-de-la-base">7.3.2.2. Modification simultanée par deux transactions d&#x27;un même objet de la base</h4>
+<p>Prenons un exemple en comptabilité : <em>U1</em> et <em>U2</em> travaillent sur des comptes. <em>U1</em> débite <em>comptex</em> d&#x27;une somme S et crédite <em>comptey</em> de la même somme. Il va le faire en plusieurs étapes : </p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>      --------+----------+--------+-------+----------------------
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>              T1a       T1b     T1c      T1d 
+</code></pre></div>
+<p><em>U1</em> démarre une transaction au temps T1a, débite <em>comptex</em> au temps T1b, crédite <em>comptey</em> au temps T1c et valide les deux opérations au temps T1d. Supposons par ailleurs que <em>U2</em> veuille faire la même chose, commence sa transaction au temps <em>T2a</em> et la termine au temps T2d selon le schéma suivant :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>      --------+----------+----+----+-------+------+-----+-------+---------
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>              T1a       T1b  T2a   T1c     T2b   T1d   T2c    T2d
+</code></pre></div>
+<p>Au temps <em>T2</em>, une photo de la table des comptes est prise pour <em>U2</em>. Elle est cohérente d&#x27;après le principe du <em>snapshot</em>. U2 voit l&#x27;état initial des comptes <em>comptex</em> et <em>comptey</em> car U1 n&#x27;a pas encore validé ses opérations.</p>
+<p>Supposons que <em>comptex</em> ait un solde initial de 1000 € et que chacun des utilisateurs U1 et U2 veuillent le débiter de 100 €. </p>
+<ul>
+  <li>au temps T1b, U1 décrémente <i>comptex</i> de 100 € et le passe donc à 90 €. Cette opération ne sera validée qu&#x27;au temps T1d.
+  </li>
+  <li>au temps  T2b, U2 voit <i>comptex</i> avec 1000 € (principe de lecture cohérente) et le décrémente de 100 € et le passe donc à 90 €.
+  </li>
+  <li>au final, au temps T2d lorsque tout aura été validé, <i>comptex</i> aura un solde de 90 € au lieu des 80 € attendus.
+  </li>
+</ul>
+
+<p>La solution à ce problème est d&#x27;empêcher U2 de modifier <em>comptex</em> tant que U1 n&#x27;a pas terminé sa transaction. U2 sera ainsi bloqué jusqu&#x27;au temps T1d. Le mode <em>snapshot</em> fournit ce mécanisme.</p>
+<p>Illustrons-le avec la base DBACCES. ADMIN1 commence une transaction dans son éditeur SQL(ADMIN1) :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E70000006CE91A4566.png" style="display:inline-block; margin:4px;width:4.302cm;height:2.011cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E70000006CE91A4566.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000F20000006C08A62D8A.png" style="display:inline-block; margin:4px;width:4.3cm;height:1.919cm;" class="odt-zoomable" data-zoom-src="images/10000000000000F20000006C08A62D8A.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EB0000006800CD4906.png" style="display:inline-block; margin:4px;width:4.302cm;height:1.903cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EB0000006800CD4906.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EA000000B05234A68B.png" style="display:inline-block; margin:4px;width:4.307cm;height:3.239cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EA000000B05234A68B.png" /></td></tr></table>
+
+<p>Nous avons commencé par faire un COMMIT pour être sûrs de démarrer une nouvelle transaction. Puis nous avons supprimé la ligne n° 4. La transaction n&#x27;a pas encore été validée.</p>
+<p>ADMIN2 commence à son tour une transaction dans son éditeur SQL(ADMIN2) :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E90000006C61230648.png" style="display:inline-block; margin:4px;width:4.304cm;height:1.993cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E90000006C61230648.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/1000000000000157000000F26D0BA296.png" style="display:inline-block; margin:4px;width:7.26cm;height:5.121cm;" class="odt-zoomable" data-zoom-src="images/1000000000000157000000F26D0BA296.png" /></td></tr></table>
+
+<p>L&#x27;écran de droite montre que ADMIN2 a voulu modifier la ligne n° 4. On lui a répondu que ce n&#x27;était pas possible parce que quelqu&#x27;un d&#x27;autre l&#x27;avait déjà modifiée mais pas encore validé cette modification.</p>
+<p>Revenons dans l&#x27;éditeur SQL(ADMIN1) pour faire le COMMIT :</p>
+<p><img src="images/10000000000000EA00000068970DFC77.png" style="width:6.191cm;height:2.752cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000EA00000068970DFC77.png" /></p>
+<p>Revenons dans l&#x27;éditeur SQL(ADMIN2) pour rejouer la commande UPDATE :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000014A000000664351B1ED.png" style="display:inline-block; margin:4px;width:6.99cm;height:2.161cm;" class="odt-zoomable" data-zoom-src="images/100000000000014A000000664351B1ED.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000ED0000006EB553DEF2.png" style="display:inline-block; margin:4px;width:5.02cm;height:2.33cm;" class="odt-zoomable" data-zoom-src="images/10000000000000ED0000006EB553DEF2.png" /></td></tr></table>
+
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EB000000B32400DCFA.png" style="display:inline-block; margin:4px;width:4.971cm;height:3.791cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EB000000B32400DCFA.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EE0000006FAFD9E9F9.png" style="display:inline-block; margin:4px;width:5.039cm;height:2.35cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EE0000006FAFD9E9F9.png" /></td></tr></table>
+
+<p>L&#x27;opération UPDATE se passe bien alors même que la ligne n° 4 n&#x27;existe plus comme le montre le SELECT qui suit. C&#x27;est à ce moment qu&#x27;ADMIN2 découvre que la ligne n&#x27;existe plus.</p>
+<h4 id="7323-le-mode-repeatable-read">7.3.2.3. Le mode Repeatable Read</h4>
+<p>Illustrons maintenant le mode &quot;Repeatable Read&quot;. Ce niveau d&#x27;isolation est fourni par le mode &quot;snapshot&quot;. Il assure à une transaction d&#x27;obtenir toujours le même résultat lors de la lecture de la base.</p>
+<p>Commençons par travailler avec l&#x27;éditeur SQL d&#x27;ADMIN2 :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E900000067526D557E.png" style="display:inline-block; margin:4px;width:4.93cm;height:2.18cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E900000067526D557E.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EA0000006DC025DF7D.png" style="display:inline-block; margin:4px;width:4.949cm;height:2.311cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EA0000006DC025DF7D.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EC000000BB05C5D76F.png" style="display:inline-block; margin:4px;width:5.805cm;height:4.598cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EC000000BB05C5D76F.png" /></td></tr></table>
+
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000014B000000671BAD6022.png" style="display:inline-block; margin:4px;width:6.13cm;height:1.91cm;" class="odt-zoomable" data-zoom-src="images/100000000000014B000000671BAD6022.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E80000009668FC9466.png" style="display:inline-block; margin:4px;width:4.3cm;height:2.78cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E80000009668FC9466.png" /></td></tr></table>
+
+<p>Passons maintenant à l&#x27;éditeur SQL d&#x27;ADMIN1 :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EE00000066E59EAE50.png" style="display:inline-block; margin:4px;width:5.805cm;height:2.487cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EE00000066E59EAE50.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EA0000006C1936C0FE.png" style="display:inline-block; margin:4px;width:4.949cm;height:2.29cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EA0000006C1936C0FE.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EB000000BB8EB368DF.png" style="display:inline-block; margin:4px;width:4.971cm;height:3.96cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EB000000BB8EB368DF.png" /></td></tr></table>
+
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000016E0000006C8F3727E0.png" style="display:inline-block; margin:4px;width:5.805cm;height:1.709cm;" class="odt-zoomable" data-zoom-src="images/100000000000016E0000006C8F3727E0.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000017F0000006A898160FA.png" style="display:inline-block; margin:4px;width:6.08cm;height:1.679cm;" class="odt-zoomable" data-zoom-src="images/100000000000017F0000006A898160FA.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EE00000068A72607CC.png" style="display:inline-block; margin:4px;width:3.78cm;height:1.649cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EE00000068A72607CC.png" /></td></tr></table>
+
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000ED000000D5184992A2.png" style="display:inline-block; margin:4px;width:5.02cm;height:4.51cm;" class="odt-zoomable" data-zoom-src="images/10000000000000ED000000D5184992A2.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E90000006B744A75D9.png" style="display:inline-block; margin:4px;width:4.93cm;height:2.26cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E90000006B744A75D9.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;">&nbsp;</td></tr></table>
+
+<p>L&#x27;utilisateur ADMIN1 a ajouté deux lignes et validé sa transaction. Revenons maintenant sur l&#x27;éditeur SQL(ADMIN2) pour rejouer le SELECT SUM :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000014A00000063188CC515.png" style="display:inline-block; margin:4px;width:6.99cm;height:2.101cm;" class="odt-zoomable" data-zoom-src="images/100000000000014A00000063188CC515.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EE00000096E214CEAF.png" style="display:inline-block; margin:4px;width:5.039cm;height:3.18cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EE00000096E214CEAF.png" /></td></tr></table>
+
+<p>On voit qu&#x27;ADMIN2 ne voit pas les ajouts de lignes d&#x27;ADMIN1 bien qu&#x27;elles aient été validées par un COMMIT. Le SELECT SUM donne le même résultat qu&#x27;avant les ajouts. C&#x27;est le principe du Repeatable Read.</p>
+<p>Maintenant, toujours dans l&#x27;éditeur SQL (ADMIN2), validons la transaction par un COMMIT puis rejouons le SELECT SUM :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EB0000006FF3AD4208.png" style="display:inline-block; margin:4px;width:4.971cm;height:2.35cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EB0000006FF3AD4208.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000014B00000068F5D7B36D.png" style="display:inline-block; margin:4px;width:7.01cm;height:2.2cm;" class="odt-zoomable" data-zoom-src="images/100000000000014B00000068F5D7B36D.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EB00000093506B2531.png" style="display:inline-block; margin:4px;width:5.108cm;height:3.194cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EB00000093506B2531.png" /></td></tr></table>
+
+<p>Les lignes ajoutées par ADMIN1 sont désormais prises en compte.</p>
+<h3 id="733-le-mode-committed-read">7.3.3. Le mode Committed Read</h3>
+<p>Illustrons maintenant le mode &quot;Committed Read&quot;. Ce niveau d&#x27;isolation est analogue à celui du <em>snapshot</em> sauf en ce qui concerne le &quot;Repeatable Read&quot;.</p>
+<p>Nous commençons par changer le niveau d&#x27;isolation des transactions des deux connexions. </p>
+<ul>
+  <li>nous déconnectons les deux utilisateurs ADMIN1 et ADMIN2
+  </li>
+  <li>nous changeons le niveau d&#x27;isolation de leurs transactions
+  </li>
+</ul>
+
+<p><img src="images/1000000000000281000001816F7FD83A.png" style="width:13.57cm;height:8.149cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000281000001816F7FD83A.png" /></p>
+<ul>
+  <li>nous reconnectons les utilisateurs ADMIN1 et ADMIN2
+  </li>
+</ul>
+
+<p>Nous reprenons maintenant l&#x27;exemple précédent qui illustrait le &quot;Repeatable Read&quot; afin de montrer que nous n&#x27;avons plus le même comportement. Commençons par travailler avec l&#x27;éditeur SQL d&#x27;ADMIN2 :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E900000067526D557E.png" style="display:inline-block; margin:4px;width:4.93cm;height:2.18cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E900000067526D557E.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EA0000006DC025DF7D.png" style="display:inline-block; margin:4px;width:4.949cm;height:2.311cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EA0000006DC025DF7D.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EC000000BB05C5D76F.png" style="display:inline-block; margin:4px;width:5.805cm;height:4.598cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EC000000BB05C5D76F.png" /></td></tr></table>
+
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000014B000000671BAD6022.png" style="display:inline-block; margin:4px;width:6.13cm;height:1.91cm;" class="odt-zoomable" data-zoom-src="images/100000000000014B000000671BAD6022.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E80000009668FC9466.png" style="display:inline-block; margin:4px;width:4.3cm;height:2.78cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E80000009668FC9466.png" /></td></tr></table>
+
+<p>Passons maintenant à l&#x27;éditeur SQL d&#x27;ADMIN1 :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EE00000066E59EAE50.png" style="display:inline-block; margin:4px;width:5.805cm;height:2.487cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EE00000066E59EAE50.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EA0000006C1936C0FE.png" style="display:inline-block; margin:4px;width:4.949cm;height:2.29cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EA0000006C1936C0FE.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EB000000BB8EB368DF.png" style="display:inline-block; margin:4px;width:4.971cm;height:3.96cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EB000000BB8EB368DF.png" /></td></tr></table>
+
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000016E0000006C8F3727E0.png" style="display:inline-block; margin:4px;width:5.805cm;height:1.709cm;" class="odt-zoomable" data-zoom-src="images/100000000000016E0000006C8F3727E0.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000017F0000006A898160FA.png" style="display:inline-block; margin:4px;width:6.08cm;height:1.679cm;" class="odt-zoomable" data-zoom-src="images/100000000000017F0000006A898160FA.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EE00000068A72607CC.png" style="display:inline-block; margin:4px;width:3.78cm;height:1.649cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EE00000068A72607CC.png" /></td></tr></table>
+
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000ED000000D5184992A2.png" style="display:inline-block; margin:4px;width:5.02cm;height:4.51cm;" class="odt-zoomable" data-zoom-src="images/10000000000000ED000000D5184992A2.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000E90000006B744A75D9.png" style="display:inline-block; margin:4px;width:4.93cm;height:2.26cm;" class="odt-zoomable" data-zoom-src="images/10000000000000E90000006B744A75D9.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;">&nbsp;</td></tr></table>
+
+<p>L&#x27;utilisateur ADMIN1 a ajouté deux lignes et validé sa transaction. Revenons maintenant sur l&#x27;éditeur SQL(ADMIN2) pour rejouer le SELECT SUM :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000014A00000063188CC515.png" style="display:inline-block; margin:4px;width:6.99cm;height:2.101cm;" class="odt-zoomable" data-zoom-src="images/100000000000014A00000063188CC515.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000EC0000009308CA65D3.png" style="display:inline-block; margin:4px;width:5.001cm;height:3.11cm;" class="odt-zoomable" data-zoom-src="images/10000000000000EC0000009308CA65D3.png" /></td></tr></table>
+
+<p>Le SELECT SUM ne donne pas le même résultat qu&#x27;avant les ajouts faits par ADMIN1. C&#x27;est la différence entre les modes <strong>snapshot</strong> et <strong>read committed</strong>.</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner">
+
+      <div>
+        <a href="https://tahe.developpez.com" target="_blank">
+          https://tahe.developpez.com
+        </a>
+        <br>
+        Ce cours-tutoriel écrit par <strong>Serge Tahé</strong> est mis à disposition du public selon les termes de la
+        <em>Licence Creative Commons Attribution – Pas d’Utilisation Commerciale –
+        Partage dans les Mêmes Conditions 3.0 non transposé</em>.
+      </div>
+
+    </div>
+  </div>
+
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.indexes", "navigation.expand", "toc.integrate", "navigation.top"], "search": "assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="javascripts/focus.js"></script>
+      
+    
+  </body>
+</html>

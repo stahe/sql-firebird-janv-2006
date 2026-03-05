@@ -1,0 +1,1267 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Introduction au langage SQL avec le SGBD Firebird">
+      
+      
+        <meta name="author" content="Serge Tahé">
+      
+      
+        <link rel="canonical" href="https://stahe.github.io/sql-firebird-janv-2006/les-expressions-du-langage-sql.html">
+      
+      
+        <link rel="prev" href="introduction-au-langage-sql.html">
+      
+      
+        <link rel="next" href="relations-entre-tables.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>4. Les expressions du langage SQL - Introduction au langage SQL avec le SGBD Firebird</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/focus.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EBZC3JVJNR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var siteName = "Introduction au langage SQL avec le SGBD Firebird";
+    gtag('config', 'G-EBZC3JVJNR', {
+        'page_title': siteName
+    });
+  </script>
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#4-les-expressions-du-langage-sql" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Introduction au langage SQL avec le SGBD Firebird" class="md-header__button md-logo" aria-label="Introduction au langage SQL avec le SGBD Firebird" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Introduction au langage SQL avec le SGBD Firebird
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              4. Les expressions du langage SQL
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Passer au mode sombre"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Passer au mode sombre" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Passer au mode clair"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Passer au mode clair" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://stahe.github.io/sql-firebird-janv-2006" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Introduction au langage SQL avec le SGBD Firebird" class="md-nav__button md-logo" aria-label="Introduction au langage SQL avec le SGBD Firebird" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Introduction au langage SQL avec le SGBD Firebird
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://stahe.github.io/sql-firebird-janv-2006" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tutoriel-firebird.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Tutoriel Firebird
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-au-langage-sql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Introduction au langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Les expressions du langage SQL
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="les-expressions-du-langage-sql.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Les expressions du langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#41-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1. Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#42-expressions-avec-operateur" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2. Expressions avec opérateur
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2. Expressions avec opérateur">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#421-les-expressions-a-operandes-de-type-numerique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2.1. Les expressions à opérandes de type numérique
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2.1. Les expressions à opérandes de type numérique">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4211-liste-des-operateurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2.1.1. Liste des opérateurs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4212-operateurs-relationnels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2.1.2. Opérateurs relationnels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4213-operateurs-arithmetiques" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2.1.3. Opérateurs arithmétiques
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#422-les-expressions-a-operandes-de-type-caracteres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2.2. Les expressions à opérandes de type caractères
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2.2. Les expressions à opérandes de type caractères">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4221-liste-des-operateurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2.2.1. Liste des opérateurs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4222-operateurs-relationnels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2.2.2. Opérateurs relationnels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4223-comparaison-de-deux-chaines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2.2.3. Comparaison de deux chaînes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4224-loperateur-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2.2.4. L&#x27;opérateur LIKE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4225-loperateur-de-concatenation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2.2.5. L&#x27;opérateur de concaténation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#423-les-expressions-a-operandes-de-type-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2.3. Les expressions à opérandes de type date
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#424-expressions-a-operandes-booleens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2.4. Expressions à opérandes booléens
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#43-les-fonctions-predefinies-de-firebird" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3. Les fonctions prédéfinies de Firebird
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3. Les fonctions prédéfinies de Firebird">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#431-fonctions-a-parametres-de-type-numerique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3.1. Fonctions à paramètres de type numérique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#432-fonctions-a-parametres-de-type-chaine-de-caracteres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3.2. Fonctions à paramètres de type chaîne de caractères
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relations-entre-tables.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Relations entre tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="approfondissement-du-langage-sql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Approfondissement du langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gestion-de-lacces-concurrent-aux-donnees.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Gestion de l'accès concurrent aux données
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="installer-et-utiliser-un-pilote-odbc-pour-firebird.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Installer et utiliser un pilote ODBC pour [Firebird]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="4-les-expressions-du-langage-sql">4. Les expressions du langage SQL</h1>
+<h2 id="41-introduction">4.1. Introduction</h2>
+<p>Dans la plupart des commandes SQL, il est possible d&#x27;utiliser une expression. Prenons par exemple la commande SELECT :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>syntaxe
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>SELECT</b> <i>expr1, expr2,</i> ... <b>from</b> <i>table</i></p><p style="margin:0;"><b>WHERE</b> <i>expression</i></p></td></tr></table>
+
+<p>SELECT sélectionne les lignes pour lesquelles <em>expression</em> est vraie et affiche pour chacune d&#x27;elles les valeurs de <em>expri</em>.</p>
+<p><strong>Exemples</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">prix</span><span class="o">*</span><span class="mi">1</span><span class="p">.</span><span class="mi">186</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">prix</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="mi">150</span>
+</code></pre></div>
+<p>Nous nous proposons dans ce paragraphe d&#x27;expliciter la notion d&#x27;expression. Une expression élémentaire est du type : </p>
+<p><strong>opérande1</strong> <em>opérateur</em> <strong>opérande2</strong></p>
+<div class="highlight"><pre><span></span><code>ou
+</code></pre></div>
+<p><strong>fonction</strong>(<em>paramètres</em>)</p>
+<p><strong>Exemple</strong></p>
+<p>Dans l&#x27;expression   <em>GENRE = &#x27;ROMAN&#x27;</em> </p>
+<ul>
+  <li>GENRE    est l&#x27;opérande1
+  </li>
+  <li>&#x27;ROMAN&#x27; est l&#x27;opérande2
+  </li>
+  <li>= est l&#x27;opérateur
+  </li>
+</ul>
+
+<p>Dans l&#x27;expression <strong>upper</strong><em>(genre)</em> </p>
+<ul>
+  <li><b>upper</b> est une fonction
+  </li>
+  <li>genre est un paramètre de cette fonction.
+  </li>
+</ul>
+
+<p>Nous traitons tout d&#x27;abord des expressions avec opérateurs, puis nous présenterons les fonctions disponibles sous Firebird. </p>
+<h2 id="42-expressions-avec-operateur">4.2. Expressions avec opérateur</h2>
+<p>Nous classifierons les expressions avec opérateur suivant le type de leurs opérandes :</p>
+<ul>
+  <li>numérique
+  </li>
+  <li>chaîne de caractères
+  </li>
+  <li>date
+  </li>
+  <li>booléen ou logique
+  </li>
+</ul>
+
+<h3 id="421-les-expressions-a-operandes-de-type-numerique">4.2.1. Les expressions à opérandes de type numérique</h3>
+<h4 id="4211-liste-des-operateurs">4.2.1.1. Liste des opérateurs</h4>
+<p>Soient <em>nombre1</em>, <em>nombre2</em>, <em>nombre3</em> des nombres. Les opérateurs utilisables sont les suivants :</p>
+<p>Opérateurs relationnels</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>nombre1 &gt; nombre2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: nombre1 plus grand que nombre2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>nombre1 &gt;= nombre2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: nombre1 plus grand ou égal à nombre2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>nombre1 &lt; nombre2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: nombre1 plus petit que nombre2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>nombre1 &lt;= nombre2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: nombre1 plus petit ou égal à nombre2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>nombre1 = nombre2 
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: nombre1 égal à nombre2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>nombre1 != nombre2 
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: nombre1 différent de nombre2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>nombre1 &lt;&gt; nombre2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: idem</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>nombre1 BETWEEN nombre2 AND nombre3
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: nombre1 dans l&#x27;intervalle [nombre2,nombre3]</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>nombre1 IN (liste de nombres)
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: nombre1 appartient à liste de nombres</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>nombre1 IS NULL
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: nombre1 n&#x27;a pas de valeur</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>nombre1 IS NOT NULL
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: nombre1 a une valeur</p></td></tr></table>
+
+<p><strong>Opérateurs arithmétiques</strong></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>nombre1 + nombre2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: addition</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>nombre1 - nombre2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: soustraction</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>nombre1 * nombre2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: multiplication</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>nombre1 / nombre2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: division</p></td></tr></table>
+
+<h4 id="4212-operateurs-relationnels">4.2.1.2. Opérateurs relationnels</h4>
+<p>Une expression relationnelle exprime une relation qui est vraie ou fausse. Le résultat d&#x27;une telle expression est donc un booléen ou valeur logique.</p>
+<p><strong>Exemples</strong> :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="p">,</span><span class="n">prix</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">prix</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="mi">150</span>
+</code></pre></div>
+<p><img src="images/1000000000000088000000340447F341.png" style="width:2.879cm;height:1.099cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000088000000340447F341.png" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="p">,</span><span class="n">prix</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">prix</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="mi">150</span>
+</code></pre></div>
+<p><img src="images/10000000000000A700000089774425EA.png" style="width:3.528cm;height:2.898cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000A700000089774425EA.png" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="p">,</span><span class="n">prix</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">prix</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="mi">210</span><span class="p">)</span>
+</code></pre></div>
+<p><img src="images/1000000000000092000000362EBD5C84.png" style="width:3.089cm;height:1.138cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000092000000362EBD5C84.png" /></p>
+<h4 id="4213-operateurs-arithmetiques">4.2.1.3. Opérateurs arithmétiques</h4>
+<p>L&#x27;expression arithmétique nous est familière. Elle exprime un calcul à faire entre des données numériques. Nous avons déjà rencontré de telles expressions : on suppose que le prix mémorisé dans les fiches du fichier BIBLIO soit un prix hors taxes. On veut visualiser chaque titre avec son prix TTC pour un taux de TVA de 18.6% :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">TITRE</span><span class="p">,</span><span class="w"> </span><span class="n">PRIX</span><span class="o">*</span><span class="mi">1</span><span class="p">.</span><span class="mi">186</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">BIBLIO</span>
+</code></pre></div>
+<p>Si les prix doivent augmenter de 3%, la commande sera</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="w">    </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">BIBLIO</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">PRIX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PRIX</span><span class="o">*</span><span class="mi">1</span><span class="p">.</span><span class="mi">03</span>
+</code></pre></div>
+<p>On peut trouver plusieurs opérateurs arithmétiques dans une expression avec de plus des fonctions et des parenthèses. Ces éléments sont traités selon des priorités différentes :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">1</p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>fonctions
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">&lt;---- plus prioritaire</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">2</p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>()
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;">&nbsp;</td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">3</p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>* et /
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;">&nbsp;</td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">4</p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>+ et -
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">&lt;---- moins prioritaire</p></td></tr></table>
+
+<p>Lorsque deux opérateurs de même priorité sont présents dans l&#x27;expression, c&#x27;est celui qui est le plus à gauche dans l&#x27;expression qui est évalué tout d&#x27;abord.</p>
+<p><strong>Exemples</strong></p>
+<p>L&#x27;expression PRIX*TAUX+TAXES sera évaluée comme (PRIX*TAUX)+TAXES. C&#x27;est en effet l&#x27;opérateur de multiplication qui sera utilisé en premier. L&#x27;expresssion PRIX*TAUX/100 sera évaluée comme (PRIX*TAUX)/100.</p>
+<h3 id="422-les-expressions-a-operandes-de-type-caracteres">4.2.2. Les expressions à opérandes de type caractères</h3>
+<h4 id="4221-liste-des-operateurs">4.2.2.1. Liste des opérateurs</h4>
+<p>Les opérateurs utilisables sont les suivants :</p>
+<p>Soient <em>chaine1, chaine2, chaine3, modèle</em> des chaînes de caractères</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>chaine1 &gt; chaine2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: chaine1 plus grande que chaine2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>chaine1 &gt;= chaine2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: chaine1 plus grande ou égale à chaine2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>chaine1 &lt; chaine2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: chaine1 plus petite que chaine2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>chaine1 &lt;= chaine2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: chaine1 plus petite ou égale à chaine2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>chaine1 = chaine2 
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: chaine1 égale à chaine2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>chaine1 != chaine2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: chaine1 différente de chaine2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>chaine1 &lt;&gt; chaine2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: idem</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>chaine1 BETWEEN chaine2 AND chaine3
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: chaine1 dans l&#x27;intervalle [chaine2,chaine3]</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>chaine1 IN liste de chaines
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: chaine1 appartient à liste de chaines</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>chaine1 IS NULL
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: chaine1 n&#x27;a pas de valeur</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>chaine1 IS NOT NULL
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: chaine1 a une valeur</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>chaine1 LIKE modèle
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: chaine1 correspond à modèle</p></td></tr></table>
+
+<p>Opérateur de concaténation</p>
+<p><em>chaine1 || chaine2</em>    : <em>chaine2</em> concaténée à <em>chaine1</em></p>
+<h4 id="4222-operateurs-relationnels">4.2.2.2. Opérateurs relationnels</h4>
+<p>Que signifie comparer des chaînes avec des opérateurs tels que &lt;, &lt;=, etc ... ?</p>
+<p>Tout caractère est codé par un nombre entier. Lorsqu&#x27;on compare deux caractères, ce sont leurs codes entiers qui sont comparés. Le codage adopté respecte l&#x27;ordre naturel du dictionnaire :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>blanc&lt;..&lt; 0 &lt; 1 &lt; ...&lt; 9 &lt; ...&lt; A &lt; B &lt;... &lt; Z &lt; ... &lt; a &lt; b &lt; ... &lt; z
+</code></pre></div>
+<p>Les chiffres viennent avant les lettres, et les majuscules avant les minuscules.</p>
+<h4 id="4223-comparaison-de-deux-chaines">4.2.2.3. Comparaison de deux chaînes</h4>
+<p>Soit la relation &#x27;CHAT&#x27; &lt; &#x27;CHIEN&#x27;. Est-elle vraie ou fausse ? Pour effectuer cette comparaison, le SGBD compare les deux chaînes caractère par caractère sur la base de leurs codes entiers. Dès que deux caractères sont trouvés différents, la chaîne à qui appartient le plus petit des deux est dite plus petite que l&#x27;autre chaîne. Dans notre exemple &#x27;CHAT&#x27; est comparée à &#x27;CHIEN&#x27;. On a les résultats successifs suivants :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>    &#39;CHAT&#39;    &#39;CHIEN&#39;
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>----------------------------
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>    &#39;C&#39;    =    &#39;C&#39;
+<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a>    &#39;H&#39;    =    &#39;H&#39;
+<a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a>    &#39;A&#39;    &lt;    &#39;I&#39;
+</code></pre></div>
+<p>Après cette dernière comparaison, la chaîne &#x27;CHAT&#x27; est déclarée plus petite que la chaîne &#x27;CHIEN&#x27;. La relation <em>&#x27;CHAT&#x27; &lt; &#x27;CHIEN&#x27;</em> est donc vraie. </p>
+<p>Soit à comparer maintenant &#x27;CHAT&#x27; et &#x27;chat&#x27;.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>    &#39;CHAT&#39;    &#39;chat&#39;
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>--------------------------
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>    &#39;C&#39;    &lt;    &#39;c&#39;
+</code></pre></div>
+<p>Après cette comparaison, la relation &#x27;CHAT&#x27; &lt; &#x27;chat&#x27; est déclarée vraie.</p>
+<p><strong>Exemples</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span>
+</code></pre></div>
+<p><img src="images/100000000000007A000000AAD562DF38.png" style="width:2.579cm;height:3.598cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000007A000000AAD562DF38.png" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">upper</span><span class="p">(</span><span class="n">titre</span><span class="p">)</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="s1">&#39;L&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="s1">&#39;M&#39;</span>
+</code></pre></div>
+<p><img src="images/100000000000007800000046F9D8BDAF.png" style="width:2.538cm;height:1.478cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000007800000046F9D8BDAF.png" /></p>
+<h4 id="4224-loperateur-like">4.2.2.4. L&#x27;opérateur LIKE</h4>
+<p>L&#x27;opérateur LIKE s&#x27;utilise comme suit : <em>chaîne</em> <strong>LIKE</strong> <em>modèle</em></p>
+<p>La relation est vraie si <em>chaîne</em> correspond au <em>modèle</em>. Celui-ci est une chaîne de caractères pouvant comporter deux caractères génériques :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>%
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">qui désigne toute suite de caractères</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>_
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">qui désigne 1 caractère quelconque</p></td></tr></table>
+
+<p><strong>Exemples</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span>
+</code></pre></div>
+<p><img src="images/100000000000007A000000AAD562DF38.png" style="width:2.579cm;height:3.598cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000007A000000AAD562DF38.png" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">titre</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;M%&#39;</span><span class="p">;</span>
+</code></pre></div>
+<p><img src="images/100000000000006600000035B50B937F.png" style="width:2.159cm;height:1.118cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000006600000035B50B937F.png" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">titre</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;L_ %&#39;</span><span class="p">;</span>
+</code></pre></div>
+<p><img src="images/100000000000005A00000037EB0C4057.png" style="width:1.909cm;height:1.159cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000005A00000037EB0C4057.png" /></p>
+<h4 id="4225-loperateur-de-concatenation">4.2.2.5. L&#x27;opérateur de concaténation</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="k">SQL</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="s1">&#39;[&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">titre</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;]&#39;</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="k">upper</span><span class="p">(</span><span class="n">titre</span><span class="p">)</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;L_ %&#39;</span>
+</code></pre></div>
+<p><img src="images/1000000000000072000000334D87104D.png" style="width:2.408cm;height:1.078cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000072000000334D87104D.png" /></p>
+<h3 id="423-les-expressions-a-operandes-de-type-date">4.2.3. Les expressions à opérandes de type date</h3>
+<p>Soient <em>date1, date2, date3</em> des dates. Les opérateurs utilisables sont les suivants :</p>
+<p><strong>Opérateurs relationnels</strong></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>date1 &lt; date2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">est vraie si date1 est antérieure à date2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>date1 &lt;= date2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">est vraie si date1 est antérieure ou égale à date2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>date1 &gt; date2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">est vraie si date1 est postérieure à date2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>date1 &gt;= date2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">est vraie si date1 est postérieure ou égale à date2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>date1 = date2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">est vraie si date1 et date2 sont identiques</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>date1 &lt;&gt; date2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">est vraie si date1 et date2 sont différentes.</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>date1 != date2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">idem</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>date1 BETWEEN date2 AND date3
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">est vraie si date1 est situé entre date2 et date3</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>date1 IN (liste de dates)
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">est vraie si date1 se trouve dans la liste de dates</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>date1 IS NULL
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">est vraie si date1 n&#x27;a pas de valeur</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>date1 IS NOT NULL
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">est vraie si date1 a une valeur</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>date1 LIKE modèle
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">est vraie si date1 correspond au modèle</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>ALL,ANY,EXISTS
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;">&nbsp;</td></tr></table>
+
+<p><strong>Opérateurs arithmétiques</strong></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>date1 - date2
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: nombre de jours séparant date1 de date2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>date1 - nombre
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: date2 telle que date1-date2=nombre</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a>date1 + nombre
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">: date2 telle que date2-date1=nombre</p></td></tr></table>
+
+<p><strong>Exemples</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">achat</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span>
+</code></pre></div>
+<p><img src="images/1000000000000041000000ABDCCBC35A.png" style="width:1.378cm;height:3.618cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000041000000ABDCCBC35A.png" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="k">select</span><span class="w"> </span><span class="n">achat</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span>
+<a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a><span class="w">   </span><span class="k">where</span><span class="w"> </span><span class="n">achat</span><span class="w"> </span><span class="k">between</span><span class="w"> </span><span class="s1">&#39;01.01.1988&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="s1">&#39;31.12.1988&#39;</span><span class="p">;</span>
+</code></pre></div>
+<p><img src="images/100000000000006000000022FC599FB9.png" style="width:2.538cm;height:0.898cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000006000000022FC599FB9.png" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="p">,</span><span class="w"> </span><span class="n">achat</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span>
+<a id="__codelineno-67-2" name="__codelineno-67-2" href="#__codelineno-67-2"></a><span class="k">where</span><span class="w"> </span><span class="k">cast</span><span class="p">(</span><span class="n">achat</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nb">char</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;1988&#39;</span>
+</code></pre></div>
+<p><img src="images/1000000000000097000000273B1A2937.png" style="width:3.993cm;height:1.03cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000097000000273B1A2937.png" /></p>
+<p>Age des livres de la bibliothèque ?</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="p">,</span><span class="w"> </span><span class="k">cast</span><span class="p">(</span><span class="s1">&#39;now&#39;</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nb">date</span><span class="p">)</span><span class="o">-</span><span class="n">achat</span><span class="w"> </span><span class="ss">&quot;age(jours)&quot;</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span>
+</code></pre></div>
+<p><img src="images/10000000000000B8000000AB71AF4F61.png" style="width:3.888cm;height:3.618cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000B8000000AB71AF4F61.png" /></p>
+<h3 id="424-expressions-a-operandes-booleens">4.2.4. Expressions à opérandes booléens</h3>
+<p>Rappelons qu&#x27;un booléen ou valeur logique a deux valeurs possibles : vrai ou faux. L&#x27;opérande logique est souvent le résultat d&#x27;une expression relationnelle.</p>
+<p>Soient <em>booléen1</em> et <em>booléen2</em> deux booléens. Il y a trois opérateurs possibles qui sont par ordre de priorité :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div class="odt-code-rich" data-linenums="false" style="counter-reset: odtline 0;"><pre><code class="language-text">
+<span class="odt-code-line"><span style="font-style:italic">booléen1</span> <span style="font-weight:bold">AND</span> <span style="font-style:italic">booléen2</span></span>
+</code></pre></div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">est vraie si <i>booléen1</i> et <i>booléen2</i> sont vrais tous les deux.</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div class="odt-code-rich" data-linenums="false" style="counter-reset: odtline 0;"><pre><code class="language-text">
+<span class="odt-code-line"><span style="font-style:italic">booléen1</span> <span style="font-weight:bold">OR</span> <span style="font-style:italic">booléen2</span></span>
+</code></pre></div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">est vraie si <i>booléen1</i> ou <i>booléen2</i> est vrai.</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div class="odt-code-rich" data-linenums="false" style="counter-reset: odtline 0;"><pre><code class="language-text">
+<span class="odt-code-line"><span style="font-weight:bold">NOT</span> <span style="font-style:italic">booléen1</span></span>
+</code></pre></div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">a pour valeur l&#x27;inverse de la valeur de <i>booléen1</i>.</p></td></tr></table>
+
+<p><strong>Exemples</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="p">,</span><span class="n">genre</span><span class="p">,</span><span class="n">prix</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">prix</span><span class="w"> </span><span class="k">desc</span>
+</code></pre></div>
+<p><img src="images/10000000000000DE000000AA98BAEE8A.png" style="width:4.699cm;height:3.598cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000DE000000AA98BAEE8A.png" /></p>
+<p>On recherche les livres entre deux prix :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-70-1" name="__codelineno-70-1" href="#__codelineno-70-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="p">,</span><span class="n">genre</span><span class="p">,</span><span class="n">prix</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span>
+<a id="__codelineno-70-2" name="__codelineno-70-2" href="#__codelineno-70-2"></a><span class="w">     </span><span class="k">where</span><span class="w"> </span><span class="n">prix</span><span class="o">&gt;=</span><span class="mi">130</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">prix</span><span class="w"> </span><span class="o">&lt;=</span><span class="mi">170</span>
+</code></pre></div>
+<p><img src="images/10000000000000BB00000025D046B587.png" style="width:4.946cm;height:0.977cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000BB00000025D046B587.png" /></p>
+<p>Recherche inverse :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-71-1" name="__codelineno-71-1" href="#__codelineno-71-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="p">,</span><span class="n">genre</span><span class="p">,</span><span class="n">prix</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span>
+<a id="__codelineno-71-2" name="__codelineno-71-2" href="#__codelineno-71-2"></a><span class="w">     </span><span class="k">where</span><span class="w"> </span><span class="n">prix</span><span class="o">&lt;</span><span class="mi">130</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">prix</span><span class="w"> </span><span class="o">&gt;</span><span class="mi">170</span>
+<a id="__codelineno-71-3" name="__codelineno-71-3" href="#__codelineno-71-3"></a><span class="w">     </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">prix</span><span class="w"> </span><span class="k">asc</span>
+</code></pre></div>
+<p><img src="images/10000000000000DE0000009911033726.png" style="width:4.699cm;height:3.239cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000DE0000009911033726.png" /></p>
+<p>Attention à la priorité des opérateurs !</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-72-1" name="__codelineno-72-1" href="#__codelineno-72-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="p">,</span><span class="n">genre</span><span class="p">,</span><span class="n">prix</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span>
+<a id="__codelineno-72-2" name="__codelineno-72-2" href="#__codelineno-72-2"></a><span class="w">  </span><span class="k">where</span><span class="w"> </span><span class="n">genre</span><span class="o">=</span><span class="s1">&#39;ROMAN&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">prix</span><span class="o">&gt;</span><span class="mi">200</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">prix</span><span class="o">&lt;</span><span class="mi">100</span>
+<a id="__codelineno-72-3" name="__codelineno-72-3" href="#__codelineno-72-3"></a><span class="w">  </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">prix</span><span class="w"> </span><span class="k">asc</span>
+</code></pre></div>
+<p><img src="images/10000000000000E10000006817271824.png" style="width:4.759cm;height:2.198cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000E10000006817271824.png" /></p>
+<p>On met des parenthèses pour contrôler la priorité des opérateurs :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-73-1" name="__codelineno-73-1" href="#__codelineno-73-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">titre</span><span class="p">,</span><span class="n">genre</span><span class="p">,</span><span class="n">prix</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">biblio</span>
+<a id="__codelineno-73-2" name="__codelineno-73-2" href="#__codelineno-73-2"></a><span class="w">  </span><span class="k">where</span><span class="w"> </span><span class="n">genre</span><span class="o">=</span><span class="s1">&#39;ROMAN&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="n">prix</span><span class="o">&gt;</span><span class="mi">200</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">prix</span><span class="o">&lt;</span><span class="mi">100</span><span class="p">)</span>
+<a id="__codelineno-73-3" name="__codelineno-73-3" href="#__codelineno-73-3"></a><span class="w">  </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">prix</span><span class="w"> </span><span class="k">asc</span>
+</code></pre></div>
+<p><img src="images/10000000000000DF0000004659081CB8.png" style="width:4.718cm;height:1.478cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000DF0000004659081CB8.png" /></p>
+<h2 id="43-les-fonctions-predefinies-de-firebird">4.3. Les fonctions prédéfinies de Firebird</h2>
+<p>Firebird dispose de fonctions prédéfinies. Elles ne sont pas immédiatement utilisables dans les ordres SQL. Il faut tout d&#x27;abord exécuter le script SQL <strong>&lt;firebird&gt;\UDF\ib_udf.sql</strong> où &lt;firebird&gt; désigne le répertoire d&#x27;installation du SGBD Firebird :</p>
+<p><img src="images/10000000000000E4000000833335D76D.png" style="width:4.828cm;height:2.768cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000E4000000833335D76D.png" /></p>
+<p>Avec IBExpert, nous procédons de la façon suivante :</p>
+<ul>
+  <li>nous utilisons l&#x27;outil [Script Excecutive] obtenu par l&#x27;option [Tools/ Script Executive] :
+  </li>
+</ul>
+
+<p><img src="images/10000000000000F0000000AA275DBAED.png" style="width:5.078cm;height:3.598cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000F0000000AA275DBAED.png" /></p>
+<ul>
+  <li>une fois l&#x27;outil présent, nous chargeons le script &lt;firebird&gt;\UDF\ib_udf.sql :
+  </li>
+</ul>
+
+<p><img src="images/10000000000001CC0000005F3722CDD5.png" style="width:9.738cm;height:2.009cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001CC0000005F3722CDD5.png" /></p>
+<ul>
+  <li>puis nous exécutons le script :
+  </li>
+</ul>
+
+<p><img src="images/1000000000000232000000D8F6B5C758.png" style="width:8.918cm;height:3.429cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000232000000D8F6B5C758.png" /></p>
+<p>Ceci fait, les fonctions prédéfinies de Firebird sont disponibles pour la base à laquelle on était connectée lorsque le script a été exécuté. Pour le voir, il suffit d&#x27;aller dans l&#x27;explorateur de bases, et de cliquer sur le noeud [UDF] de la base dans laquelle ont été importées les fonctions :</p>
+<p><img src="images/100000000000009B0000011312E88160.png" style="width:3.279cm;height:5.819cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000009B0000011312E88160.png" /></p>
+<p>On a ci-dessus, les fonctions disponibles à la base. Pour les tester, il est pratique d&#x27;avoir une table à une ligne. Appelons-la TEST :</p>
+<p><img src="images/100000000000008A0000005622B803A9.png" style="width:2.917cm;height:1.819cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000008A0000005622B803A9.png" /></p>
+<p>et définissons-la comme suit (clic droit sur Tables / New Table ) :</p>
+<p>Mettons une unique ligne dans cette table :</p>
+<p><img src="images/100000000000020700000074B5AF90E7.png" style="width:10.989cm;height:2.459cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000020700000074B5AF90E7.png" /></p>
+<p><img src="images/1000000000000179000000786AD08B5F.png" style="width:7.978cm;height:2.538cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000179000000786AD08B5F.png" /></p>
+<p>Passons maintenant dans l&#x27;éditeur SQL (F12) et émettons l&#x27;ordre SQL suivant :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-74-1" name="__codelineno-74-1" href="#__codelineno-74-1"></a><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">cos</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">test</span>
+</code></pre></div>
+<p>qui utilise la fonction prédéfinie cos (cosinus). La commande ci-dessus évalue <em>cos(0)</em> pour chaque ligne de la table TEST, donc en fait pour une seule ligne. Il y a donc simplement affichage de la valeur de <em>cos(0) :</em></p>
+<p><img src="images/10000000000000390000002315445C4E.png" style="width:1.506cm;height:0.924cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000000390000002315445C4E.png" /></p>
+<p>Les fonctions UDF (User Defined Fonction) sont des fonctions que l&#x27;utilisateur peut créer et on peut ainsi trouver des bibliothèques de fonctions UDF sur le web. Nous ne décrivons ici que certaines de celles disponibles avec la version téléchargeable de Firebird (2005). Nous les classifions selon le type prédominant de leurs paramètres ou selon leur rôle :</p>
+<ul>
+  <li>fonctions à paramètres de type numérique
+  </li>
+  <li>fonctions à paramètres de type chaîne de caractères
+  </li>
+</ul>
+
+<h3 id="431-fonctions-a-parametres-de-type-numerique">4.3.1. Fonctions à paramètres de type numérique</h3>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div class="odt-code-rich" data-linenums="false" style="counter-reset: odtline 0;"><pre><code class="language-text">
+<span class="odt-code-line"><span style="font-weight:bold">abs</span><span style="font-style:italic">(nombre)</span></span>
+</code></pre></div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">valeur absolue de nombre</p><p style="margin:0;">abs(-15)=15</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div class="odt-code-rich" data-linenums="false" style="counter-reset: odtline 0;"><pre><code class="language-text">
+<span class="odt-code-line"><span style="font-weight:bold">ceil</span><span style="font-style:italic">(nombre)</span></span>
+</code></pre></div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">plus petit entier plus grand ou égal à <i>nombre</i></p><p style="margin:0;">ceil(15.7)=16</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div class="odt-code-rich" data-linenums="false" style="counter-reset: odtline 0;"><pre><code class="language-text">
+<span class="odt-code-line"><span style="font-weight:bold">floor</span><span style="font-style:italic">(nombre)</span></span>
+</code></pre></div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">plus grand entier inférieur ou égal à <i>nombre</i></p><p style="margin:0;">floor(14.3)=14</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div class="odt-code-rich" data-linenums="false" style="counter-reset: odtline 0;"><pre><code class="language-text">
+<span class="odt-code-line"><span style="font-weight:bold;font-style:italic">div</span><span style="font-style:italic">(nombre1,nombre2)</span></span>
+</code></pre></div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">quotient de la division entière (le quotient est entier) de <i>nombre1</i> par <i>nombre2</i></p><p style="margin:0;">div(7,3)=2</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div class="odt-code-rich" data-linenums="false" style="counter-reset: odtline 0;"><pre><code class="language-text">
+<span class="odt-code-line"><span style="font-weight:bold">mod</span><span style="font-style:italic">(nombre1,nombre2)</span></span>
+</code></pre></div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">reste de la division entière (le quotient est entier) de <i>nombre1</i> par <i>nombre2</i></p><p style="margin:0;">mod(7,3)=1</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div class="odt-code-rich" data-linenums="false" style="counter-reset: odtline 0;"><pre><code class="language-text">
+<span class="odt-code-line"><span style="font-weight:bold">sign</span><span style="font-style:italic">(nombre)</span></span>
+</code></pre></div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">-1 si <i>nombre</i>&lt;0</p><p style="margin:0;">0 si <i>nombre</i>=0</p><p style="margin:0;">+1 si <i>nombre</i>&gt;0</p><p style="margin:0;">sign(-6)=-1</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div class="odt-code-rich" data-linenums="false" style="counter-reset: odtline 0;"><pre><code class="language-text">
+<span class="odt-code-line"><span style="font-weight:bold">sqrt</span><span style="font-style:italic">(nombre)</span></span>
+</code></pre></div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">racine carrée de <i>nombre</i> si <i>nombre</i>&gt;=0</p><p style="margin:0;">-1 si <i>nombre</i>&lt;0</p><p style="margin:0;">sqrt(16)=4</p></td></tr></table>
+
+<h3 id="432-fonctions-a-parametres-de-type-chaine-de-caracteres">4.3.2. Fonctions à paramètres de type chaîne de caractères</h3>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><i><b>ascii_char</b></i><i>(nombre)</i></p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">caractère de code ASCII <i>nombre</i></p><p style="margin:0;">ascii_char(65)=&#x27;A&#x27;</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>lower</b><i>(chaine)</i></p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">met <i>chaine</i> en minuscules</p><p style="margin:0;">lower(&#x27;INFO&#x27;)=&#x27;info&#x27;</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>ltrim</b><i>(chaine)</i></p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Left Trim - Les espaces précédant le texte de <i>chaine</i> sont supprimés :</p><p style="margin:0;">ltrim(&#x27;  chaton&#x27;)=&#x27;chaton&#x27;</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>replace</b><i>(chaine1,chaine2,chaine3)</i></p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">remplace <i>chaine2</i> par <i>chaine3</i> dans <i>chaine1</i>.</p><p style="margin:0;">replace(&#x27;chat et chien&#x27;,&#x27;ch&#x27;,&#x27;**&#x27;)=&#x27;**at et **ien&#x27;</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>rtrim</b><i>(chaine1,chaine2)</i></p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">Right Trim - idem ltrim mais à droite</p><p style="margin:0;">rtrim(&#x27;chat  &#x27;)=&#x27;chat&#x27;</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>substr</b><i>(chaine,p,q)</i></p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">sous-chaîne de <i>chaine</i> commençant en position <i>p </i>et se terminant en position <i>q.</i></p><p style="margin:0;">substr(&#x27;chaton&#x27;,3,5)=&#x27;ato&#x27;</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>ascii_val</b><i>(caractère)</i></p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">code ASCII de <i>caractère</i></p><p style="margin:0;">ascii_val(&#x27;A&#x27;)=65</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;"><b>strlen(</b><i>chaine)</i></p></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">nombre de caractères de <i>chaine</i></p><p style="margin:0;">strlen(&#x27;chaton&#x27;)=6</p></td></tr></table>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner">
+
+      <div>
+        <a href="https://tahe.developpez.com" target="_blank">
+          https://tahe.developpez.com
+        </a>
+        <br>
+        Ce cours-tutoriel écrit par <strong>Serge Tahé</strong> est mis à disposition du public selon les termes de la
+        <em>Licence Creative Commons Attribution – Pas d’Utilisation Commerciale –
+        Partage dans les Mêmes Conditions 3.0 non transposé</em>.
+      </div>
+
+    </div>
+  </div>
+
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.indexes", "navigation.expand", "toc.integrate", "navigation.top"], "search": "assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="javascripts/focus.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,882 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Introduction au langage SQL avec le SGBD Firebird">
+      
+      
+        <meta name="author" content="Serge Tahé">
+      
+      
+        <link rel="canonical" href="https://stahe.github.io/sql-firebird-janv-2006/installer-et-utiliser-un-pilote-odbc-pour-firebird.html">
+      
+      
+        <link rel="prev" href="gestion-de-lacces-concurrent-aux-donnees.html">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>8. Installer et utiliser un pilote ODBC pour [Firebird] - Introduction au langage SQL avec le SGBD Firebird</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/focus.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EBZC3JVJNR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var siteName = "Introduction au langage SQL avec le SGBD Firebird";
+    gtag('config', 'G-EBZC3JVJNR', {
+        'page_title': siteName
+    });
+  </script>
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#8-installer-et-utiliser-un-pilote-odbc-pour-firebird" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Introduction au langage SQL avec le SGBD Firebird" class="md-header__button md-logo" aria-label="Introduction au langage SQL avec le SGBD Firebird" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Introduction au langage SQL avec le SGBD Firebird
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              8. Installer et utiliser un pilote ODBC pour [Firebird]
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Passer au mode sombre"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Passer au mode sombre" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Passer au mode clair"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Passer au mode clair" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://stahe.github.io/sql-firebird-janv-2006" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Introduction au langage SQL avec le SGBD Firebird" class="md-nav__button md-logo" aria-label="Introduction au langage SQL avec le SGBD Firebird" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Introduction au langage SQL avec le SGBD Firebird
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://stahe.github.io/sql-firebird-janv-2006" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tutoriel-firebird.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Tutoriel Firebird
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="introduction-au-langage-sql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Introduction au langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="les-expressions-du-langage-sql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Les expressions du langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="relations-entre-tables.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Relations entre tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="approfondissement-du-langage-sql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Approfondissement du langage SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gestion-de-lacces-concurrent-aux-donnees.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Gestion de l'accès concurrent aux données
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Installer et utiliser un pilote ODBC pour [Firebird]
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="installer-et-utiliser-un-pilote-odbc-pour-firebird.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Installer et utiliser un pilote ODBC pour [Firebird]
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#81-installer-le-pilote" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1. Installer le pilote
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#82-creer-une-source-odbc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2. Créer une source ODBC
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#83-tester-la-source-odbc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3. Tester la source ODBC
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#84-microsoft-query" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4. Microsoft Query
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="8-installer-et-utiliser-un-pilote-odbc-pour-firebird">8. Installer et utiliser un pilote ODBC pour [Firebird]</h1>
+<h2 id="81-installer-le-pilote">8.1. Installer le pilote</h2>
+<p>Il existe de nombreuses bases de données sur le marché. Afin d’uniformiser les accès aux bases de données sous MS Windows, Microsoft a développé une interface appelée ODBC (Open DataBase Connectivity). Cette couche cache les particularités de chaque base de données sous une interface standard. Il existe sous MS Windows de nombreux pilotes ODBC facilitant l’accès aux bases de données. Voici par exemple, quelques-uns des pilotes ODBC installés sur une machine Windows XP : </p>
+<p><img src="images/10000000000001D10000015EA41092C7.png" style="width:9.841cm;height:7.41cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001D10000015EA41092C7.png" /></p>
+<p>Une application s’appuyant sur ces pilotes peut utiliser n’importe quelle bases de données sans ré-écriture. Le pilote ODBC s&#x27;intercale entre l&#x27;application et le SGBD. Le dialogue Application &lt;-&gt; pilote ODBC est standard. Si on change de SGBD, on installe alors le pilote ODBC du nouveau SGBD et l&#x27;application reste inchangée.</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/1000000000000489000000C4DC1F7C74.png" style="display:inline-block; margin:4px;width:15.36cm;height:2.593cm;" class="odt-zoomable" data-zoom-src="images/1000000000000489000000C4DC1F7C74.png" /></td></tr></table>
+
+<p>Le lien [firebird-odbc-provider] de la page de téléchargements de [Firebird] (paragraphe <a href="tutoriel-firebird.html#firebird">2.1</a>) donne accès à un pilote ODBC. Une fois celui-ci installé, il apparaît dans la liste des pilotes ODBC installés.</p>
+<h2 id="82-creer-une-source-odbc">8.2. Créer une source ODBC</h2>
+<ul>
+  <li>lancer l&#x27;outil [Démarrer -&gt; Paramètres -&gt; Outil de configuration -&gt; Outils d&#x27;administration -&gt; Sources de données ODBC] :
+  </li>
+</ul>
+
+<p><img src="images/10000000000002300000004F5D5AC060.png" style="width:10.363cm;height:1.457cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000002300000004F5D5AC060.png" /></p>
+<ul>
+  <li>on obtient la fenêtre suivante :
+  </li>
+</ul>
+
+<p><img src="images/10000000000001C9000000A624EE6794.png" style="width:8.456cm;height:3.062cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001C9000000A624EE6794.png" /></p>
+<ul>
+  <li>ajoutons [Add] une nouvelle source de données système (panneau [System DSN]) qu&#x27;on associera à la base Firebird [dbarticles] que nous avons créée au paragraphe <a href="tutoriel-firebird.html#dbarticles">2.3</a> :
+  </li>
+</ul>
+
+<p><img src="images/10000000000001C0000000908EA3F24F.png" style="width:8.299cm;height:2.667cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001C0000000908EA3F24F.png" /></p>
+<ul>
+  <li>il nous faut tout d&#x27;abord préciser le pilote ODBC à utiliser. Ci-dessus, nous choisissons le pilote pour Firebird puis nous faisons [Terminer]. L&#x27;assistant du pilote ODBC de Firebird prend alors la main :
+  </li>
+</ul>
+
+<p><img src="images/10000000000001680000015EDB63A521.png" style="width:6.664cm;height:6.477cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001680000015EDB63A521.png" /></p>
+<ul>
+  <li>nous remplissons les différents champs :
+  </li>
+</ul>
+
+<p><img src="images/1000000000000166000000EB91DB777F.png" style="width:6.623cm;height:4.348cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000166000000EB91DB777F.png" /></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>DSN [demo-odbc-firebird]
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">le nom DSN de la source ODBC - peut être quelconque</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Database [D:\..\DBARTICLES.GDB]
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">le nom de la BD Firebird à exploiter - utiliser [Browse] pour désigner le fichier .gbd correspondant. Nous utilisons ici la base d&#x27;articles [dbarticles] créée page <a href="tutoriel-firebird.html#dbarticles">8</a>.</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Database Account [SYSDBA]
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">identifiant à utiliser pour se connecter à la base</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Password [masterkey]
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">le mot de passe associé à cet identifiant</p></td></tr></table>
+
+<p>Le bouton [Test connection] permet de vérifier la validité des informations que nous avons données. Avant de l&#x27;utiliser, lancer le SGBD [Firebird] :</p>
+<p><img src="images/100000000000010E000000715EB8CF57.png" style="width:4.997cm;height:2.081cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000010E000000715EB8CF57.png" /></p>
+<ul>
+  <li>valider l&#x27;assistant ODBC, en faisant [OK] autant de fois que nécessaire
+  </li>
+</ul>
+
+<p><a id="testersourceodbc"></a></p>
+<h2 id="83-tester-la-source-odbc">8.3. Tester la source ODBC</h2>
+<p>Il y a diverses façons de vérifier le bon fonctionnement d&#x27;une source ODBC. Nous allons ici utiliser Excel :</p>
+<p><img src="images/10000000000002FE0000011C4766F8B1.png" style="width:14.183cm;height:5.253cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000002FE0000011C4766F8B1.png" /></p>
+<ul>
+  <li>utilisons l&#x27;option [Données -&gt; Données externes -&gt; Créer une requête] ci-dessus. Nous obtenons la première fenêtre d&#x27;un assistant de définition de la source de données. Le panneau [Bases de données] liste les sources ODBC actuellement définies sur la machine :
+  </li>
+</ul>
+
+<p><img src="images/10000000000001C40000008759047E8D.png" style="width:9.569cm;height:2.854cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001C40000008759047E8D.png" /></p>
+<ul>
+  <li>choisissons la source ODBC [odbc-firebird-articles] que nous venons de créer et passons à l&#x27;étape suivante avec [OK] :
+  </li>
+</ul>
+
+<p><img src="images/10000000000001A8000000BBB5B02067.png" style="width:7.844cm;height:3.459cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001A8000000BBB5B02067.png" /></p>
+<ul>
+  <li>cette fenêtre liste les tables et colonnes disponibles dans la source ODBC. Nous prenons toute la table :
+  </li>
+</ul>
+
+<p><img src="images/10000000000001A1000000A4D05B6723.png" style="width:7.717cm;height:3.03cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001A1000000A4D05B6723.png" /></p>
+<ul>
+  <li>passons à l&#x27;étape suivante avec [Suivant] :
+  </li>
+</ul>
+
+<p><img src="images/10000000000001A9000000A390F267F9.png" style="width:7.863cm;height:3.018cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001A9000000A390F267F9.png" /></p>
+<ul>
+  <li>cette étape nous permet de filtrer les données. Ici nous ne filtrons rien et passons à l&#x27;étape suivante :
+  </li>
+</ul>
+
+<p><img src="images/10000000000001760000008A11A9838F.png" style="width:6.925cm;height:2.554cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001760000008A11A9838F.png" /></p>
+<ul>
+  <li>cette étape nous permet de trier les données. Nous ne le faisons pas et passons à l&#x27;étape suivante :
+  </li>
+</ul>
+
+<p><img src="images/10000000000001F10000009660A83120.png" style="width:9.193cm;height:2.773cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001F10000009660A83120.png" /></p>
+<ul>
+  <li>la dernière étape nous demande ce qu&#x27;on veut faire des données. Ici, nous les renvoyons vers Excel :
+  </li>
+</ul>
+
+<p><img src="images/1000000000000174000000A73256E8B1.png" style="width:6.888cm;height:3.085cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000174000000A73256E8B1.png" /></p>
+<ul>
+  <li>ici, Excel demande où on veut mettre les données récupérées. On les met dans la feuille active à partir de la cellule A1. Les données sont alors récupérées dans la feuille Excel :
+  </li>
+</ul>
+
+<p><img src="images/1000000000000163000000569C910E63.png" style="width:7.507cm;height:1.815cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000163000000569C910E63.png" /></p>
+<p>Il y a d&#x27;autres façons de tester la validité d&#x27;une source ODBC. On pourra par exemple utilliser la suite gratuite OpenOffice disponible à l&#x27;url [<a href="http://www.openoffice.org/">http://www.openoffice.org</a>]. Voici un exemple avec un texte OpenOffice :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/1000000000000194000000A116CB2AF7.png" style="display:inline-block; margin:4px;width:7.475cm;height:2.97cm;" class="odt-zoomable" data-zoom-src="images/1000000000000194000000A116CB2AF7.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000015400000082E88D5673.png" style="display:inline-block; margin:4px;width:6.297cm;height:2.402cm;" class="odt-zoomable" data-zoom-src="images/100000000000015400000082E88D5673.png" /></td></tr></table>
+
+<ul>
+  <li>une icône sur le côté gauche de la fenêtre d&#x27;OpenOffice donne accès aux sources de données. L&#x27;interface change alors pour introduire une zone de gestion des sources de données :
+  </li>
+</ul>
+
+<p><img src="images/1000000000000117000000D40479A691.png" style="width:5.154cm;height:3.923cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000117000000D40479A691.png" /></p>
+<ul>
+  <li>une source de données est prédéfinie, la source [Bibliography]. Un clic droit sur la zone des sources de données nous permet d&#x27;en créer une nouvelle avec l&#x27;option [Gérer les sources de données] :
+  </li>
+</ul>
+
+<p><img src="images/100000000000011F0000009AA3A7F501.png" style="width:5.304cm;height:2.843cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000011F0000009AA3A7F501.png" /></p>
+<ul>
+  <li>un assistant [Gestion des sources de données] permet de créer des sources de données. Un clic droit sur la zone des sources de données nous permet d&#x27;en créer une nouvelle avec l&#x27;option [Nouvelle source de données] : 
+  </li>
+</ul>
+
+<p><img src="images/100000000000021400000095EE775B91.png" style="width:9.846cm;height:2.753cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000021400000095EE775B91.png" /></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Nom [odbc-firebird-articles]
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">un nom quelconque. Ici on a repris le nom de la source ODBC</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Type de BD [odbc]
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">OpenOffice sait gérer différents types de BD via JDBC, ODBC ou directement (MySQL, Dbase, ...). Pour notre exemple, il faut choisir ODBC</p></td></tr><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>URL de la source de données
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">le bouton à droite du champ de saisie nous donne accès à la liste des sources ODBC de la machine. Nous choisissons la source [odbc-firebird-articles]</p></td></tr></table>
+
+<ul>
+  <li>nous passons au panneau [ODBC] pour y définir l&#x27;utilisateur sous l&#x27;identité duquel se fera la connexion :
+  </li>
+</ul>
+
+<p><img src="images/100000000000015200000063E39E08E9.png" style="width:7.149cm;height:2.099cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000015200000063E39E08E9.png" /></p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><div markdown="block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Nom d&#39;utilisateur [sysdba]
+</code></pre></div>
+</div></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><p style="margin:0;">le propriétaire de la source ODBC</p></td></tr></table>
+
+<ul>
+  <li>on passe au panneau [Tables]. Le mot de passe est demandé. Ici c&#x27;est [masterkey] :
+  </li>
+</ul>
+
+<p><img src="images/1000000000000219000000AE62FFF4E4.png" style="width:9.936cm;height:3.219cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/1000000000000219000000AE62FFF4E4.png" /></p>
+<ul>
+  <li>on fait [OK]. La liste des tables de la source ODBC est alors présentée :
+  </li>
+</ul>
+
+<p><img src="images/100000000000010D0000008F52BA0B8E.png" style="width:4.972cm;height:2.644cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000010D0000008F52BA0B8E.png" /></p>
+<ul>
+  <li>on peut définir les tables qui seront présentées au document [OpenOffice]. Ici nous choisissons la table [ARTICLES] et nous faisons [OK]. La définition de la source de données est terminée. Elle apparaît alors dans la liste des sources de données du document actif :
+  </li>
+</ul>
+
+<p><img src="images/100000000000029D000000E23B22A499.png" style="width:12.386cm;height:4.18cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000029D000000E23B22A499.png" /></p>
+<ul>
+  <li>on peut avec la souris faire glisser la table [ARTICLES] ci-dessus dans le texte [OpenOffice].
+  </li>
+</ul>
+
+<h2 id="84-microsoft-query">8.4. Microsoft Query</h2>
+<p>Quoique MS Query soit livré avec MS Office, il n&#x27;existe pas toujours de lien vers ce programme. On le trouve dans le dossier <em>Office</em> de MS Office sous le nom <em>MSQRY32.EXE</em>. Par exemple <em>&quot;C:\Program Files\Office 2000\Office\MSQRY32.EXE&quot;</em>. MS Query permet d&#x27;interroger toute source de données ODBC avec des requêtes SQL. Celles-ci peuvent être construites graphiquement ou tapées directement au clavier. Comme la plupart des bases de données pour Windows fournissent des pilotes ODBC, elles peuvent donc toutes être interrogées avec MS Query. Lorsque MS Query est lancé, on a l&#x27;affichage suivant :</p>
+<p><img src="images/10000000000001C70000006854343211.png" style="width:9.631cm;height:2.2cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001C70000006854343211.png" /></p>
+<p>Il nous faut tout d&#x27;abord désigner la source de données ODBC qui va être interrogée On utilise pour cela l&#x27;option : <em>Fichier/Nouvelle</em> :</p>
+<p><img src="images/10000000000001C7000000ED130998F5.png" style="width:9.631cm;height:5.02cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001C7000000ED130998F5.png" /></p>
+<p>Nous utiliserons la source ODBC créée précédemment. MS Query nous présente alors la structure de la source :</p>
+<p><img src="images/10000000000001EE000001324CD8E8A3.png" style="width:9.19cm;height:5.69cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001EE000001324CD8E8A3.png" /></p>
+<p>Nous utilisons le bouton [Annuler] car l&#x27;assistant proposé n&#x27;est guère utile si on connaît le langage SQL. Nous pouvons émettre des requêtes SQL sur la source ODBC sélectionnée avec l&#x27;option [Fichier / Exécuter SQL] :</p>
+<table class="odt-table" style="border-collapse: collapse; width: 100%; margin-bottom: 1em;"><tr><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/10000000000000AD000000A9FCF375CC.png" style="display:inline-block; margin:4px;width:3.66cm;height:3.581cm;" class="odt-zoomable" data-zoom-src="images/10000000000000AD000000A9FCF375CC.png" /></td><td style="border: 1px solid #ddd; padding: 8px; vertical-align: top;"><img src="images/100000000000016100000145581A5704.png" style="display:inline-block; margin:4px;width:7.47cm;height:6.879cm;" class="odt-zoomable" data-zoom-src="images/100000000000016100000145581A5704.png" /></td></tr></table>
+
+<p>Nous sommes encore amenés à sélectionner la source ODBC :</p>
+<p><img src="images/10000000000001C5000000994E49CD26.png" style="width:9.59cm;height:3.24cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001C5000000994E49CD26.png" /></p>
+<p>Une fois la source ODBC choisie, on peut émettre des ordres SQL dessus :</p>
+<p><img src="images/100000000000015F0000011233BE3562.png" style="width:7.43cm;height:5.8cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/100000000000015F0000011233BE3562.png" /></p>
+<p>Nous obtenons le résultat suivant :</p>
+<p><img src="images/10000000000001570000012E8FF0D252.png" style="width:7.26cm;height:6.391cm;" alt="Image" class="odt-zoomable" data-zoom-src="images/10000000000001570000012E8FF0D252.png" /></p>
+<p>Le lecteur est invité à créer une source ODBC avec la base de données Firebird DBBIBLIO et à rejouer les exemples précédents.</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner">
+
+      <div>
+        <a href="https://tahe.developpez.com" target="_blank">
+          https://tahe.developpez.com
+        </a>
+        <br>
+        Ce cours-tutoriel écrit par <strong>Serge Tahé</strong> est mis à disposition du public selon les termes de la
+        <em>Licence Creative Commons Attribution – Pas d’Utilisation Commerciale –
+        Partage dans les Mêmes Conditions 3.0 non transposé</em>.
+      </div>
+
+    </div>
+  </div>
+
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.sections", "navigation.indexes", "navigation.expand", "toc.integrate", "navigation.top"], "search": "assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="javascripts/focus.js"></script>
+      
+    
+  </body>
+</html>
